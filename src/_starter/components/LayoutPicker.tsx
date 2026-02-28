@@ -42,7 +42,7 @@ export function LayoutPicker() {
               marginBottom: 0,
             })}
           >
-            Preview the layout, then copy and paste the prompt of the layout
+            Preview the layout, then copy and paste the layout prompt
             into chat
           </p>
         </header>
