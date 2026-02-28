@@ -3,7 +3,6 @@ import {
   CardPreview,
   Content,
   Text,
-  Badge,
 } from "@react-spectrum/s2";
 import { style } from "@react-spectrum/s2/style" with { type: "macro" };
 import type { Layout } from "../layouts/types";
@@ -86,20 +85,6 @@ export function LayoutCard({ layout, index, onPress }: LayoutCardProps) {
         <Content>
           <Text slot="title">{layout.name}</Text>
           <Text slot="description">{layout.description}</Text>
-          <div
-            className={style({
-              display: "flex",
-              gap: 4,
-              flexWrap: "wrap",
-              marginTop: 8,
-            })}
-          >
-            {layout.tags.map((tag) => (
-              <Badge key={tag} variant="indigo" size="S">
-                {tag}
-              </Badge>
-            ))}
-          </div>
         </Content>
       </Card>
     </div>

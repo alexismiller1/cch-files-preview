@@ -1,12 +1,17 @@
 import { useState } from "react";
-import { DialogContainer } from "@react-spectrum/s2";
+import { ActionButton, DialogContainer } from "@react-spectrum/s2";
 import { style } from "@react-spectrum/s2/style" with { type: "macro" };
+import Contrast from "@react-spectrum/s2/icons/Contrast";
 import { layouts } from "../layouts/registry";
 import type { Layout } from "../layouts/types";
 import { LayoutCard } from "./LayoutCard";
 import { LayoutDetailDialog } from "./LayoutDetailDialog";
 
-export function LayoutPicker() {
+interface LayoutPickerProps {
+  onToggleTheme: () => void;
+}
+
+export function LayoutPicker({ onToggleTheme }: LayoutPickerProps) {
   const [selectedLayout, setSelectedLayout] = useState<Layout | null>(null);
 
   return (
@@ -25,26 +30,42 @@ export function LayoutPicker() {
           paddingBottom: 64,
         })}
       >
-        <header className={style({ marginBottom: 32 })}>
-          <h1
-            className={style({
-              font: "heading-3xl",
-              marginY: 0,
-            })}
+        <header
+          className={style({
+            marginBottom: 32,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "start",
+          })}
+        >
+          <div>
+            <h1
+              className={style({
+                font: "heading-3xl",
+                marginY: 0,
+              })}
+            >
+              Pick a layout
+            </h1>
+            <p
+              className={style({
+                font: "body-xl",
+                color: "body",
+                marginTop: 8,
+                marginBottom: 0,
+              })}
+            >
+              Pick a layout, then copy and paste the layout prompt
+              into chat
+            </p>
+          </div>
+          <ActionButton
+            isQuiet
+            aria-label="Toggle light and dark mode"
+            onPress={onToggleTheme}
           >
-            Pick a layout
-          </h1>
-          <p
-            className={style({
-              font: "body-xl",
-              color: "body",
-              marginTop: 8,
-              marginBottom: 0,
-            })}
-          >
-            Pick a layout, then copy and paste the layout prompt
-            into chat
-          </p>
+            <Contrast />
+          </ActionButton>
         </header>
 
         <div

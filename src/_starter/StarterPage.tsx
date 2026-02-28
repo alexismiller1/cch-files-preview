@@ -1,10 +1,14 @@
 import { UNSTABLE_ToastContainer as ToastContainer } from "@react-spectrum/s2";
 import { LayoutPicker } from "./components/LayoutPicker";
 
-export default function StarterPage() {
+interface StarterPageProps {
+  onToggleTheme: () => void;
+}
+
+export default function StarterPage({ onToggleTheme }: StarterPageProps) {
   return (
     <>
-      <LayoutPicker />
+      <LayoutPicker onToggleTheme={onToggleTheme} />
       <ToastContainer />
     </>
   );
