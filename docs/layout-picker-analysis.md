@@ -98,18 +98,21 @@ The prompt is essentially a detailed specification, not a vague instruction. Sto
 
 ### Atom 6: Thumbnail / preview representation
 
-**Logical component.** A visual representation of what each layout looks like before the designer commits to generating it.
+**Logical component.** A visual representation of what each layout looks like before the designer commits to generating it. The same image is used at card size (thumbnail) and at full size in the detail dialog.
 
-**Independence.** This is a content/asset concern. The gallery UI (Atom 4) consumes thumbnails but does not dictate their format.
+**Independence.** This is a content/asset concern. The gallery UI (Atom 4) and the detail dialog (Atom 10) consume the image but do not dictate how it is produced.
 
-**Correctness.** Options ranked by fidelity and cost:
+**Correctness.** Screenshots are generated automatically via a Playwright script (`scripts/screenshot-layout.ts`). The layout author's workflow:
 
-1. **Static images** (PNG/WebP) — highest fidelity, requires manual creation per layout, stored in `src/assets/layouts/`
-2. **SVG wireframes** — schematic representation, lightweight, can be version-controlled, conveys structure without pixel-perfect detail
-3. **CSS-only previews** — miniature rendered versions using actual CSS, no image assets needed, but complex to maintain
-4. **Placeholder with icon** — lowest effort, uses a generic icon per category, weakest signal
+1. Write the prompt and add it to the registry
+2. Generate the layout from the prompt to produce real running code
+3. Run `pnpm screenshot <layout-id>` while the dev server is running
+4. The script captures a 1080x1440 screenshot and saves it to `src/_starter/layouts/thumbnails/{id}.png`
+5. Revert the generated layout code — only the screenshot persists
 
-For a template where layouts will be added incrementally, **SVG wireframes** or **static images** are the best balance. Start with a placeholder strategy and upgrade to images as layouts are authored.
+One image per layout (1080x1440 PNG, ~200-400KB). CSS scales it down for card thumbnails; the dialog displays it at full size. No separate thumbnail pipeline needed at this scale.
+
+When a layout has no screenshot yet (newly added to the registry), the `thumbnail` field is omitted and an S2 gradient illustration is shown as a fallback.
 
 ---
 
@@ -515,9 +518,29 @@ function App() {
 
 The only change is the import — from `_starter/StarterPage` to the generated component. The `Provider` and `IMSProvider` wrappers persist.
 
-#### Thumbnail placeholders
+#### Screenshot generation
 
-When a layout has no `thumbnail`, use an S2 gradient illustration as a fallback. S2 provides generic gradient illustrations importable from `@react-spectrum/s2/illustrations/gradient/generic1/` and `generic2/`. Use a different illustration per card by cycling through available options based on array index.
+Layouts use 1080x1440 PNG screenshots for both card thumbnails and the dialog full image. Screenshots are generated with a Playwright script:
+
+```bash
+pnpm screenshot <layout-id> [url]
+```
+
+The script (`scripts/screenshot-layout.ts`) opens a headless Chromium browser at the given URL (defaults to `https://localhost:5173`), sets the viewport to 1080x1440, waits for network idle, and saves a screenshot to `src/_starter/layouts/thumbnails/{layout-id}.png`.
+
+The `thumbnail` field in the registry uses a static Vite import:
+
+```typescript
+import sidebarDetailImg from "./thumbnails/sidebar-detail.png";
+
+{
+  id: "sidebar-detail",
+  thumbnail: sidebarDetailImg,
+  // ...
+}
+```
+
+When a layout has no screenshot yet, omit the `thumbnail` field. The card and dialog should fall back to an S2 gradient illustration from `@react-spectrum/s2/illustrations/gradient/generic1/` or `generic2/`, cycled by array index.
 
 ---
 

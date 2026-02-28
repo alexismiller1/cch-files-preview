@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "tsc --noEmit && eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "screenshot": "npx tsx scripts/screenshot-layout.ts"
   },
   "dependencies": {
     "@adtech/protopack-services-all": "^2.0.1",
@@ -28,6 +29,8 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
+    "playwright": "^1.58.2",
+    "tsx": "^4.21.0",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
     "unplugin-parcel-macros": "^0.1.1",
