@@ -25,8 +25,9 @@
 
 import { useContext } from 'react';
 import { IMSContext } from './IMSContext';
+import type { Ims } from '../utils/IMS';
 
-export function useIMS() {
+export function useIMS(): Ims {
   const context = useContext(IMSContext);
   if (!context) {
     throw new Error('useIMS must be used within an IMSProvider');
