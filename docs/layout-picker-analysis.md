@@ -64,7 +64,7 @@ The prompt is essentially a detailed specification, not a vague instruction. Sto
 
 ### Atom 4: Gallery UI
 
-**Logical component.** A visual grid of layout cards that designers can browse.
+**Logical component.** A visual grid of layout cards that designers can browse. Clicking a card opens a full-screen detail dialog (Atom 10).
 
 **Independence.** Depends on the registry (Atom 2) for data. Does not depend on clipboard or routing logic.
 
@@ -72,7 +72,9 @@ The prompt is essentially a detailed specification, not a vague instruction. Sto
 
 - Uses React Spectrum S2 components exclusively
 - Responsive grid that works at common viewport sizes
-- Each card shows: thumbnail, name, description, tags, and a copy action
+- Each card shows: thumbnail, name, description, and tags
+- Cards are clickable — pressing a card opens the detail dialog for that layout
+- No copy button on the cards themselves (copy happens inside the dialog)
 - Follows S2 attention hierarchy (the gallery is the primary focal point)
 - Sentence case for all text
 - WCAG 2.2 AA compliant (keyboard navigable, sufficient contrast, alt text on thumbnails)
@@ -147,16 +149,35 @@ This is correct because it avoids dead code (no picker logic ships in the final 
 
 ### Atom 9: Page header and context
 
-**Logical component.** The surrounding UI that frames the gallery: a title, brief instructions, and any branding.
+**Logical component.** The surrounding UI that frames the gallery: a title, brief instructions, and any branding. The header should feel luxurious and give the page a polished, high-quality first impression.
 
 **Independence.** Depends on S2 components. Does not depend on layout data or clipboard logic.
 
 **Correctness.** Must:
 
-- Use S2 `Heading` for the page title
-- Provide a one-sentence instruction ("Browse layouts and copy a prompt to get started")
-- Not compete with the gallery for attention (supportive, not dominant)
+- Use an `h1` element styled with the style macro's `heading-3xl` font (the largest available heading token) for the page title: "Pick a layout"
+- Below the heading, a paragraph styled with `body-xl` (pairs well with the heading scale): "Preview the layout, then copy and paste the prompt of the layout into chat"
+- Generous whitespace around the header (40px top padding, 32px bottom margin before the card grid) to let the typography breathe
 - Follow Spectrum content guidelines (sentence case, no exclamation points, second person)
+
+---
+
+### Atom 10: Layout detail dialog
+
+**Logical component.** A full-screen dialog that opens when the user clicks a layout card, showing the prompt and a large screenshot side by side.
+
+**Independence.** Depends on the layout data model (Atom 1) and clipboard interaction (Atom 5). Does not depend on the gallery grid layout or page header.
+
+**Correctness.** Must:
+
+- Use S2 `FullscreenDialog` with the default `variant="fullscreen"` (not `"fullscreenTakeover"`) — this gives a large dialog with room to close, not a full browser takeover
+- Dialog title (via `Heading slot="title"`) is the layout name
+- `Content` area uses a two-column CSS grid layout: prompt text on the left, large screenshot on the right
+- The prompt column should display the full prompt text in a scrollable, readable format using a monospace or code-like font (`font: 'code'` via style macro) in a styled container
+- The screenshot column displays the layout preview image at full size, contained within the column
+- `ButtonGroup` contains a "Copy prompt" button (accent variant) and a "Close" button (secondary variant)
+- Keyboard accessible: Escape closes the dialog, focus is trapped while open (S2 handles this automatically)
+- The copy button triggers the same clipboard + toast logic from Atom 5
 
 ---
 
@@ -285,8 +306,9 @@ All template scaffolding lives under `src/_starter/`. The underscore prefix is a
 src/
 ├── _starter/                      # Template scaffolding (isolated, do not modify)
 │   ├── components/
-│   │   ├── LayoutPicker.tsx       # Gallery grid page
-│   │   └── LayoutCard.tsx         # Individual layout card
+│   │   ├── LayoutPicker.tsx       # Gallery grid + page header
+│   │   ├── LayoutCard.tsx         # Individual layout card
+│   │   └── LayoutDetailDialog.tsx # Fullscreen dialog with prompt + screenshot
 │   ├── layouts/
 │   │   ├── registry.ts            # Layout data model + all entries
 │   │   └── thumbnails/            # SVG or PNG preview assets
@@ -374,27 +396,47 @@ MainLayout (CSS grid: 280px 1fr, full viewport height)
 
 #### S2 component architecture
 
-**Why not CardView.** `CardView` is designed for collection browsing with selection and bulk actions. The layout picker needs per-card copy actions without selection semantics. Individual `Card` components in a CSS grid provide the right interaction model.
+**Why not CardView.** `CardView` is designed for collection browsing with selection and bulk actions. The layout picker needs clickable cards that open a detail dialog. Individual `Card` components in a CSS grid provide the right interaction model without selection semantics.
 
-**Card composition** — each layout renders as a `Card` with:
+**Card composition** — each layout renders as a `Card`. Clicking opens the detail dialog.
 
 ```
-Card (variant="secondary", size="L")
+Card (variant="secondary", size="L", onPress → opens dialog)
 ├── CardPreview
 │   └── Image (thumbnail) or gradient Illustration (placeholder)
-├── Content
-│   ├── Text slot="title" — layout name
-│   └── Text slot="description" — layout description
-└── Footer
-    └── Button (variant="primary", size="S") — "Copy prompt"
+└── Content
+    ├── Text slot="title" — layout name
+    └── Text slot="description" — layout description
 ```
+
+No `Footer` or copy button on the card. The copy action lives inside the detail dialog.
+
+**Detail dialog** — opens when a card is pressed. Uses `FullscreenDialog` (variant `"fullscreen"`, not takeover).
+
+```
+DialogContainer (controlled by selectedLayout state)
+└── FullscreenDialog
+    ├── Heading slot="title" — layout name
+    ├── Content
+    │   └── two-column CSS grid (1fr 1fr)
+    │       ├── left column: prompt display
+    │       │   └── scrollable pre/code block (font: 'code', backgroundColor: 'layer-2')
+    │       └── right column: screenshot
+    │           └── Image (objectFit: 'contain', full width, rounded corners)
+    └── ButtonGroup
+        ├── Button variant="secondary" → close
+        └── Button variant="accent" → "Copy prompt" (clipboard + toast)
+```
+
+The `DialogContainer` is controlled programmatically via a `selectedLayout` state variable (set when a card is pressed, cleared when the dialog is dismissed).
 
 S2 imports needed:
 
 ```typescript
 import {
-  Card, CardPreview, Content, Footer, Text,
-  Image, Button, Heading,
+  Card, CardPreview, Content, Text, Image,
+  Button, ButtonGroup,
+  FullscreenDialog, DialogContainer, Heading,
   ToastContainer, ToastQueue,
 } from "@react-spectrum/s2";
 import { style } from "@react-spectrum/s2/style" with { type: "macro" };
@@ -412,18 +454,17 @@ style({
 
 This creates a responsive grid that adapts from 1 column on narrow viewports to 3-4 columns on wide ones, without breakpoint logic.
 
-**Page header** — use S2 `Heading` (size `"L"`) and `Text` for the instruction line. The header sits above the grid with 32px bottom spacing.
+**Page header** — use an `h1` styled with `style({ font: 'heading-3xl' })` for "Pick a layout", and a `p` styled with `style({ font: 'body-xl', color: 'body' })` for "Preview the layout, then copy and paste the prompt of the layout into chat". The header area gets generous padding (40px top, 32px bottom) to feel luxurious and let the large type breathe.
 
 #### Toast feedback
 
-`ToastContainer` must be placed at the root level of `StarterPage` (not in `App.tsx`, since the toast is specific to the picker and gets removed with it).
+`ToastContainer` must be placed at the root level of `StarterPage` (not in `App.tsx`, since the toast is specific to the picker and gets removed with it). The copy action is triggered from the dialog's "Copy prompt" button.
 
 ```typescript
-// Copy handler
 async function copyPrompt(prompt: string, layoutName: string) {
   try {
     await navigator.clipboard.writeText(prompt);
-    ToastQueue.positive(`Prompt for "${layoutName}" copied to clipboard`, {
+    ToastQueue.positive(`Prompt copied for "${layoutName}"`, {
       timeout: 5000,
     });
   } catch {
@@ -484,9 +525,9 @@ When a layout has no `thumbnail`, use an S2 gradient illustration as a fallback.
 
 1. Create `src/_starter/` directory structure
 2. Define the `Layout` TypeScript interface and create `registry.ts` with 2-3 placeholder entries
-3. Build `LayoutCard` component (S2 card with thumbnail, name, description, copy button)
-4. Build `LayoutPicker` component (page header + responsive grid of cards)
-5. Create `StarterPage.tsx` as the single entry point
-6. Wire clipboard copy with S2 toast feedback
+3. Build `LayoutCard` component (S2 card with thumbnail, name, description; clickable)
+4. Build `LayoutDetailDialog` component (fullscreen dialog with two-column prompt + screenshot layout, copy button)
+5. Build `LayoutPicker` component (page header with `heading-3xl` title + `body-xl` subtitle + responsive card grid + dialog state management)
+6. Create `StarterPage.tsx` as the single entry point (wraps `LayoutPicker` + `ToastContainer`)
 7. Replace `App.tsx` placeholder content with `<StarterPage />`
 8. Add placeholder thumbnails (SVG wireframes or generic icons)
