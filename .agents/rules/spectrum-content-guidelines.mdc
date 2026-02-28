@@ -1,6 +1,5 @@
 ---
-description: Spectrum voice, tone, grammar, inclusivity, and messaging rules. Applies to UI strings, error messages, button labels, help text, dialog content, notifications, form labels and placeholders.
-alwaysApply: false
+alwaysApply: true
 ---
 
 # Spectrum content guidelines
@@ -110,7 +109,6 @@ Follow the full [grammar and mechanics](https://spectrum.adobe.com/page/grammar-
   - **[MEDIUM PRIORITY]** Use simple verb tenses so content is concise, scannable, and easier to localize.
   - **[MEDIUM PRIORITY]** Use common contractions (you're, we'll, it's) to stay conversational.
 - **Punctuation**
-
   - **[MEDIUM PRIORITY]** Use serial commas.
   - **[LOW PRIORITY]** Use colons to introduce lists, em dashes (with spaces) for related thoughts, en dashes for ranges, smart quotation marks for quoted text or asset names, and parentheses for supplementary info.
 
