@@ -34,43 +34,11 @@ export function LayoutDetailDialog({ layout }: LayoutDetailDialogProps) {
             <div
               className={style({
                 display: "grid",
-                gridTemplateColumns: "1fr 1fr",
+                gridTemplateColumns: "1fr 500px",
                 gap: 24,
                 height: "full",
               })}
             >
-              <div
-                className={style({
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 8,
-                })}
-              >
-                <p
-                  className={style({
-                    font: "body",
-                    color: "body",
-                    marginY: 0,
-                  })}
-                >
-                  {layout.description}
-                </p>
-                <pre
-                  className={style({
-                    font: "code-sm",
-                    backgroundColor: "layer-2",
-                    borderRadius: "lg",
-                    padding: 16,
-                    overflow: "auto",
-                    flexGrow: 1,
-                    marginY: 0,
-                    whiteSpace: "pre-wrap",
-                    overflowWrap: "anywhere",
-                  })}
-                >
-                  {layout.prompt}
-                </pre>
-              </div>
               <div
                 className={style({
                   display: "flex",
@@ -116,6 +84,39 @@ export function LayoutDetailDialog({ layout }: LayoutDetailDialogProps) {
                     </p>
                   </div>
                 )}
+              </div>
+              <div
+                className={style({
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 8,
+                })}
+              >
+                <p
+                  className={style({
+                    font: "body",
+                    color: "body",
+                    marginTop: 0,
+                    marginBottom: 16,
+                  })}
+                >
+                  {layout.description}
+                </p>
+                <pre
+                  className={style({
+                    font: "code-sm",
+                    backgroundColor: "layer-1",
+                    borderRadius: "lg",
+                    padding: 32,
+                    overflow: "auto",
+                    flexGrow: 1,
+                    marginY: 0,
+                    whiteSpace: "pre-wrap",
+                    overflowWrap: "anywhere",
+                  })}
+                >
+                  {layout.prompt}
+                </pre>
               </div>
             </div>
           </Content>
