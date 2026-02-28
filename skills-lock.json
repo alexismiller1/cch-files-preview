@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "web-accessibility-checker": {
+      "source": "OneAdobe/oeftimie-skills",
+      "sourceType": "github",
+      "computedHash": "0cba5c3f694b97a3525c72cd783c3e6ed7643a3ca9f78b8ecb8d715c0c8d94ac"
+    }
+  }
+}
