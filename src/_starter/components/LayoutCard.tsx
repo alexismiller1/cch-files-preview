@@ -65,7 +65,7 @@ export function LayoutCard({ layout, index, onPress }: LayoutCardProps) {
       className={style({ cursor: "pointer", borderRadius: "xl" })}
       aria-label={`View ${layout.name} layout`}
     >
-      <Card variant="secondary" size="L">
+      <Card variant="secondary" size="M">
         <CardPreview>
           {layout.thumbnail ? (
             <img

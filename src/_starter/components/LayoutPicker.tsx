@@ -20,7 +20,7 @@ export function LayoutPicker() {
         className={style({
           maxWidth: 1280,
           marginX: "auto",
-          paddingX: 32,
+          paddingX: 24,
           paddingTop: 40,
           paddingBottom: 64,
         })}
@@ -42,17 +42,17 @@ export function LayoutPicker() {
               marginBottom: 0,
             })}
           >
-            Preview the layout, then copy and paste the layout prompt
+            Pick a layout, then copy and paste the layout prompt
             into chat
           </p>
         </header>
 
         <div
           className={style({
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fill, minmax(280px, 1fr))",
-            gap: 24,
+            display: "flex",
+            flexWrap: "wrap",
+            columnGap: 24,
+            rowGap: 24,
           })}
         >
           {layouts.map((layout, index) => (
