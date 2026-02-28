@@ -317,6 +317,169 @@ Each layout prompt in the registry includes explicit instructions about file pla
 
 ---
 
+### Implementation specification
+
+#### TypeScript interface
+
+```typescript
+export interface Layout {
+  id: string;
+  name: string;
+  description: string;
+  prompt: string;
+  thumbnail?: string;
+  tags: string[];
+}
+```
+
+The `thumbnail` is optional so layouts can be added before images exist. When absent, a placeholder illustration is shown.
+
+#### Example registry entry
+
+```typescript
+import type { Layout } from "./types";
+
+export const layouts: Layout[] = [
+  {
+    id: "sidebar-detail",
+    name: "Sidebar with detail view",
+    description: "A navigation sidebar on the left with a content area on the right, suitable for browsing and editing items.",
+    tags: ["navigation", "editing"],
+    prompt: `Generate a layout with a fixed-width sidebar on the left (280px) and a flexible content area on the right.
+
+## File structure
+- Create src/components/Sidebar.tsx
+- Create src/components/DetailView.tsx
+- Create src/pages/MainLayout.tsx
+- Update src/App.tsx to import MainLayout instead of _starter/StarterPage
+
+## Component hierarchy
+MainLayout (CSS grid: 280px 1fr, full viewport height)
+├── Sidebar (gray-75 background, 16px padding)
+│   ├── Heading size="S" — app name
+│   └── vertical nav list using ActionButton components
+└── DetailView (gray-25 background, 32px padding)
+    ├── Heading size="L" — selected item title
+    └── Content area — placeholder body text
+
+## Constraints
+- Use only @react-spectrum/s2 components
+- Use the style macro for all styling
+- Sentence case for all text
+- WCAG 2.2 AA compliant
+- Do not modify any files inside src/_starter/`,
+  },
+];
+```
+
+#### S2 component architecture
+
+**Why not CardView.** `CardView` is designed for collection browsing with selection and bulk actions. The layout picker needs per-card copy actions without selection semantics. Individual `Card` components in a CSS grid provide the right interaction model.
+
+**Card composition** — each layout renders as a `Card` with:
+
+```
+Card (variant="secondary", size="L")
+├── CardPreview
+│   └── Image (thumbnail) or gradient Illustration (placeholder)
+├── Content
+│   ├── Text slot="title" — layout name
+│   └── Text slot="description" — layout description
+└── Footer
+    └── Button (variant="primary", size="S") — "Copy prompt"
+```
+
+S2 imports needed:
+
+```typescript
+import {
+  Card, CardPreview, Content, Footer, Text,
+  Image, Button, Heading,
+  ToastContainer, ToastQueue,
+} from "@react-spectrum/s2";
+import { style } from "@react-spectrum/s2/style" with { type: "macro" };
+```
+
+**Card grid** — use CSS grid via the `style` macro:
+
+```typescript
+style({
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+  gap: 24,
+})
+```
+
+This creates a responsive grid that adapts from 1 column on narrow viewports to 3-4 columns on wide ones, without breakpoint logic.
+
+**Page header** — use S2 `Heading` (size `"L"`) and `Text` for the instruction line. The header sits above the grid with 32px bottom spacing.
+
+#### Toast feedback
+
+`ToastContainer` must be placed at the root level of `StarterPage` (not in `App.tsx`, since the toast is specific to the picker and gets removed with it).
+
+```typescript
+// Copy handler
+async function copyPrompt(prompt: string, layoutName: string) {
+  try {
+    await navigator.clipboard.writeText(prompt);
+    ToastQueue.positive(`Prompt for "${layoutName}" copied to clipboard`, {
+      timeout: 5000,
+    });
+  } catch {
+    ToastQueue.negative("Could not copy to clipboard", { timeout: 5000 });
+  }
+}
+```
+
+#### App.tsx transition
+
+**Before** (ships with the template):
+
+```typescript
+import "./utils/IMS";
+import { Provider } from "@react-spectrum/s2";
+import { IMSProvider } from "./contexts/IMSProvider";
+import StarterPage from "./_starter/StarterPage";
+
+function App() {
+  return (
+    <Provider>
+      <IMSProvider>
+        <StarterPage />
+      </IMSProvider>
+    </Provider>
+  );
+}
+```
+
+**After** (once the AI generates a layout):
+
+```typescript
+import "./utils/IMS";
+import { Provider } from "@react-spectrum/s2";
+import { IMSProvider } from "./contexts/IMSProvider";
+import MainLayout from "./pages/MainLayout";
+
+function App() {
+  return (
+    <Provider>
+      <IMSProvider>
+        <MainLayout />
+      </IMSProvider>
+    </Provider>
+  );
+}
+```
+
+The only change is the import — from `_starter/StarterPage` to the generated component. The `Provider` and `IMSProvider` wrappers persist.
+
+#### Thumbnail placeholders
+
+When a layout has no `thumbnail`, use an S2 gradient illustration as a fallback. S2 provides generic gradient illustrations importable from `@react-spectrum/s2/illustrations/gradient/generic1/` and `generic2/`. Use a different illustration per card by cycling through available options based on array index.
+
+---
+
 ### Implementation order
 
 1. Create `src/_starter/` directory structure
