@@ -29,7 +29,7 @@ export function LayoutCard({ layout, onPress }: LayoutCardProps) {
       className={style({ cursor: "pointer", borderRadius: "xl" })}
       aria-label={`View ${layout.name} layout`}
     >
-      <Card variant="secondary" size="XL" density="spacious">
+      <Card variant="primary" size="XL" density="spacious">
         <CardPreview>
           {PreviewComponent ? (
             <ScaledPreview>

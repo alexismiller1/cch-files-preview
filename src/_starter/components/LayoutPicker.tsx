@@ -92,6 +92,25 @@ export function LayoutPicker({ onToggleTheme }: LayoutPickerProps) {
         {selectedLayout && (
           <LayoutDetailDialog
             layout={selectedLayout}
+            onPreviousLayout={() => {
+              const currentIndex = layouts.findIndex(
+                (l) => l.id === selectedLayout.id
+              );
+              const prevIndex =
+                currentIndex === 0 ? layouts.length - 1 : currentIndex - 1;
+              const prevLayout = layouts[prevIndex];
+
+              if (!document.startViewTransition) {
+                setSelectedLayout(prevLayout);
+                return;
+              }
+
+              document.startViewTransition(() => {
+                flushSync(() => {
+                  setSelectedLayout(prevLayout);
+                });
+              });
+            }}
             onNextLayout={() => {
               const currentIndex = layouts.findIndex(
                 (l) => l.id === selectedLayout.id

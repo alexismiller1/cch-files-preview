@@ -12,11 +12,14 @@ import {
 } from "@react-spectrum/s2";
 import { style } from "@react-spectrum/s2/style" with { type: "macro" };
 import OpenIn from "@react-spectrum/s2/icons/OpenIn";
+import ChevronLeft from "@react-spectrum/s2/icons/ChevronLeft";
+import ChevronRight from "@react-spectrum/s2/icons/ChevronRight";
 import type { Layout } from "../layouts/types";
 import { ScaledPreview } from "./ScaledPreview";
 
 interface LayoutDetailDialogProps {
   layout: Layout;
+  onPreviousLayout?: () => void;
   onNextLayout?: () => void;
 }
 
@@ -31,7 +34,7 @@ async function copyPrompt(prompt: string, layoutName: string) {
   }
 }
 
-export function LayoutDetailDialog({ layout, onNextLayout }: LayoutDetailDialogProps) {
+export function LayoutDetailDialog({ layout, onPreviousLayout, onNextLayout }: LayoutDetailDialogProps) {
   const PreviewComponent = layout.preview;
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -169,10 +172,21 @@ export function LayoutDetailDialog({ layout, onNextLayout }: LayoutDetailDialogP
             <Button variant="secondary" onPress={close}>
               Close
             </Button>
+            {onPreviousLayout && (
+              <TooltipTrigger>
+                <Button variant="secondary" aria-label="Previous layout" onPress={onPreviousLayout}>
+                  <ChevronLeft />
+                </Button>
+                <Tooltip>Previous layout</Tooltip>
+              </TooltipTrigger>
+            )}
             {onNextLayout && (
-              <Button variant="secondary" onPress={onNextLayout}>
-                Next layout
-              </Button>
+              <TooltipTrigger>
+                <Button variant="secondary" aria-label="Next layout" onPress={onNextLayout}>
+                  <ChevronRight />
+                </Button>
+                <Tooltip>Next layout</Tooltip>
+              </TooltipTrigger>
             )}
             <Button
               variant="accent"
