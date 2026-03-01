@@ -1,26 +1,24 @@
 import {
   ActionButton,
   Button,
+  Image,
   NumberField,
-  SearchField,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@react-spectrum/s2";
+import { useState } from "react";
+import type { Key } from "@react-spectrum/s2";
 import { style } from "@react-spectrum/s2/style" with { type: "macro" };
 import Contrast from "@react-spectrum/s2/icons/Contrast";
-import Redo from "@react-spectrum/s2/icons/Redo";
-import Undo from "@react-spectrum/s2/icons/Undo";
-
-const ASSET_ITEMS = [
-  { name: "Hero banner", color: "blue-400" },
-  { name: "Product shot", color: "green-400" },
-  { name: "Icon set", color: "purple-400" },
-  { name: "Background texture", color: "orange-400" },
-  { name: "Logo mark", color: "indigo-400" },
-  { name: "Typography sample", color: "gray-400" },
-] as const;
+import Select from "@react-spectrum/s2/icons/Select";
+import SelectRectangle from "@react-spectrum/s2/icons/SelectRectangle";
+import Text from "@react-spectrum/s2/icons/Text";
+import appLogo from "../../assets/B_app_Murtceps.svg";
 
 import type { PreviewProps } from "../layouts/types";
 
 export default function ProEditingAppPreview({ onToggleTheme }: PreviewProps) {
+  const [selectedTool, setSelectedTool] = useState<Key>("select");
   return (
     <div
       className={style({
@@ -41,22 +39,36 @@ export default function ProEditingAppPreview({ onToggleTheme }: PreviewProps) {
           height: 56,
           backgroundColor: "layer-2",
         })}
+        style={{ marginBottom: "1px" }}
       >
-        <h2
+        <div
           className={style({
-            font: "heading-xs",
-            margin: 0,
-            fontWeight: "bold",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            columnGap: 12,
           })}
         >
-          Creative studio
-        </h2>
-        <ActionButton isQuiet aria-label="Undo">
-          <Undo />
-        </ActionButton>
-        <ActionButton isQuiet aria-label="Redo">
-          <Redo />
-        </ActionButton>
+          <Image
+            src={appLogo}
+            alt="App icon"
+            styles={style({
+              width: 32,
+              height: 32,
+              flexShrink: 0,
+              borderRadius: "default",
+            })}
+          />
+          <h2
+            className={style({
+              font: "heading-xs",
+              margin: 0,
+              fontWeight: "bold",
+            })}
+          >
+            Project
+          </h2>
+        </div>
         <div className={style({ flexGrow: 1 })} />
         <ActionButton isQuiet aria-label="Toggle color scheme" onPress={onToggleTheme}>
           <Contrast />
@@ -68,61 +80,41 @@ export default function ProEditingAppPreview({ onToggleTheme }: PreviewProps) {
       <div
         className={style({
           display: "grid",
-          gridTemplateColumns: "240px 1fr 280px",
+          gridTemplateColumns: "auto 1fr 280px",
           flexGrow: 1,
           overflow: "hidden",
         })}
       >
-        {/* AssetPanel */}
+        {/* Toolbar Panel */}
         <div
           className={style({
-            display: "flex",
-            flexDirection: "column",
+            backgroundColor: "elevated",
             padding: 16,
-            rowGap: 12,
-            backgroundColor: "layer-1",
-            overflowY: "auto",
-            borderEndWidth: 1,
-            borderStyle: "solid",
-            borderColor: "gray-200",
           })}
         >
-          <SearchField label="Search assets" />
-          <div
-            className={style({
-              display: "flex",
-              flexDirection: "column",
-              rowGap: 4,
-            })}
+          <ToggleButtonGroup
+            orientation="vertical"
+            selectionMode="single"
+            selectedKeys={[selectedTool]}
+            onSelectionChange={(keys) => {
+              const selected = Array.from(keys)[0];
+              if (selected) {
+                setSelectedTool(selected);
+              }
+            }}
+            isQuiet
+            size="M"
           >
-            {ASSET_ITEMS.map((item) => (
-              <div
-                key={item.name}
-                className={style({
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  columnGap: 8,
-                  padding: 8,
-                  borderRadius: "default",
-                  backgroundColor: "transparent",
-                })}
-              >
-                <div
-                  className={style({
-                    width: 32,
-                    height: 32,
-                    borderRadius: "sm",
-                    flexShrink: 0,
-                  })}
-                  style={{
-                    backgroundColor: `var(--spectrum-${item.color})`,
-                  }}
-                />
-                <span className={style({ font: "ui" })}>{item.name}</span>
-              </div>
-            ))}
-          </div>
+            <ToggleButton id="select" aria-label="Select">
+              <Select />
+            </ToggleButton>
+            <ToggleButton id="square" aria-label="Square">
+              <SelectRectangle />
+            </ToggleButton>
+            <ToggleButton id="text" aria-label="Text">
+              <Text />
+            </ToggleButton>
+          </ToggleButtonGroup>
         </div>
 
         {/* Canvas */}
@@ -131,15 +123,13 @@ export default function ProEditingAppPreview({ onToggleTheme }: PreviewProps) {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "elevated",
           })}
         >
           <div
             className={style({
               width: 640,
               height: 400,
-              backgroundColor: "layer-1",
-              borderRadius: "lg",
+              backgroundColor: "layer-2",
               borderWidth: 1,
               borderStyle: "solid",
               borderColor: "gray-200",
@@ -161,11 +151,8 @@ export default function ProEditingAppPreview({ onToggleTheme }: PreviewProps) {
             flexDirection: "column",
             padding: 16,
             rowGap: 16,
-            backgroundColor: "layer-1",
+            backgroundColor: "layer-2",
             overflowY: "auto",
-            borderStartWidth: 1,
-            borderStyle: "solid",
-            borderColor: "gray-200",
           })}
         >
           <h3
@@ -234,26 +221,6 @@ export default function ProEditingAppPreview({ onToggleTheme }: PreviewProps) {
               <NumberField label="W" />
               <NumberField label="H" />
             </div>
-          </div>
-
-          {/* Opacity */}
-          <div
-            className={style({
-              display: "flex",
-              flexDirection: "column",
-              rowGap: 4,
-            })}
-          >
-            <span
-              className={style({
-                font: "detail",
-                color: "detail",
-                marginBottom: 4,
-              })}
-            >
-              Opacity
-            </span>
-            <NumberField label="Opacity" />
           </div>
         </div>
       </div>
