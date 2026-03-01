@@ -4,6 +4,7 @@ import EditingAppPreview from "../previews/EditingAppPreview";
 import ProEditingAppPreview from "../previews/ProEditingAppPreview";
 import BrowsingContextPreview from "../previews/BrowsingContextPreview";
 import BentoPreview from "../previews/BentoPreview";
+import TextDocumentPreview from "../previews/TextDocumentPreview";
 
 export const layouts: Layout[] = [
   {
@@ -126,6 +127,31 @@ Preserve the collapsible sidebar transitions and custom SideNav behavior.
 
 Split the preview's single-file layout into the components listed above.
 Match the preview's visual structure, spacing, colors, and grid layout exactly.
+
+## Constraints
+- Use only @react-spectrum/s2 components
+- Use the style macro for all styling
+- Sentence case for all text
+- WCAG 2.2 AA compliant
+- Do not modify any files inside src/_starter/`,
+  },
+  {
+    id: "text-document",
+    name: "Text document",
+    description:
+      "A long-form document layout with a sidebar outline and optimal reading width, suited for articles, guides, and documentation.",
+    tags: ["document", "reading", "content"],
+    preview: TextDocumentPreview,
+    prompt: `Use the layout defined in src/_starter/previews/TextDocumentPreview.tsx as the reference implementation.
+
+## File structure
+- Create src/components/DocumentOutline.tsx
+- Create src/components/DocumentContent.tsx
+- Create src/pages/TextDocument.tsx
+- Update src/App.tsx to import TextDocument instead of _starter/StarterPage
+
+Split the preview's single-file layout into the components listed above.
+Match the preview's visual structure, spacing, colors, typography, and scroll behavior exactly.
 
 ## Constraints
 - Use only @react-spectrum/s2 components

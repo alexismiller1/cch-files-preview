@@ -55,7 +55,7 @@ export function LayoutPicker({ onToggleTheme }: LayoutPickerProps) {
                 marginBottom: 0,
               })}
             >
-              Pick a layout, then copy and paste the layout prompt
+              Then copy and paste the layout prompt
               into chat
             </p>
           </div>

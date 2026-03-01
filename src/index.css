@@ -4,3 +4,8 @@ body {
   margin: 0;
   font-family: adobe-clean, sans-serif;
 }
+
+li {
+  margin: 0;
+  padding: 0;
+}
