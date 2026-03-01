@@ -8,6 +8,7 @@ import {
 } from "@react-spectrum/s2";
 import { style } from "@react-spectrum/s2/style" with { type: "macro" };
 import type { Layout } from "../layouts/types";
+import { ScaledPreview } from "./ScaledPreview";
 
 interface LayoutDetailDialogProps {
   layout: Layout;
@@ -25,6 +26,8 @@ async function copyPrompt(prompt: string, layoutName: string) {
 }
 
 export function LayoutDetailDialog({ layout }: LayoutDetailDialogProps) {
+  const PreviewComponent = layout.preview;
+
   return (
     <FullscreenDialog>
       {({ close }) => (
@@ -47,16 +50,10 @@ export function LayoutDetailDialog({ layout }: LayoutDetailDialogProps) {
                   overflow: "auto",
                 })}
               >
-                {layout.thumbnail ? (
-                  <img
-                    src={layout.thumbnail}
-                    alt={`Full preview of ${layout.name}`}
-                    className={style({
-                      width: "full",
-                      borderRadius: "lg",
-                      objectFit: "contain",
-                    })}
-                  />
+                {PreviewComponent ? (
+                  <ScaledPreview>
+                    <PreviewComponent />
+                  </ScaledPreview>
                 ) : (
                   <div
                     className={style({
@@ -76,11 +73,7 @@ export function LayoutDetailDialog({ layout }: LayoutDetailDialogProps) {
                         textAlign: "center",
                       })}
                     >
-                      Screenshot not yet available. Run{" "}
-                      <code
-                        className={style({ font: "code-sm" })}
-                      >{`pnpm screenshot ${layout.id}`}</code>{" "}
-                      to generate one.
+                      Preview not available
                     </p>
                   </div>
                 )}
