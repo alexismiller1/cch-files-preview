@@ -5,7 +5,7 @@ import {
   Content,
   ButtonGroup,
   Button,
-  ActionButton,
+  Text,
   TooltipTrigger,
   Tooltip,
   UNSTABLE_ToastQueue as ToastQueue,
@@ -112,13 +112,15 @@ export function LayoutDetailDialog({ layout }: LayoutDetailDialogProps) {
                     }}
                   >
                     <TooltipTrigger>
-                      <ActionButton
-                        isQuiet
+                      <Button
+                        variant="primary"
+                        size="S"
                         aria-label="Open preview in new tab"
                         onPress={openPreviewInNewTab}
                       >
                         <OpenIn />
-                      </ActionButton>
+                        <Text>Open in new tab</Text>
+                      </Button>
                       <Tooltip>Open in new tab</Tooltip>
                     </TooltipTrigger>
                   </div>
