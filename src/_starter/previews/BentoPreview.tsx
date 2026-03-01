@@ -2,14 +2,6 @@ import { ActionButton } from "@react-spectrum/s2";
 import { style } from "@react-spectrum/s2/style" with { type: "macro" };
 import Contrast from "@react-spectrum/s2/icons/Contrast";
 
-const ACTIVITY_ITEMS = [
-  { text: "Item updated", color: "blue-400" },
-  { text: "New comment", color: "cyan-400" },
-  { text: "File uploaded", color: "green-400" },
-  { text: "User joined", color: "purple-400" },
-  { text: "Task completed", color: "orange-400" },
-] as const;
-
 const CHART_BARS = [
   { height: 60, color: "var(--spectrum-blue-900)" },
   { height: 100, color: "var(--spectrum-cyan-900)" },
@@ -60,7 +52,9 @@ export default function BentoPreview({ onToggleTheme }: PreviewProps) {
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)",
           gridAutoRows: "minmax(180px, auto)",
+          gridAutoFlow: "dense",
           paddingX: 24,
+          paddingBottom: 24,
           gap: 16,
           flexGrow: 1,
           overflow: "auto",
@@ -207,49 +201,10 @@ export default function BentoPreview({ onToggleTheme }: PreviewProps) {
             className={style({
               font: "title-sm",
               margin: 0,
-              marginBottom: 12,
             })}
           >
             Recent activity
           </h3>
-          <div
-            className={style({
-              display: "flex",
-              flexDirection: "column",
-            })}
-          >
-            {ACTIVITY_ITEMS.map((item, i) => (
-              <div
-                key={item.text}
-                className={style({
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 8,
-                  paddingY: 8,
-                  borderStyle: "solid",
-                  borderColor: "gray-200",
-                })}
-                style={{
-                  borderBottomWidth:
-                    i < ACTIVITY_ITEMS.length - 1 ? 1 : 0,
-                }}
-              >
-                <div
-                  className={style({
-                    width: 12,
-                    height: 12,
-                    borderRadius: "full",
-                    flexShrink: 0,
-                  })}
-                  style={{
-                    backgroundColor: `var(--spectrum-${item.color})`,
-                  }}
-                />
-                <span className={style({ font: "body-sm" })}>{item.text}</span>
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* Wide card - Performance overview */}
@@ -298,7 +253,7 @@ export default function BentoPreview({ onToggleTheme }: PreviewProps) {
 
         {/* Small card - Status */}
         <div
-          style={{ gridColumn: "span 1", gridRow: "span 1" }}
+          style={{ gridColumn: "span 1", gridRow: "span 2" }}
           className={style({
             display: "flex",
             flexDirection: "column",
