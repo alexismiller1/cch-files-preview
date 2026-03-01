@@ -47,7 +47,9 @@ export function LayoutCard({ layout, onPress }: LayoutCardProps) {
         </CardPreview>
         <Content>
           <Text slot="title">{layout.name}</Text>
-          <Text slot="description">{layout.description}</Text>
+          <Text slot="description" styles={style({ color: "neutral-subdued" })}>
+            {layout.description}
+          </Text>
         </Content>
       </Card>
     </div>

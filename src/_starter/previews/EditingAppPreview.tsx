@@ -126,7 +126,7 @@ export default function EditingAppPreview({ onToggleTheme }: PreviewProps) {
             padding: 32,
             overflow: "auto",
           })}
-          style={{ width: "30vw", height: "60vh" }}
+          style={{ width: "30vw", height: "50vh", flexShrink: 0 }}
         />
       </div>
     </div>

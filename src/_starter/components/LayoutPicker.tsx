@@ -51,7 +51,7 @@ export function LayoutPicker({ onToggleTheme }: LayoutPickerProps) {
             <p
               className={style({
                 font: "body",
-                color: "body",
+                color: "neutral-subdued",
                 marginTop: 8,
                 marginBottom: 0,
               })}

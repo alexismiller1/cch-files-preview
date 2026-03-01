@@ -149,6 +149,7 @@ export function LayoutDetailDialog({ layout, onNextLayout }: LayoutDetailDialogP
                 <pre
                   className={style({
                     font: "code-sm",
+                    color: "neutral-subdued",
                     backgroundColor: "layer-1",
                     borderRadius: "lg",
                     padding: 32,
