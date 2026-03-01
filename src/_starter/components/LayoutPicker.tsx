@@ -33,7 +33,7 @@ export function LayoutPicker({ onToggleTheme }: LayoutPickerProps) {
       >
         <header
           className={style({
-            marginBottom: 32,
+            marginBottom: 48,
             display: "flex",
             justifyContent: "space-between",
             alignItems: "start",
@@ -42,7 +42,7 @@ export function LayoutPicker({ onToggleTheme }: LayoutPickerProps) {
           <div>
             <h1
               className={style({
-                font: "heading-3xl",
+                font: "heading-2xl",
                 marginY: 0,
               })}
             >
@@ -50,14 +50,14 @@ export function LayoutPicker({ onToggleTheme }: LayoutPickerProps) {
             </h1>
             <p
               className={style({
-                font: "body-xl",
+                font: "body",
                 color: "body",
                 marginTop: 8,
                 marginBottom: 0,
               })}
             >
-              Then copy and paste the layout prompt
-              into chat
+              Copy and paste the layout prompt
+              in chat
             </p>
           </div>
           <ActionButton
