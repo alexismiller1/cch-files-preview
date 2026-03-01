@@ -242,7 +242,6 @@ export default function BrowsingContextPreview() {
         borderRadius: "xl",
         borderBottomEndRadius: "none",
       })}
-      style={{ colorScheme }}
     >
       <div
         className={style({

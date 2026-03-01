@@ -4,18 +4,24 @@ interface ScaledPreviewProps {
   children: React.ReactNode;
   innerWidth?: number;
   innerHeight?: number;
+  fill?: boolean;
 }
 
 /**
  * Renders children at a fixed "virtual viewport" size and scales them down
- * to fit the container. The outer element takes full width from its parent
- * and maintains the inner aspect ratio. A ResizeObserver keeps the scale
- * factor in sync when the container resizes.
+ * to fit the container. Uses ResizeObserver to keep the scale in sync.
+ *
+ * Default mode: outer element takes full width and maintains the inner
+ * aspect ratio.
+ *
+ * Fill mode (fill=true): outer element fills both width and height of its
+ * parent, scaling to fit while preserving aspect ratio (letterboxed).
  */
 export function ScaledPreview({
   children,
   innerWidth = 1280,
   innerHeight = 800,
+  fill = false,
 }: ScaledPreviewProps) {
   const outerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0.25);
@@ -27,24 +33,28 @@ export function ScaledPreview({
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (entry) {
-        setScale(entry.contentRect.width / innerWidth);
+        const { width, height } = entry.contentRect;
+        if (fill) {
+          setScale(Math.min(width / innerWidth, height / innerHeight));
+        } else {
+          setScale(width / innerWidth);
+        }
       }
     });
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [innerWidth]);
+  }, [innerWidth, innerHeight, fill]);
 
   return (
     <div
       ref={outerRef}
       style={{
         width: "100%",
-        aspectRatio: `${innerWidth} / ${innerHeight}`,
+        ...(fill ? { height: "100%" } : { aspectRatio: `${innerWidth} / ${innerHeight}` }),
         overflow: "hidden",
         pointerEvents: "none",
         position: "relative",
-        borderRadius: 8,
       }}
     >
       <div

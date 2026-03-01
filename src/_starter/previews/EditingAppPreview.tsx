@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   ActionButton,
   Button,
@@ -11,11 +10,8 @@ import TextItalic from "@react-spectrum/s2/icons/TextItalic";
 import TextUnderline from "@react-spectrum/s2/icons/TextUnderline";
 
 export default function EditingAppPreview() {
-  const [colorScheme, setColorScheme] = useState<"light" | "dark">("dark");
-
   return (
     <div
-      style={{ colorScheme }}
       className={style({
         display: "flex",
         flexDirection: "column",
@@ -55,13 +51,7 @@ export default function EditingAppPreview() {
           <TextUnderline />
         </ActionButton>
         <div className={style({ flexGrow: 1 })} />
-        <ActionButton
-          isQuiet
-          aria-label="Toggle color scheme"
-          onPress={() =>
-            setColorScheme((v) => (v === "dark" ? "light" : "dark"))
-          }
-        >
+        <ActionButton isQuiet aria-label="Toggle color scheme">
           <Contrast />
         </ActionButton>
         <Button variant="accent">Save</Button>

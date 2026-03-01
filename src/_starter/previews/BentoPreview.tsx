@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { ActionButton } from "@react-spectrum/s2";
 import { style } from "@react-spectrum/s2/style" with { type: "macro" };
 import Contrast from "@react-spectrum/s2/icons/Contrast";
@@ -20,11 +19,8 @@ const CHART_BARS = [
 ] as const;
 
 export default function BentoPreview() {
-  const [colorScheme, setColorScheme] = useState<"light" | "dark">("dark");
-
   return (
     <div
-      style={{ colorScheme }}
       className={style({
         display: "flex",
         flexDirection: "column",
@@ -51,13 +47,7 @@ export default function BentoPreview() {
         >
           Dashboard
         </h1>
-        <ActionButton
-          isQuiet
-          aria-label="Toggle color scheme"
-          onPress={() =>
-            setColorScheme((v) => (v === "dark" ? "light" : "dark"))
-          }
-        >
+        <ActionButton isQuiet aria-label="Toggle color scheme">
           <Contrast />
         </ActionButton>
       </div>

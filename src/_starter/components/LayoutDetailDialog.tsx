@@ -45,13 +45,17 @@ export function LayoutDetailDialog({ layout }: LayoutDetailDialogProps) {
               <div
                 className={style({
                   display: "flex",
-                  alignItems: "start",
+                  alignItems: "stretch",
                   justifyContent: "center",
-                  overflow: "auto",
+                  overflow: "hidden",
+                  borderWidth: 2,
+                  borderStyle: "solid",
+                  borderColor: "gray-200",
+                  borderRadius: "lg",
                 })}
               >
                 {PreviewComponent ? (
-                  <ScaledPreview>
+                  <ScaledPreview fill>
                     <PreviewComponent />
                   </ScaledPreview>
                 ) : (

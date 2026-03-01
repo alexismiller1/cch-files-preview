@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   ActionButton,
   Button,
@@ -20,11 +19,8 @@ const ASSET_ITEMS = [
 ] as const;
 
 export default function ProEditingAppPreview() {
-  const [colorScheme, setColorScheme] = useState<"light" | "dark">("dark");
-
   return (
     <div
-      style={{ colorScheme }}
       className={style({
         display: "flex",
         flexDirection: "column",
@@ -61,13 +57,7 @@ export default function ProEditingAppPreview() {
           <Redo />
         </ActionButton>
         <div className={style({ flexGrow: 1 })} />
-        <ActionButton
-          isQuiet
-          aria-label="Toggle color scheme"
-          onPress={() =>
-            setColorScheme((v) => (v === "dark" ? "light" : "dark"))
-          }
-        >
+        <ActionButton isQuiet aria-label="Toggle color scheme">
           <Contrast />
         </ActionButton>
         <Button variant="accent">Export</Button>
