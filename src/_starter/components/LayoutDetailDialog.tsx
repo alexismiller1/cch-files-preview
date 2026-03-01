@@ -1,12 +1,17 @@
+import { useRef } from "react";
 import {
   FullscreenDialog,
   Heading,
   Content,
   ButtonGroup,
   Button,
+  ActionButton,
+  TooltipTrigger,
+  Tooltip,
   UNSTABLE_ToastQueue as ToastQueue,
 } from "@react-spectrum/s2";
 import { style } from "@react-spectrum/s2/style" with { type: "macro" };
+import OpenIn from "@react-spectrum/s2/icons/OpenIn";
 import type { Layout } from "../layouts/types";
 import { ScaledPreview } from "./ScaledPreview";
 
@@ -27,6 +32,19 @@ async function copyPrompt(prompt: string, layoutName: string) {
 
 export function LayoutDetailDialog({ layout }: LayoutDetailDialogProps) {
   const PreviewComponent = layout.preview;
+  const previewRef = useRef<HTMLDivElement>(null);
+
+  function openPreviewInNewTab() {
+    let theme = "dark";
+    if (previewRef.current) {
+      const cs = getComputedStyle(previewRef.current).colorScheme;
+      if (cs === "light") theme = "light";
+    }
+    const url = new URL(window.location.origin + window.location.pathname);
+    url.searchParams.set("preview", layout.id);
+    url.searchParams.set("theme", theme);
+    window.open(url.toString(), "_blank");
+  }
 
   return (
     <FullscreenDialog>
@@ -44,6 +62,7 @@ export function LayoutDetailDialog({ layout }: LayoutDetailDialogProps) {
               })}
             >
               <div
+                ref={previewRef}
                 className={style({
                   display: "flex",
                   alignItems: "stretch",
@@ -54,6 +73,7 @@ export function LayoutDetailDialog({ layout }: LayoutDetailDialogProps) {
                   borderColor: "gray-200",
                   borderRadius: "lg",
                 })}
+                style={{ position: "relative" }}
               >
                 {PreviewComponent ? (
                   <ScaledPreview fill>
@@ -80,6 +100,27 @@ export function LayoutDetailDialog({ layout }: LayoutDetailDialogProps) {
                     >
                       Preview not available
                     </p>
+                  </div>
+                )}
+                {PreviewComponent && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 8,
+                      right: 8,
+                      zIndex: 10,
+                    }}
+                  >
+                    <TooltipTrigger>
+                      <ActionButton
+                        isQuiet
+                        aria-label="Open preview in new tab"
+                        onPress={openPreviewInNewTab}
+                      >
+                        <OpenIn />
+                      </ActionButton>
+                      <Tooltip>Open in new tab</Tooltip>
+                    </TooltipTrigger>
                   </div>
                 )}
               </div>
