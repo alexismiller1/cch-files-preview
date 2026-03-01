@@ -67,7 +67,7 @@ Match the preview's visual structure, spacing, colors, and S2 components exactly
 - Create src/components/AssetPanel.tsx
 - Create src/components/Canvas.tsx
 - Create src/components/InspectorPanel.tsx
-- Create src/components/AppToolbar.tsx
+- Create src/components/AppHeader.tsx
 - Create src/pages/ProEditingApp.tsx
 - Update src/App.tsx to import ProEditingApp instead of _starter/StarterPage
 

@@ -28,7 +28,7 @@ export default function ProEditingAppPreview({ onToggleTheme }: PreviewProps) {
         backgroundColor: "pasteboard",
       })}
     >
-      {/* AppToolbar */}
+      {/* App Header */}
       <div
         className={style({
           display: "flex",
@@ -37,7 +37,7 @@ export default function ProEditingAppPreview({ onToggleTheme }: PreviewProps) {
           paddingX: 16,
           columnGap: 8,
           height: 56,
-          backgroundColor: "layer-2",
+          backgroundColor: "layer-1",
         })}
         style={{ marginBottom: "1px" }}
       >
@@ -88,7 +88,7 @@ export default function ProEditingAppPreview({ onToggleTheme }: PreviewProps) {
         {/* Toolbar Panel */}
         <div
           className={style({
-            backgroundColor: "elevated",
+            backgroundColor: "layer-1",
             padding: 16,
           })}
         >
@@ -139,7 +139,6 @@ export default function ProEditingAppPreview({ onToggleTheme }: PreviewProps) {
             })}
           >
             <span className={style({ font: "body", color: "detail" })}>
-              Canvas area
             </span>
           </div>
         </div>
@@ -151,7 +150,7 @@ export default function ProEditingAppPreview({ onToggleTheme }: PreviewProps) {
             flexDirection: "column",
             padding: 16,
             rowGap: 16,
-            backgroundColor: "layer-2",
+            backgroundColor: "layer-1",
             overflowY: "auto",
           })}
         >
@@ -165,7 +164,7 @@ export default function ProEditingAppPreview({ onToggleTheme }: PreviewProps) {
             Properties
           </h3>
 
-          {/* Position */}
+          {/* Transform */}
           <div
             className={style({
               display: "flex",
@@ -180,46 +179,20 @@ export default function ProEditingAppPreview({ onToggleTheme }: PreviewProps) {
                 marginBottom: 4,
               })}
             >
-              Position
+              Transform
             </span>
             <div
               className={style({
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
-                columnGap: 8,
+                columnGap: 24,
+                rowGap: 8,
               })}
             >
-              <NumberField label="X" />
-              <NumberField label="Y" />
-            </div>
-          </div>
-
-          {/* Size */}
-          <div
-            className={style({
-              display: "flex",
-              flexDirection: "column",
-              rowGap: 4,
-            })}
-          >
-            <span
-              className={style({
-                font: "detail",
-                color: "detail",
-                marginBottom: 4,
-              })}
-            >
-              Size
-            </span>
-            <div
-              className={style({
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                columnGap: 8,
-              })}
-            >
-              <NumberField label="W" />
-              <NumberField label="H" />
+              <NumberField label="W" labelPosition="side" hideStepper />
+              <NumberField label="X" labelPosition="side" hideStepper />
+              <NumberField label="H" labelPosition="side" hideStepper />
+              <NumberField label="Y" labelPosition="side" hideStepper />
             </div>
           </div>
         </div>
