@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Provider } from "@react-spectrum/s2";
 import { style } from "@react-spectrum/s2/style" with { type: "macro" };
 import { IMSProvider } from "./contexts/IMSProvider";
-import { Agentation } from "agentation";
 import StarterPage from "./_starter/StarterPage";
+import { DevToolbar } from "./_starter/components/DevToolbar";
 import { layouts } from "./_starter/layouts/registry";
 
 function PreviewPage({
@@ -65,12 +65,23 @@ function App() {
     return <PreviewPage layoutId={previewId} initialTheme={theme} />;
   }
 
+  if (params.has("picker")) {
+    return (
+      <Provider colorScheme={colorScheme}>
+        <IMSProvider>
+          <StarterPage onToggleTheme={toggleColorScheme} />
+        </IMSProvider>
+        {import.meta.env.DEV && <DevToolbar />}
+      </Provider>
+    );
+  }
+
   return (
     <Provider colorScheme={colorScheme}>
       <IMSProvider>
         <StarterPage onToggleTheme={toggleColorScheme} />
       </IMSProvider>
-      {import.meta.env.DEV && <Agentation />}
+      {import.meta.env.DEV && <DevToolbar />}
     </Provider>
   );
 }

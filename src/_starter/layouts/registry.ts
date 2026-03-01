@@ -19,7 +19,7 @@ export const layouts: Layout[] = [
 ## File structure
 - Create src/pages/BlankPage.tsx
 - Update src/App.tsx to import BlankPage instead of _starter/StarterPage
-- Keep existing Provider/IMSProvider/Agentation wiring and preview query-param behavior in App.tsx
+- Keep existing Provider/IMSProvider wiring, preview query-param behavior, \`?picker\` query-param routing, and the dev-mode DevToolbar in App.tsx
 
 ## Constraints
 - Reuse preview implementations by copying/duplicating code into src/components and src/pages; do not import preview components from src/_starter/previews in runtime app code
@@ -49,7 +49,7 @@ export const layouts: Layout[] = [
 - Create src/components/EditorCanvas.tsx
 - Create src/pages/EditingApp.tsx
 - Update src/App.tsx to import EditingApp instead of _starter/StarterPage
-- Keep existing Provider/IMSProvider/Agentation wiring and preview query-param behavior in App.tsx
+- Keep existing Provider/IMSProvider wiring, preview query-param behavior, \`?picker\` query-param routing, and the dev-mode DevToolbar in App.tsx
 
 ## Constraints
 - Reuse preview implementations by copying/duplicating code into src/components and src/pages; do not import preview components from src/_starter/previews in runtime app code
@@ -84,7 +84,7 @@ export const layouts: Layout[] = [
 - Create src/components/AppHeader.tsx
 - Create src/pages/ProEditingApp.tsx
 - Update src/App.tsx to import ProEditingApp instead of _starter/StarterPage
-- Keep existing Provider/IMSProvider/Agentation wiring and preview query-param behavior in App.tsx
+- Keep existing Provider/IMSProvider wiring, preview query-param behavior, \`?picker\` query-param routing, and the dev-mode DevToolbar in App.tsx
 
 ## Constraints
 - Reuse preview implementations by copying/duplicating code into src/components and src/pages; do not import preview components from src/_starter/previews in runtime app code
@@ -121,7 +121,7 @@ export const layouts: Layout[] = [
 - Create src/components/ContentArea.tsx
 - Create src/pages/BrowsingContext.tsx
 - Update src/App.tsx to import BrowsingContext instead of _starter/StarterPage
-- Keep existing Provider/IMSProvider/Agentation wiring and preview query-param behavior in App.tsx
+- Keep existing Provider/IMSProvider wiring, preview query-param behavior, \`?picker\` query-param routing, and the dev-mode DevToolbar in App.tsx
 
 ## Constraints
 - Reuse preview implementations by copying/duplicating code into src/components and src/pages; do not import preview components from src/_starter/previews in runtime app code
@@ -157,7 +157,7 @@ export const layouts: Layout[] = [
 - Create src/components/BentoGrid.tsx
 - Create src/pages/BentoLayout.tsx
 - Update src/App.tsx to import BentoLayout instead of _starter/StarterPage
-- Keep existing Provider/IMSProvider/Agentation wiring and preview query-param behavior in App.tsx
+- Keep existing Provider/IMSProvider wiring, preview query-param behavior, \`?picker\` query-param routing, and the dev-mode DevToolbar in App.tsx
 
 ## Constraints
 - Reuse preview implementations by copying/duplicating code into src/components and src/pages; do not import preview components from src/_starter/previews in runtime app code
@@ -190,7 +190,7 @@ export const layouts: Layout[] = [
 - Create src/components/DocumentContent.tsx
 - Create src/pages/TextDocument.tsx
 - Update src/App.tsx to import TextDocument instead of _starter/StarterPage
-- Keep existing Provider/IMSProvider/Agentation wiring and preview query-param behavior in App.tsx
+- Keep existing Provider/IMSProvider wiring, preview query-param behavior, \`?picker\` query-param routing, and the dev-mode DevToolbar in App.tsx
 
 ## Constraints
 - Reuse preview implementations by copying/duplicating code into src/components and src/pages; do not import preview components from src/_starter/previews in runtime app code
