@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { flushSync } from "react-dom";
 import { ActionButton, DialogContainer } from "@react-spectrum/s2";
 import { style } from "@react-spectrum/s2/style" with { type: "macro" };
 import Contrast from "@react-spectrum/s2/icons/Contrast";
@@ -97,7 +98,18 @@ export function LayoutPicker({ onToggleTheme }: LayoutPickerProps) {
               );
               const nextIndex =
                 currentIndex === layouts.length - 1 ? 0 : currentIndex + 1;
-              setSelectedLayout(layouts[nextIndex]);
+              const nextLayout = layouts[nextIndex];
+
+              if (!document.startViewTransition) {
+                setSelectedLayout(nextLayout);
+                return;
+              }
+
+              document.startViewTransition(() => {
+                flushSync(() => {
+                  setSelectedLayout(nextLayout);
+                });
+              });
             }}
           />
         )}

@@ -51,16 +51,16 @@ export function LayoutDetailDialog({ layout, onNextLayout }: LayoutDetailDialogP
     <FullscreenDialog>
       {({ close }) => (
         <>
-          <Heading slot="title">{layout.name}</Heading>
+          <Heading slot="title" UNSAFE_className="dialog-title">{layout.name}</Heading>
           <Content>
             <div
-              className={style({
+              className={`dialog-content ${style({
                 display: "grid",
                 gridTemplateColumns: "1fr 500px",
                 gap: 24,
                 height: "full",
                 overflow: "hidden",
-              })}
+              })}`}
             >
               <div
                 ref={previewRef}
@@ -120,7 +120,7 @@ export function LayoutDetailDialog({ layout, onNextLayout }: LayoutDetailDialogP
                         onPress={openPreviewInNewTab}
                       >
                         <OpenIn />
-                        <Text>Open in new tab</Text>
+                        <Text>Preview in new tab</Text>
                       </Button>
                       <Tooltip>Open in new tab</Tooltip>
                     </TooltipTrigger>

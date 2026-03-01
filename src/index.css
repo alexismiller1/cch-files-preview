@@ -9,3 +9,22 @@ li {
   margin: 0;
   padding: 0;
 }
+
+@keyframes slide-out-left { to { transform: translateX(-40px); } }
+@keyframes slide-in-right { from { transform: translateX(40px); } }
+@keyframes fade-out { to { opacity: 0; } }
+@keyframes fade-in { from { opacity: 0; } }
+
+.dialog-title {
+  /* No view-transition-name here. Let it transition with the root to avoid text scaling artifacts. */
+}
+
+.dialog-content {
+  view-transition-name: dialog-content;
+}
+::view-transition-old(dialog-content) {
+  animation: 300ms ease-in-out both slide-out-left, 300ms ease-in-out both fade-out;
+}
+::view-transition-new(dialog-content) {
+  animation: 300ms ease-in-out both slide-in-right, 300ms ease-in-out both fade-in;
+}
