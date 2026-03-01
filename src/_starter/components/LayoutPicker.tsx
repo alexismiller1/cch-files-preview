@@ -105,10 +105,14 @@ export function LayoutPicker({ onToggleTheme }: LayoutPickerProps) {
                 return;
               }
 
-              document.startViewTransition(() => {
+              document.documentElement.classList.add("transition-backward");
+              const transition = document.startViewTransition(() => {
                 flushSync(() => {
                   setSelectedLayout(prevLayout);
                 });
+              });
+              transition.finished.then(() => {
+                document.documentElement.classList.remove("transition-backward");
               });
             }}
             onNextLayout={() => {
