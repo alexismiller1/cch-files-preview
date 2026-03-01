@@ -15,7 +15,7 @@ export default function EditingAppPreview() {
       className={style({
         display: "flex",
         flexDirection: "column",
-        height: "screen",
+        height: "full",
       })}
     >
       <div

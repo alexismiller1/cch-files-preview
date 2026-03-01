@@ -8,7 +8,7 @@ export default function BlankPreview() {
       className={style({
         display: "flex",
         flexDirection: "column",
-        height: "screen",
+        height: "full",
         backgroundColor: "base",
         padding: 32,
       })}

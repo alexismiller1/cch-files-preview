@@ -24,7 +24,7 @@ export default function ProEditingAppPreview() {
       className={style({
         display: "flex",
         flexDirection: "column",
-        height: "screen",
+        height: "full",
       })}
     >
       {/* AppToolbar */}

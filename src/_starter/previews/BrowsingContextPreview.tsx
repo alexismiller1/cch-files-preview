@@ -238,7 +238,7 @@ export default function BrowsingContextPreview() {
       className={style({
         padding: 0,
         backgroundColor: "layer-1",
-        height: "screen",
+        height: "full",
         borderRadius: "xl",
         borderBottomEndRadius: "none",
       })}

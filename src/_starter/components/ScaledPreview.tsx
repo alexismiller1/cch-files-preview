@@ -15,7 +15,7 @@ interface ScaledPreviewProps {
  * aspect ratio.
  *
  * Fill mode (fill=true): outer element fills both width and height of its
- * parent, scaling to fit while preserving aspect ratio (letterboxed).
+ * parent, scaling to cover the container (overflow is clipped).
  */
 export function ScaledPreview({
   children,
@@ -35,7 +35,7 @@ export function ScaledPreview({
       if (entry) {
         const { width, height } = entry.contentRect;
         if (fill) {
-          setScale(Math.min(width / innerWidth, height / innerHeight));
+          setScale(Math.max(width / innerWidth, height / innerHeight));
         } else {
           setScale(width / innerWidth);
         }

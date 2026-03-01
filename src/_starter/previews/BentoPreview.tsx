@@ -24,7 +24,7 @@ export default function BentoPreview() {
       className={style({
         display: "flex",
         flexDirection: "column",
-        height: "screen",
+        height: "full",
         backgroundColor: "base",
       })}
     >
