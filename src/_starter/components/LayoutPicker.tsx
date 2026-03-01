@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { flushSync } from "react-dom";
-import { ActionButton, DialogContainer } from "@react-spectrum/s2";
+import { ActionButton, DialogContainer, Link } from "@react-spectrum/s2";
 import { style } from "@react-spectrum/s2/style" with { type: "macro" };
 import Contrast from "@react-spectrum/s2/icons/Contrast";
 import { layouts } from "../layouts/registry";
@@ -56,8 +56,8 @@ export function LayoutPicker({ onToggleTheme }: LayoutPickerProps) {
                 marginBottom: 0,
               })}
             >
-              Copy and paste the layout prompt
-              in chat
+              Copy and paste the layout prompt in chat. These templates come with toggleable Blueline accessibility overlay (via Ctrl+Shift+A) and{" "}
+              <Link href="https://agentation.dev/" target="_blank" variant="secondary">Agentation</Link>.
             </p>
           </div>
           <ActionButton
