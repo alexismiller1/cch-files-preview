@@ -1,21 +1,20 @@
 import {
   ActionButton,
   Button,
-  Divider,
 } from "@react-spectrum/s2";
 import { style } from "@react-spectrum/s2/style" with { type: "macro" };
 import Contrast from "@react-spectrum/s2/icons/Contrast";
-import TextBold from "@react-spectrum/s2/icons/TextBold";
-import TextItalic from "@react-spectrum/s2/icons/TextItalic";
-import TextUnderline from "@react-spectrum/s2/icons/TextUnderline";
 
-export default function EditingAppPreview() {
+import type { PreviewProps } from "../layouts/types";
+
+export default function EditingAppPreview({ onToggleTheme }: PreviewProps) {
   return (
     <div
       className={style({
         display: "flex",
         flexDirection: "column",
         height: "full",
+        backgroundColor: "pasteboard",
       })}
     >
       <div
@@ -23,12 +22,10 @@ export default function EditingAppPreview() {
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
-          padding: 16,
+          paddingX: 16,
           columnGap: 8,
-          backgroundColor: "layer-1",
-          borderBottomWidth: 1,
-          borderStyle: "solid",
-          borderColor: "gray-200",
+          height: 56,
+          backgroundColor: "layer-2",
         })}
       >
         <h2
@@ -38,23 +35,13 @@ export default function EditingAppPreview() {
             fontWeight: "bold",
           })}
         >
-          Document title
+          Project
         </h2>
-        <Divider orientation="vertical" size="M" />
-        <ActionButton isQuiet aria-label="Bold">
-          <TextBold />
-        </ActionButton>
-        <ActionButton isQuiet aria-label="Italic">
-          <TextItalic />
-        </ActionButton>
-        <ActionButton isQuiet aria-label="Underline">
-          <TextUnderline />
-        </ActionButton>
         <div className={style({ flexGrow: 1 })} />
-        <ActionButton isQuiet aria-label="Toggle color scheme">
+        <ActionButton isQuiet aria-label="Toggle color scheme" onPress={onToggleTheme}>
           <Contrast />
         </ActionButton>
-        <Button variant="accent">Save</Button>
+        <Button variant="accent">Export</Button>
       </div>
       <div
         className={style({
@@ -63,38 +50,7 @@ export default function EditingAppPreview() {
           padding: 32,
           overflow: "auto",
         })}
-      >
-        <p
-          className={style({
-            font: "body",
-            color: "body",
-          })}
-        >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-          ad minim veniam, quis nostrud exercitation ullamco laboris.
-        </p>
-        <p
-          className={style({
-            font: "body",
-            color: "body",
-          })}
-        >
-          Duis aute irure dolor in reprehenderit in voluptate velit esse
-          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-          cupidatat non proident, sunt in culpa qui officia deserunt mollit
-          anim id est laborum.
-        </p>
-        <p
-          className={style({
-            font: "body",
-            color: "body",
-          })}
-        >
-          Curabitur pretium tincidunt lacus. Nulla facilisi. Ut fringilla.
-          Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet.
-        </p>
-      </div>
+      />
     </div>
   );
 }

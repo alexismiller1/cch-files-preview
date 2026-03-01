@@ -18,13 +18,16 @@ const ASSET_ITEMS = [
   { name: "Typography sample", color: "gray-400" },
 ] as const;
 
-export default function ProEditingAppPreview() {
+import type { PreviewProps } from "../layouts/types";
+
+export default function ProEditingAppPreview({ onToggleTheme }: PreviewProps) {
   return (
     <div
       className={style({
         display: "flex",
         flexDirection: "column",
         height: "full",
+        backgroundColor: "pasteboard",
       })}
     >
       {/* AppToolbar */}
@@ -33,12 +36,10 @@ export default function ProEditingAppPreview() {
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
-          padding: 12,
+          paddingX: 16,
           columnGap: 8,
+          height: 56,
           backgroundColor: "layer-2",
-          borderBottomWidth: 1,
-          borderStyle: "solid",
-          borderColor: "gray-200",
         })}
       >
         <h2
@@ -57,7 +58,7 @@ export default function ProEditingAppPreview() {
           <Redo />
         </ActionButton>
         <div className={style({ flexGrow: 1 })} />
-        <ActionButton isQuiet aria-label="Toggle color scheme">
+        <ActionButton isQuiet aria-label="Toggle color scheme" onPress={onToggleTheme}>
           <Contrast />
         </ActionButton>
         <Button variant="accent">Export</Button>

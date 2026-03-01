@@ -1,6 +1,7 @@
 import "./utils/IMS";
 import { useState } from "react";
 import { Provider } from "@react-spectrum/s2";
+import { style } from "@react-spectrum/s2/style" with { type: "macro" };
 import { IMSProvider } from "./contexts/IMSProvider";
 import { Agentation } from "agentation";
 import StarterPage from "./_starter/StarterPage";
@@ -8,18 +9,23 @@ import { layouts } from "./_starter/layouts/registry";
 
 function PreviewPage({
   layoutId,
-  theme,
+  initialTheme,
 }: {
   layoutId: string;
-  theme: "light" | "dark";
+  initialTheme: "light" | "dark";
 }) {
+  const [colorScheme, setColorScheme] = useState<"light" | "dark">(initialTheme);
+  const toggleColorScheme = () =>
+    setColorScheme((prev) => (prev === "dark" ? "light" : "dark"));
+
   const layout = layouts.find((l) => l.id === layoutId);
   const PreviewComponent = layout?.preview;
 
   if (!PreviewComponent) {
     return (
-      <Provider colorScheme={theme}>
+      <Provider colorScheme={colorScheme}>
         <div
+          className={style({ backgroundColor: "pasteboard" })}
           style={{
             width: "100vw",
             height: "100vh",
@@ -35,9 +41,12 @@ function PreviewPage({
   }
 
   return (
-    <Provider colorScheme={theme}>
-      <div style={{ width: "100vw", height: "100vh" }}>
-        <PreviewComponent />
+    <Provider colorScheme={colorScheme}>
+      <div
+        className={style({ backgroundColor: "pasteboard" })}
+        style={{ width: "100vw", height: "100vh" }}
+      >
+        <PreviewComponent onToggleTheme={toggleColorScheme} />
       </div>
     </Provider>
   );
@@ -53,7 +62,7 @@ function App() {
 
   if (previewId) {
     const theme = params.get("theme") === "light" ? "light" : "dark";
-    return <PreviewPage layoutId={previewId} theme={theme} />;
+    return <PreviewPage layoutId={previewId} initialTheme={theme} />;
   }
 
   return (

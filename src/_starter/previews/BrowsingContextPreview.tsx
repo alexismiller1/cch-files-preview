@@ -213,7 +213,9 @@ function PanelToggleButton({
   );
 }
 
-export default function BrowsingContextPreview() {
+import type { PreviewProps } from "../layouts/types";
+
+export default function BrowsingContextPreview({ onToggleTheme }: PreviewProps) {
   const [colorScheme, setColorScheme] = useState<"light" | "dark">(
     getInitialColorScheme,
   );
@@ -308,11 +310,12 @@ export default function BrowsingContextPreview() {
           >
             <ActionButton
               isQuiet
-              onPress={() =>
+              onPress={() => {
                 setColorScheme((value) =>
                   value === "dark" ? "light" : "dark",
-                )
-              }
+                );
+                onToggleTheme?.();
+              }}
               aria-label={
                 colorScheme === "dark"
                   ? "Switch to light mode"

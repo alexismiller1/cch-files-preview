@@ -18,7 +18,9 @@ const CHART_BARS = [
   { height: 110, color: "var(--spectrum-blue-800)" },
 ] as const;
 
-export default function BentoPreview() {
+import type { PreviewProps } from "../layouts/types";
+
+export default function BentoPreview({ onToggleTheme }: PreviewProps) {
   return (
     <div
       className={style({
@@ -47,7 +49,7 @@ export default function BentoPreview() {
         >
           Dashboard
         </h1>
-        <ActionButton isQuiet aria-label="Toggle color scheme">
+        <ActionButton isQuiet aria-label="Toggle color scheme" onPress={onToggleTheme}>
           <Contrast />
         </ActionButton>
       </div>
