@@ -15,7 +15,7 @@ interface ScaledPreviewProps {
  * aspect ratio.
  *
  * Fill mode (fill=true): outer element fills both width and height of its
- * parent, scaling to cover the container (overflow is clipped).
+ * parent, scaling to contain the content (centered, no clipping).
  */
 export function ScaledPreview({
   children,
@@ -25,6 +25,7 @@ export function ScaledPreview({
 }: ScaledPreviewProps) {
   const outerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0.25);
+  const [containerSize, setContainerSize] = useState({ w: 0, h: 0 });
 
   useEffect(() => {
     const el = outerRef.current;
@@ -35,7 +36,8 @@ export function ScaledPreview({
       if (entry) {
         const { width, height } = entry.contentRect;
         if (fill) {
-          setScale(Math.max(width / innerWidth, height / innerHeight));
+          setScale(Math.min(width / innerWidth, height / innerHeight));
+          setContainerSize({ w: width, h: height });
         } else {
           setScale(width / innerWidth);
         }
@@ -45,6 +47,9 @@ export function ScaledPreview({
     observer.observe(el);
     return () => observer.disconnect();
   }, [innerWidth, innerHeight, fill]);
+
+  const offsetX = fill ? (containerSize.w - innerWidth * scale) / 2 : 0;
+  const offsetY = fill ? (containerSize.h - innerHeight * scale) / 2 : 0;
 
   return (
     <div
@@ -64,8 +69,8 @@ export function ScaledPreview({
           transform: `scale(${scale})`,
           transformOrigin: "top left",
           position: "absolute",
-          top: 0,
-          left: 0,
+          top: offsetY,
+          left: offsetX,
         }}
       >
         {children}

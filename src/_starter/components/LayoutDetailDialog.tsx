@@ -73,7 +73,7 @@ export function LayoutDetailDialog({ layout }: LayoutDetailDialogProps) {
                   borderColor: "gray-200",
                   borderRadius: "lg",
                 })}
-                style={{ position: "relative" }}
+                style={{ position: "relative", backgroundColor: "black" }}
               >
                 {PreviewComponent ? (
                   <ScaledPreview fill>
