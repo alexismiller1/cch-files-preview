@@ -17,6 +17,7 @@ import { ScaledPreview } from "./ScaledPreview";
 
 interface LayoutDetailDialogProps {
   layout: Layout;
+  onNextLayout?: () => void;
 }
 
 async function copyPrompt(prompt: string, layoutName: string) {
@@ -30,7 +31,7 @@ async function copyPrompt(prompt: string, layoutName: string) {
   }
 }
 
-export function LayoutDetailDialog({ layout }: LayoutDetailDialogProps) {
+export function LayoutDetailDialog({ layout, onNextLayout }: LayoutDetailDialogProps) {
   const PreviewComponent = layout.preview;
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -167,6 +168,11 @@ export function LayoutDetailDialog({ layout }: LayoutDetailDialogProps) {
             <Button variant="secondary" onPress={close}>
               Close
             </Button>
+            {onNextLayout && (
+              <Button variant="secondary" onPress={onNextLayout}>
+                Next layout
+              </Button>
+            )}
             <Button
               variant="accent"
               onPress={() => copyPrompt(layout.prompt, layout.name)}

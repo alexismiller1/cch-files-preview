@@ -89,7 +89,17 @@ export function LayoutPicker({ onToggleTheme }: LayoutPickerProps) {
 
       <DialogContainer onDismiss={() => setSelectedLayout(null)}>
         {selectedLayout && (
-          <LayoutDetailDialog layout={selectedLayout} />
+          <LayoutDetailDialog
+            layout={selectedLayout}
+            onNextLayout={() => {
+              const currentIndex = layouts.findIndex(
+                (l) => l.id === selectedLayout.id
+              );
+              const nextIndex =
+                currentIndex === layouts.length - 1 ? 0 : currentIndex + 1;
+              setSelectedLayout(layouts[nextIndex]);
+            }}
+          />
         )}
       </DialogContainer>
     </div>
