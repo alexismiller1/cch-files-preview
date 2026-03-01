@@ -107,8 +107,8 @@ export function LayoutDetailDialog({ layout, onNextLayout }: LayoutDetailDialogP
                   <div
                     style={{
                       position: "absolute",
-                      top: 8,
-                      right: 8,
+                      top: 16,
+                      right: 16,
                       zIndex: 10,
                     }}
                   >
