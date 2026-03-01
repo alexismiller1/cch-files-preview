@@ -40,6 +40,7 @@ export function LayoutDetailDialog({ layout }: LayoutDetailDialogProps) {
                 gridTemplateColumns: "1fr 500px",
                 gap: 24,
                 height: "full",
+                overflow: "hidden",
               })}
             >
               <div
@@ -87,6 +88,8 @@ export function LayoutDetailDialog({ layout }: LayoutDetailDialogProps) {
                   display: "flex",
                   flexDirection: "column",
                   gap: 8,
+                  overflow: "hidden",
+                  minHeight: 0,
                 })}
               >
                 <p
