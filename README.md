@@ -1,4 +1,4 @@
-# PPK Template Starter
+# Spectrum 2 Starter
 
 A React + Vite starter template with React Spectrum S2.
 
