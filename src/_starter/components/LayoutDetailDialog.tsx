@@ -8,7 +8,7 @@ import {
   Text,
   TooltipTrigger,
   Tooltip,
-  UNSTABLE_ToastQueue as ToastQueue,
+  ToastQueue,
 } from "@react-spectrum/s2";
 import { style } from "@react-spectrum/s2/style" with { type: "macro" };
 import OpenIn from "@react-spectrum/s2/icons/OpenIn";
