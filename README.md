@@ -28,12 +28,7 @@ pnpm dev
 
 The app starts on a layout picker page where you can browse available layouts, preview them, and copy a prompt to apply one via the AI chat.
 
-After a layout has been applied to `src/App.tsx`, you can still get back to the picker in two ways:
-
-- **URL parameter** -- Add `?picker` to the URL (e.g. `https://localhost:8080/?picker`)
-- **Dev toolbar** -- In dev mode (`pnpm dev`), a floating toolbar appears in the bottom-right corner with a grid icon button that navigates to the picker
-
-The dev toolbar also includes the Agentation widget. Both are automatically removed from production builds.
+After a layout has been applied to `src/App.tsx`, you can still get back to the picker by adding `?picker` to the URL (e.g. `https://localhost:8080/?picker`). This works because the picker check lives in `src/main.tsx`, which is not overwritten when layouts are applied.
 
 ## Support
 

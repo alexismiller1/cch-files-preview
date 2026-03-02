@@ -65,17 +65,7 @@ function App() {
     return <PreviewPage layoutId={previewId} initialTheme={theme} />;
   }
 
-  if (params.has("picker")) {
-    return (
-      <Provider colorScheme={colorScheme}>
-        <IMSProvider>
-          <StarterPage onToggleTheme={toggleColorScheme} />
-        </IMSProvider>
-        {import.meta.env.DEV && <DevToolbar />}
-      </Provider>
-    );
-  }
-
+  // ?picker is handled in main.tsx so it persists after layouts replace App.tsx
   return (
     <Provider colorScheme={colorScheme}>
       <IMSProvider>
