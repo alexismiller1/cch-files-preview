@@ -1,5 +1,9 @@
 @import url("https://use.typekit.net/uma8ayv.css");
 
+html, body, #root {
+  height: 100%;
+}
+
 body {
   margin: 0;
   font-family: adobe-clean, sans-serif;

@@ -29,11 +29,13 @@ export const layouts: Layout[] = [
 - Use the style macro for static styles; keep inline style or UNSAFE_style only where runtime values are required
 - Keep user-facing text in sentence case
 - Preserve accessibility semantics from the preview
+- The page component's root element must use minHeight "screen" (instead of the preview's height "full") and include a semantic backgroundColor from the style macro, so the page fills the viewport and adapts to light and dark mode
 - Do not modify any files inside src/_starter/
 
 ## Deterministic acceptance checks
-- Root container is a full-height column with base background and 32px padding
-- A quiet ActionButton with Contrast icon appears in a top-right row and calls onToggleTheme`,
+- Root container uses minHeight "screen" with "base" backgroundColor and 32px padding
+- A quiet ActionButton with Contrast icon appears in a top-right row and calls onToggleTheme
+- Page root covers the full viewport height with no exposed body background in light or dark mode`,
   },
   {
     id: "editing-app",
@@ -61,12 +63,14 @@ export const layouts: Layout[] = [
 - Use the style macro for static styles; keep inline style or UNSAFE_style only where runtime values are required
 - Keep user-facing text in sentence case
 - Preserve accessibility semantics from the preview
+- The page component's root element must use minHeight "screen" (instead of the preview's height "full") and include a semantic backgroundColor from the style macro, so the page fills the viewport and adapts to light and dark mode
 - Do not modify any files inside src/_starter/
 
 ## Deterministic acceptance checks
 - Header is 56px tall with layer-2 background, logo + "Project", theme toggle, and "Export" button
 - Vertical ToggleButtonGroup is fixed at top: 64px and left: 8px, quiet, size M, with ids: select, square, text
-- Canvas area is centered and sized to width: 30vw and height: 60vh with layer-2 background`,
+- Canvas area is centered and sized to width: 30vw and height: 60vh with layer-2 background
+- Page root covers the full viewport height with no exposed body background in light or dark mode`,
   },
   {
     id: "pro-editing-app",
@@ -96,13 +100,15 @@ export const layouts: Layout[] = [
 - Use the style macro for static styles; keep inline style or UNSAFE_style only where runtime values are required
 - Keep user-facing text in sentence case
 - Preserve accessibility semantics from the preview
+- The page component's root element must use minHeight "screen" (instead of the preview's height "full") and include a semantic backgroundColor from the style macro, so the page fills the viewport and adapts to light and dark mode
 - Do not modify any files inside src/_starter/
 
 ## Deterministic acceptance checks
 - Header uses layer-1 background, includes logo + "Project", quiet theme toggle, and "Export" button
 - Main work area uses gridTemplateColumns: "auto 1fr 280px"
 - Center canvas is 640x400 with layer-2 background and a 1px solid gray-200 border
-- Inspector has "Properties" heading and NumberField controls W/X/H/Y with side labels and hidden steppers`,
+- Inspector has "Properties" heading and NumberField controls W/X/H/Y with side labels and hidden steppers
+- Page root covers the full viewport height with no exposed body background in light or dark mode`,
   },
   {
     id: "browsing-context",
@@ -135,13 +141,15 @@ export const layouts: Layout[] = [
 - Use the style macro for static styles; keep inline style or UNSAFE_style only where runtime values are required
 - Keep user-facing text in sentence case
 - Preserve accessibility semantics from the preview
+- The page component's root element must use minHeight "screen" (instead of the preview's height "full") and include a semantic backgroundColor from the style macro, so the page fills the viewport and adapts to light and dark mode
 - Do not modify any files inside src/_starter/
 
 ## Deterministic acceptance checks
 - Sidebar column animates between 160px (expanded) and 56px (collapsed) using 180ms cubic-bezier(0.2, 0, 0, 1)
 - Navigation contains Home, Files, and Learn items with animated labels
 - Toggle button aria-label switches between "Expand sidebar" and "Collapse sidebar"
-- Main content area starts with "Lorem ipsum" heading and placeholder paragraphs`,
+- Main content area starts with "Lorem ipsum" heading and placeholder paragraphs
+- Page root covers the full viewport height with no exposed body background in light or dark mode`,
   },
   {
     id: "bento",
@@ -168,13 +176,15 @@ export const layouts: Layout[] = [
 - Use the style macro for static styles; keep inline style or UNSAFE_style only where runtime values are required
 - Keep user-facing text in sentence case
 - Preserve accessibility semantics from the preview
+- The page component's root element must use minHeight "screen" (instead of the preview's height "full") and include a semantic backgroundColor from the style macro, so the page fills the viewport and adapts to light and dark mode
 - Do not modify any files inside src/_starter/
 
 ## Deterministic acceptance checks
 - Main grid uses 4 equal columns, dense flow, minmax(180px, auto) rows, 16px gap, and 24px side/bottom padding
 - Hero card spans 2 columns x 2 rows and includes the purple-to-indigo gradient block
 - "Performance overview" renders five bars using CHART_BARS with the specified heights/colors
-- "Status" card includes a positive status dot and the text "All systems operational"`,
+- "Status" card includes a positive status dot and the text "All systems operational"
+- Page root covers the full viewport height with no exposed body background in light or dark mode`,
   },
   {
     id: "text-document",
@@ -202,12 +212,14 @@ export const layouts: Layout[] = [
 - Use the style macro for static styles; keep inline style or UNSAFE_style only where runtime values are required
 - Keep user-facing text in sentence case
 - Preserve accessibility semantics from the preview
+- The page component's root element must use minHeight "screen" (instead of the preview's height "full") and include a semantic backgroundColor from the style macro, so the page fills the viewport and adapts to light and dark mode
 - Do not modify any files inside src/_starter/
 
 ## Deterministic acceptance checks
 - Two-column layout uses gridTemplateColumns: "240px 1fr"
 - Outline sidebar has "On this page" label and links for all headings with level-based left padding
 - Clicking an outline link scrolls to the matching heading id with smooth behavior
-- Article content uses maxWidth 720 and includes the same heading/list text as the preview`,
+- Article content uses maxWidth 720 and includes the same heading/list text as the preview
+- Page root covers the full viewport height with no exposed body background in light or dark mode`,
   },
 ];
