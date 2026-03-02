@@ -120,12 +120,12 @@ export const layouts: Layout[] = [
     prompt: `Use src/_starter/previews/BrowsingContextPreview.tsx as the source of truth. Keep values and behavior identical while splitting into the files below.
 
 ## File structure
-- Create src/components/NavSidebar.tsx
-- Create src/components/SideNav.tsx
-- Create src/components/PanelToggleButton.tsx
-- Create src/components/TopBar.tsx
-- Create src/components/ContentArea.tsx
-- Create src/pages/BrowsingContext.tsx
+- Create src/components/NavSidebar.tsx — sidebar panel containing SideNav, dual Create button, and PanelToggleButton; accepts page/sidebar state and callbacks
+- Create src/components/SideNav.tsx — custom SideNav (wraps RAC ToggleButtonGroup) and SideNavItem (wraps RAC ToggleButton with render-props children, focusRing, pressScale, and indicator bar); exports sideNav/sideNavItem/sideNavIndicator style constants and getSidebarLabelMotionStyle helper
+- Create src/components/PanelToggleButton.tsx — PanelToggleButton component plus PanelIcon (created via createIcon with an animated SVG rect that transitions width based on state and isHovered custom props)
+- Create src/components/TopBar.tsx — header bar with logo image, "Project" title, and theme toggle ActionButton
+- Create src/components/ContentArea.tsx — main content area with "Lorem ipsum" heading and three placeholder paragraphs
+- Create src/pages/BrowsingContext.tsx — page shell composing TopBar, NavSidebar, and ContentArea in a 12-column CSS grid; owns page, isSidebarCollapsed, and colorScheme state plus localStorage persistence
 - Update src/App.tsx to import BrowsingContext instead of _starter/StarterPage
 - Keep existing Provider/IMSProvider wiring, preview query-param behavior, \`?picker\` query-param routing, and the dev-mode DevToolbar in App.tsx
 
@@ -134,21 +134,30 @@ export const layouts: Layout[] = [
 - Match the preview exactly (layout, spacing, colors, transitions, icon behavior, aria-labels, and control props)
 - Keep the same state defaults: page = "home", sidebar collapsed = false
 - Keep color-scheme persistence behavior with localStorage key "chat-s2p-color-scheme" and system fallback via matchMedia
-- Keep the custom SideNav behavior based on react-aria-components ToggleButtonGroup/ToggleButton
-- Keep PanelToggleButton + custom icon behavior and the same transition timing values
+- Keep the custom SideNav/SideNavItem built on react-aria-components ToggleButtonGroup/ToggleButton — SideNavItem uses render-props children (ToggleButtonRenderProps), calls style functions with renderProps (e.g., sideNavItem(renderProps)), spreads focusRing() into its style, and applies pressScale(ref) for press animation
+- Keep PanelToggleButton + PanelIcon created via createIcon from @react-spectrum/s2 — the PanelIcon SVG rect width animates between 1.5px and 5px based on state (expanded/collapsed) and isHovered custom props
+- Keep the dual Create button overlay: icon-only Button visible when collapsed, icon+text Button when expanded, using absolute positioning and opacity transitions
+- Preserve @ts-expect-error directives for onHoverChange and custom icon props exactly as in the preview
 - Use @react-spectrum/s2 and react-aria-components as in the preview
 - Semantic HTML elements are allowed where the preview uses them
 - Use the style macro for static styles; keep inline style or UNSAFE_style only where runtime values are required
 - Keep user-facing text in sentence case
 - Preserve accessibility semantics from the preview
-- The page component's root element must use minHeight "screen" (instead of the preview's height "full") and include a semantic backgroundColor from the style macro, so the page fills the viewport and adapts to light and dark mode
+- This is a fixed-viewport layout — the page root must use height "screen" (instead of the preview's height "full") and include backgroundColor "layer-1" from the style macro; the inner grid uses height "full" which requires the root to have an explicit height (not just minHeight) so percentage heights resolve
 - Do not modify any files inside src/_starter/
 
 ## Deterministic acceptance checks
-- Sidebar column animates between 160px (expanded) and 56px (collapsed) using 180ms cubic-bezier(0.2, 0, 0, 1)
-- Navigation contains Home, Files, and Learn items with animated labels
+- Root element uses height "screen" with "layer-1" backgroundColor; inner grid uses height "full" to fill the root
+- Grid uses gridTemplateColumns with a dynamic first column (sidebarColumnWidth px) and 11 minmax(0, 1fr) columns; gridTemplateRows: "56px 420px" followed by 5 "minmax(24px, 1fr)" rows
+- Header spans all 12 columns (gridColumn "1 / span 12") in row 1; sidebar spans column 1 rows 2-7; content spans columns 2-12 rows 2-7
+- Sidebar column animates between 160px (expanded) and 56px (collapsed) using 180ms cubic-bezier(0.2, 0, 0, 1) via grid-template-columns transition
+- PanelIcon created via createIcon: SVG rect width transitions between 1.5px (collapsed) and 5px (expanded), with inverse behavior on hover
+- SideNavItem indicator bar is 2px wide, transparent by default, gray-400 on hover, gray-800 when selected
+- Navigation contains Home (Home icon), Files (Folder icon), and Learn (Lightbulb icon) items with animated labels (maxWidth/opacity/translateX transitions)
 - Toggle button aria-label switches between "Expand sidebar" and "Collapse sidebar"
-- Main content area starts with "Lorem ipsum" heading and placeholder paragraphs
+- Create button uses dual-overlay pattern: icon-only and icon+text variants toggle via opacity and pointer-events
+- Main content area uses "base" backgroundColor with borderTopStartRadius and borderTopEndRadius "xl", 48px padding, and 12px marginEnd
+- Main content area contains "Lorem ipsum" heading and three placeholder paragraphs
 - Page root covers the full viewport height with no exposed body background in light or dark mode`,
   },
   {
