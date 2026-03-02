@@ -1,7 +1,6 @@
 import { Card, CardPreview, Content, Text } from "@react-spectrum/s2";
 import { style } from "@react-spectrum/s2/style" with { type: "macro" };
 import type { Layout } from "../layouts/types";
-import type { KeyboardEvent } from "react";
 import { ScaledPreview } from "./ScaledPreview";
 
 interface LayoutCardProps {
@@ -10,23 +9,24 @@ interface LayoutCardProps {
   onPress: () => void;
 }
 
-export function LayoutCard({ layout, onPress }: LayoutCardProps) {
-  function handleKeyDown(e: KeyboardEvent) {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      onPress();
-    }
-  }
+const buttonStyles = style({
+  cursor: "pointer",
+  backgroundColor: "transparent",
+  borderStyle: "none",
+  padding: 0,
+  font: "body",
+  textAlign: "start",
+  color: "inherit",
+});
 
+export function LayoutCard({ layout, onPress }: LayoutCardProps) {
   const PreviewComponent = layout.preview;
 
   return (
-    <div
-      role="button"
-      tabIndex={0}
+    <button
+      type="button"
+      className={buttonStyles}
       onClick={onPress}
-      onKeyDown={handleKeyDown}
-      className={style({ cursor: "pointer", borderRadius: "xl" })}
       aria-label={`View ${layout.name} layout`}
     >
       <Card variant="tertiary" size="XL" density="spacious">
@@ -52,6 +52,6 @@ export function LayoutCard({ layout, onPress }: LayoutCardProps) {
           </Text>
         </Content>
       </Card>
-    </div>
+    </button>
   );
 }
