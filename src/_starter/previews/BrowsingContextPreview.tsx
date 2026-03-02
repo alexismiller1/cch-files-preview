@@ -23,7 +23,7 @@ import type {
   Selection,
   ToggleButtonRenderProps,
 } from "react-aria-components";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import type React from "react";
 import appLogo from "../../assets/B_app_Murtceps.svg";
 
@@ -110,28 +110,6 @@ const PanelIcon = createIcon((props: any) => {
 
 const sidebarTransitionMs = 180;
 const sidebarTransitionTiming = `${sidebarTransitionMs}ms cubic-bezier(0.2, 0, 0, 1)`;
-const colorSchemeStorageKey = "chat-s2p-color-scheme";
-
-function getInitialColorScheme(): "light" | "dark" {
-  if (typeof window === "undefined") {
-    return "light";
-  }
-
-  try {
-    const storedColorScheme = window.localStorage.getItem(
-      colorSchemeStorageKey,
-    );
-    if (storedColorScheme === "light" || storedColorScheme === "dark") {
-      return storedColorScheme;
-    }
-  } catch {
-    // Ignore storage access errors and fall back to system preference.
-  }
-
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
-}
 
 function getSidebarLabelMotionStyle(
   isCollapsed: boolean,
@@ -216,24 +194,9 @@ function PanelToggleButton({
 import type { PreviewProps } from "../layouts/types";
 
 export default function BrowsingContextPreview({ onToggleTheme }: PreviewProps) {
-  const [colorScheme, setColorScheme] = useState<"light" | "dark">(
-    getInitialColorScheme,
-  );
   const [page, setPage] = useState("home");
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
   const sidebarColumnWidth = isSidebarCollapsed ? 56 : 160;
-
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    try {
-      window.localStorage.setItem(colorSchemeStorageKey, colorScheme);
-    } catch {
-      // Ignore storage write errors.
-    }
-  }, [colorScheme]);
 
   return (
     <div
@@ -310,17 +273,8 @@ export default function BrowsingContextPreview({ onToggleTheme }: PreviewProps) 
           >
             <ActionButton
               isQuiet
-              onPress={() => {
-                setColorScheme((value) =>
-                  value === "dark" ? "light" : "dark",
-                );
-                onToggleTheme?.();
-              }}
-              aria-label={
-                colorScheme === "dark"
-                  ? "Switch to light mode"
-                  : "Switch to dark mode"
-              }
+              onPress={() => onToggleTheme?.()}
+              aria-label="Toggle color scheme"
             >
               <Contrast />
             </ActionButton>
