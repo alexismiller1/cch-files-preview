@@ -12,7 +12,7 @@ export default function BlankPreview({ onToggleTheme }: PreviewProps) {
         flexDirection: "column",
         height: "full",
         backgroundColor: "base",
-        padding: 32,
+        padding: 16,
       })}
     >
       <div
