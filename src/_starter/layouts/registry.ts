@@ -205,9 +205,9 @@ export const layouts: Layout[] = [
     prompt: `Use src/_starter/previews/TextDocumentPreview.tsx as the source of truth. Keep values and behavior identical while splitting into the files below.
 
 ## File structure
-- Create src/components/DocumentOutline.tsx
-- Create src/components/DocumentContent.tsx
-- Create src/pages/TextDocument.tsx
+- Create src/components/DocumentOutline.tsx — the outline sidebar nav with "On this page" heading and heading links
+- Create src/components/DocumentContent.tsx — the article with all headings, paragraphs, lists, and horizontal rules
+- Create src/pages/TextDocument.tsx — page shell composing the top bar, outline, and content in a flex-column + grid layout; owns the onToggleTheme callback
 - Update src/App.tsx to import TextDocument instead of _starter/StarterPage
 - Keep existing Provider/IMSProvider wiring, preview query-param behavior, \`?picker\` query-param routing, and the dev-mode DevToolbar in App.tsx
 
@@ -216,22 +216,33 @@ export const layouts: Layout[] = [
 - Match the preview exactly (layout, spacing, typography, text content, heading ids, outline behavior, and scroll behavior)
 - Keep the headings array entries exactly (id, label, level order) and keep INDENT_PER_LEVEL = 12
 - Keep smooth scroll behavior for outline navigation and content container
-- Use @react-spectrum/s2 controls and icons as in the preview
+- Use @react-spectrum/s2 controls and icons as in the preview; import Contrast icon from @react-spectrum/s2/icons/Contrast
 - Semantic HTML elements are allowed where the preview uses them
 - Use the style macro for static styles; keep inline style or UNSAFE_style only where runtime values are required
 - Keep user-facing text in sentence case
 - Preserve accessibility semantics from the preview
 - The page component's root element must use minHeight "screen" (instead of the preview's height "full") and include a semantic backgroundColor from the style macro, so the page fills the viewport and adapts to light and dark mode
 - Do not modify any files inside src/_starter/
-- The outline sidebar must stay fixed in place while the document content scrolls. This is achieved by setting overflow "hidden" on the two-column grid container so neither column scrolls at the page level, then setting overflow "auto" only on the main content area so it becomes the sole scroll container. The nav sidebar must not have its own vertical scroll unless its content exceeds the viewport, in which case it should also use overflow "auto". This split-overflow pattern keeps the outline visible at all times while the user scrolls through the article.
+
+## Structural blueprint (top to bottom)
+
+1. **Root container**: flex column, minHeight "screen", backgroundColor "base"
+2. **Top bar**: flex row, justifyContent "end", alignItems "center", paddingX 24, paddingY 12. Contains a single quiet ActionButton with Contrast icon, aria-label "Toggle color scheme", that calls onToggleTheme.
+3. **Two-column grid**: display "grid", gridTemplateColumns "240px 1fr", flexGrow 1, overflow "hidden", paddingBottom 56. The overflow "hidden" on this container is critical — it prevents the grid itself from scrolling, so the sidebar stays fixed in place.
+4. **Outline sidebar (left column)**: \`<nav>\` with aria-label "Document outline", overflow "auto", paddingX 20. Contains a "On this page" label (font "detail", fontWeight "bold", color "detail", letterSpacing 0.5, marginTop 0, marginBottom 16) followed by a \`<ul>\` (no list style, no margin, no padding) of heading links. Each link is an \`<a>\` with font "body-sm", color "body", display "block", paddingY 4, borderStartWidth 2, borderStyle "solid", borderColor "transparent", no text decoration. Left padding per link: 12 + (level - 1) * 12 px. On hover, borderLeftColor changes to var(--spectrum-accent-visual-color); on mouse leave, back to transparent.
+5. **Main content area (right column)**: \`<main>\` with overflow "auto", display "flex", justifyContent "center", inline scrollBehavior "smooth". This is the only scrollable region. Contains an \`<article>\` with paddingX 48, paddingTop 40, paddingBottom 80, maxWidth 720.
+6. **Article content**: All headings use ids matching the headings array. Typography: H1 uses heading-xl, H2 uses heading-lg, H3 uses heading, H4 uses heading-sm, H5 uses heading-xs, H6 uses heading-2xs. Body text uses body-lg with color "body" and lineHeight "body". Horizontal rules use borderTopWidth 1, borderColor "gray-200". All text content, heading ids, lists, and section order must match the preview exactly.
 
 ## Deterministic acceptance checks
-- Two-column layout uses gridTemplateColumns: "240px 1fr"
-- The grid container has overflow "hidden" and flexGrow 1 so it fills remaining vertical space without scrolling itself
-- Outline sidebar nav has overflow "auto", paddingX 20, and contains "On this page" label and links for all headings with level-based left padding
-- The main content area has overflow "auto" with scrollBehavior "smooth", making it the only scrollable region; the outline stays fixed in place as the document scrolls
-- Clicking an outline link scrolls to the matching heading id with smooth behavior within the main content area
-- Article content uses maxWidth 720 and includes the same heading/list text as the preview
+- Root is flex column with minHeight "screen" and backgroundColor "base"
+- Top bar is a flex row with justifyContent "end", paddingX 24, paddingY 12, containing a quiet ActionButton with Contrast icon that calls onToggleTheme
+- Two-column grid uses gridTemplateColumns "240px 1fr", flexGrow 1, overflow "hidden", and paddingBottom 56
+- Outline sidebar nav has overflow "auto", paddingX 20, "On this page" detail label, and links for all 11 headings with level-based left padding (12 + (level-1)*12 px)
+- Outline links have borderStartWidth 2 with transparent borderColor that changes to accent on hover
+- Main content area has overflow "auto" with inline scrollBehavior "smooth", making it the only scrollable region; the outline stays fixed in place as the document scrolls
+- Clicking an outline link calls scrollIntoView({ behavior: "smooth", block: "start" }) on the target heading
+- Article uses paddingX 48, paddingTop 40, paddingBottom 80, maxWidth 720
+- Article contains all heading/paragraph/list content from the preview with matching ids, text, and section order
 - Page root covers the full viewport height with no exposed body background in light or dark mode`,
   },
 ];
