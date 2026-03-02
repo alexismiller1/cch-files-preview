@@ -221,12 +221,12 @@ export const layouts: Layout[] = [
 - Use the style macro for static styles; keep inline style or UNSAFE_style only where runtime values are required
 - Keep user-facing text in sentence case
 - Preserve accessibility semantics from the preview
-- The page component's root element must use minHeight "screen" (instead of the preview's height "full") and include a semantic backgroundColor from the style macro, so the page fills the viewport and adapts to light and dark mode
+- This is a fixed-viewport layout — the page root must use height "screen" (instead of the preview's height "full") and include backgroundColor "base" from the style macro; the inner grid uses flexGrow 1 which requires the root to have an explicit height (not just minHeight) so the grid is constrained and only the main content area scrolls
 - Do not modify any files inside src/_starter/
 
 ## Structural blueprint (top to bottom)
 
-1. **Root container**: flex column, minHeight "screen", backgroundColor "base"
+1. **Root container**: flex column, height "screen", backgroundColor "base"
 2. **Top bar**: flex row, justifyContent "end", alignItems "center", paddingX 24, paddingY 12. Contains a single quiet ActionButton with Contrast icon, aria-label "Toggle color scheme", that calls onToggleTheme.
 3. **Two-column grid**: display "grid", gridTemplateColumns "240px 1fr", flexGrow 1, overflow "hidden", paddingBottom 56. The overflow "hidden" on this container is critical — it prevents the grid itself from scrolling, so the sidebar stays fixed in place.
 4. **Outline sidebar (left column)**: \`<nav>\` with aria-label "Document outline", overflow "auto", paddingX 20. Contains a "On this page" label (font "detail", fontWeight "bold", color "detail", letterSpacing 0.5, marginTop 0, marginBottom 16) followed by a \`<ul>\` (no list style, no margin, no padding) of heading links. Each link is an \`<a>\` with font "body-sm", color "body", display "block", paddingY 4, borderStartWidth 2, borderStyle "solid", borderColor "transparent", no text decoration. Left padding per link: 12 + (level - 1) * 12 px. On hover, borderLeftColor changes to var(--spectrum-accent-visual-color); on mouse leave, back to transparent.
@@ -234,7 +234,7 @@ export const layouts: Layout[] = [
 6. **Article content**: All headings use ids matching the headings array. Typography: H1 uses heading-xl, H2 uses heading-lg, H3 uses heading, H4 uses heading-sm, H5 uses heading-xs, H6 uses heading-2xs. Body text uses body-lg with color "body" and lineHeight "body". Horizontal rules use borderTopWidth 1, borderColor "gray-200". All text content, heading ids, lists, and section order must match the preview exactly.
 
 ## Deterministic acceptance checks
-- Root is flex column with minHeight "screen" and backgroundColor "base"
+- Root is flex column with height "screen" (not minHeight) and backgroundColor "base" — this is a fixed-viewport layout so the outline stays in place
 - Top bar is a flex row with justifyContent "end", paddingX 24, paddingY 12, containing a quiet ActionButton with Contrast icon that calls onToggleTheme
 - Two-column grid uses gridTemplateColumns "240px 1fr", flexGrow 1, overflow "hidden", and paddingBottom 56
 - Outline sidebar nav has overflow "auto", paddingX 20, "On this page" detail label, and links for all 11 headings with level-based left padding (12 + (level-1)*12 px)
