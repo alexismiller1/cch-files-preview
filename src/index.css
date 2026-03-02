@@ -9,6 +9,15 @@ body {
   font-family: adobe-clean, sans-serif;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+}
+
 li {
   margin: 0;
   padding: 0;
@@ -23,6 +32,8 @@ li {
 
 .dialog-title {
   /* No view-transition-name here. Let it transition with the root to avoid text scaling artifacts. */
+  /* Intentionally empty - selector exists for documentation purposes */
+  display: inherit;
 }
 
 .dialog-content {
