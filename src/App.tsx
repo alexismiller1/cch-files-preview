@@ -3,6 +3,7 @@ import { Provider } from "@react-spectrum/s2";
 import { style } from "@react-spectrum/s2/style" with { type: "macro" };
 import { IMSProvider } from "./contexts/IMSProvider";
 import StarterPage from "./_starter/StarterPage";
+import { Blueline } from "./_starter/components/Blueline";
 import { DevToolbar } from "./_starter/components/DevToolbar";
 import { layouts } from "./_starter/layouts/registry";
 import { useColorScheme } from "./hooks/useColorScheme";
@@ -60,6 +61,7 @@ function App() {
       <IMSProvider>
         <StarterPage onToggleTheme={toggleColorScheme} />
       </IMSProvider>
+      <Blueline />
       {import.meta.env.DEV && <DevToolbar />}
     </Provider>
   );
