@@ -76,6 +76,8 @@ export default function TextDocumentPreview({ onToggleTheme }: PreviewProps) {
           className={style({
             overflow: "auto",
             paddingX: 20,
+            paddingTop: 48,
+            paddingBottom: 80,
           })}
         >
           <p
