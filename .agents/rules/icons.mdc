@@ -66,6 +66,34 @@ actions:
   4. **Follow naming conventions** - Use PascalCase for icon component names
   5. **Organize custom icons** - Place all custom SVG icons in `assets/svgs/` directory
 
+  ## Label text next to icons
+
+  When an S2 control shows an icon and visible label text together (for example `Button` with an icon slot and a caption), wrap the label in **`Text`** from `@react-spectrum/s2`. Do not leave raw text nodes as siblings of the icon. This keeps typography and layout aligned with Spectrum 2.
+
+  ```typescript
+  import { ActionButton, Button, Text } from "@react-spectrum/s2";
+  ```
+
+  ```tsx
+  // ✅ Correct: label wrapped in Text
+  <Button variant="secondary" size="M">
+    <IconSlotWrapper>
+      <IconHome />
+    </IconSlotWrapper>
+    <Text>Home</Text>
+  </Button>
+
+  // ❌ Wrong: raw text next to the icon
+  <Button variant="secondary" size="M">
+    <IconSlotWrapper>
+      <IconHome />
+    </IconSlotWrapper>
+    Home
+  </Button>
+  ```
+
+  Icon-only controls (no visible label) do not need `Text`. Controls that are text-only with no icon do not need `Text` for the label unless a pattern elsewhere in the product requires it.
+
   ## CRITICAL: Wrapping non-S2 icons in S2 components
 
   Any icon that does NOT come from `@react-spectrum/s2/icons` must be wrapped
@@ -127,9 +155,16 @@ examples:
   <IconSlotWrapper><IconHome /></IconSlotWrapper>
   </ActionButton>
 
+  // ✅ Good: icon + label — use Text for the label
+  import { Button, Text } from "@react-spectrum/s2";
+  <Button variant="secondary">
+  <IconSlotWrapper><IconHome /></IconSlotWrapper>
+  <Text>Home</Text>
+  </Button>
+
 metadata:
 priority: high
-version: 2.0
+version: 2.1
 category: icons
 enforcement: strict
 </rule>
