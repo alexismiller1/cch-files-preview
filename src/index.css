@@ -18,7 +18,11 @@ h6 {
   margin-top: 0;
 }
 
-ul *, ol *, li {
+/* List reset only under #root. ToastContainer portals to document.body, so its <ol>
+   layout stays outside these selectors and keeps Spectrum padding. */
+#root ul *,
+#root ol *,
+#root li {
   margin-top: 0 !important;
   padding: 0;
 }
