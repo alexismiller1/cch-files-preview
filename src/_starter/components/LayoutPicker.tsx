@@ -14,6 +14,7 @@ interface LayoutPickerProps {
 
 export function LayoutPicker({ onToggleTheme }: LayoutPickerProps) {
   const [selectedLayout, setSelectedLayout] = useState<Layout | null>(null);
+  const [iconSetId, setIconSetId] = useState("default");
 
   return (
     <div
@@ -92,6 +93,8 @@ export function LayoutPicker({ onToggleTheme }: LayoutPickerProps) {
         {selectedLayout && (
           <LayoutDetailDialog
             layout={selectedLayout}
+            iconSetId={iconSetId}
+            onIconSetChange={setIconSetId}
             onPreviousLayout={() => {
               const currentIndex = layouts.findIndex(
                 (l) => l.id === selectedLayout.id

@@ -139,24 +139,27 @@ Recommended structure:
 
 ```tsx
 <div className={footerControls}>
-  <Picker
-    label="Icon set"
-    labelPosition="side"
-    size="S"
-    value={iconSetId}
-    onChange={onIconSetChange}
-    styles={pickerStyles}
-  >
-    {ICON_SET_OPTIONS.map((iconSet) => (
-      <PickerItem key={iconSet.id} id={iconSet.id} textValue={iconSet.name}>
-        {iconSet.name}
-      </PickerItem>
-    ))}
-  </Picker>
-
   <ButtonGroup>
-    {/* existing buttons */}
+    {/* close and layout navigation buttons */}
   </ButtonGroup>
+
+  <div className={promptActions}>
+    <Picker
+      label="Icon set"
+      labelPosition="side"
+      size="M"
+      value={iconSetId}
+      onChange={onIconSetChange}
+      styles={pickerStyles}
+    >
+      {ICON_SET_OPTIONS.map((iconSet) => (
+        <PickerItem key={iconSet.id} id={iconSet.id} textValue={iconSet.name}>
+          {iconSet.name}
+        </PickerItem>
+      ))}
+    </Picker>
+    <Button variant="accent">Copy prompt</Button>
+  </div>
 </div>
 ```
 
@@ -168,19 +171,22 @@ Required wrapper behavior:
 - The wrapper should use `flexWrap: "wrap"` so the layout does not break at narrower widths.
 - The wrapper should use `columnGap: 16` and `rowGap: 12`.
 - The wrapper should use `alignItems: "center"`.
+- The wrapper should stretch to the full dialog width so the prompt actions can align to the end.
 - The wrapper should use `maxWidth: "full"`.
+- The prompt actions group should use `marginStart: "auto"` so the picker and `Copy prompt` stay together on the right.
 
 Recommended picker behavior:
 
 - Use `label="Icon set"` for a visible, accessible label.
 - Use `labelPosition="side"` to keep the control compact in the dialog controls area.
-- Use `size="S"`.
-- Constrain width so long labels do not expand the top row unexpectedly. A good starting point is `width: { default: "full", sm: 240 }`.
+- Use `size="M"`.
+- Place the picker immediately to the left of `Copy prompt`, not as a standalone control on the far left.
+- Constrain width so long labels do not expand the top row unexpectedly. A good starting point is a fixed width around `280`.
 
 Implementation notes:
 
-- Keep the existing `ButtonGroup` intact so button overflow behavior stays handled by Spectrum.
-- Keep the button order unchanged.
+- Keep the existing `ButtonGroup` for close and layout navigation only so button overflow behavior stays handled by Spectrum.
+- Keep the picker and `Copy prompt` in a separate right-aligned action group.
 - Update the copy action to `copyPrompt(finalPrompt, layout.name)`.
 
 ### 5. Build the prompt addendum from the findings doc
@@ -205,15 +211,12 @@ Convert only 20px SVGs into React components:
 Import generated icons from `src/icons/{outputDir}`.
 
 Keep using `@react-spectrum/s2/icons/*` when the same icon exists in both sources.
-
-Avoid gradient or fixed-color icons unless you intentionally want fixed colors, because they do not follow the standard S2 color contract.
 ```
 
 Required constraints from `docs/a4u-icon-set-findings.md`:
 
 - Only 20px icons should be sent through the standard S2 icon pipeline.
 - Base React Spectrum S2 icons take precedence over overlapping A4U icons.
-- Gradient, multi-color, or other fixed-color icons do not reliably inherit the S2 color system.
 
 Recommended additional note:
 
