@@ -27,27 +27,28 @@ interface IconSetOption {
   sourceType: IconSetSourceType;
   packageName: string | null;
   outputDir: string | null;
+  exportName: string | null;
   sourceUrl?: string;
 }
 
 const ICON_SET_OPTIONS: IconSetOption[] = [
-  { id: "default", name: "Default", sourceType: "default", packageName: null, outputDir: null },
-  { id: "adobe-concept", name: "Adobe Concept S2", sourceType: "package", packageName: "@a4u/a4u-adobe-concept-s2", outputDir: "adobe-concept" },
-  { id: "adobe-connect", name: "Adobe Connect S2", sourceType: "package", packageName: "@a4u/a4u-adobe-connect-s2", outputDir: "adobe-connect" },
-  { id: "adobe-com", name: "Adobe.com S2", sourceType: "gateway", packageName: null, outputDir: "adobe-com", sourceUrl: "https://a4u-gateway.corp.adobe.com/packages/661812de248c150261377f31/overview" },
-  { id: "ai-web", name: "Ai Web S2", sourceType: "package", packageName: "@a4u/a4u-ai-web-s2", outputDir: "ai-web" },
-  { id: "cc-express", name: "CC Express S2", sourceType: "package", packageName: "@a4u/a4u-cc-express-s2", outputDir: "cc-express" },
-  { id: "firefly", name: "Firefly S2", sourceType: "package", packageName: "@a4u/a4u-firefly-s2", outputDir: "firefly" },
-  { id: "fr", name: "Fr S2", sourceType: "package", packageName: "@a4u/a4u-fr-s2", outputDir: "fr" },
-  { id: "lr-mobile", name: "Lr Mobile S2", sourceType: "package", packageName: "@a4u/a4u-lr-mobile-s2", outputDir: "lr-mobile" },
-  { id: "lr-web", name: "Lr Web S2", sourceType: "package", packageName: "@a4u/a4u-lr-web-s2", outputDir: "lr-web" },
-  { id: "md-desktop-workflow-icons", name: "Md Desktop Workflow Icons S2", sourceType: "package", packageName: "@a4u/a4u-md-desktop-workflow-icons-s2", outputDir: "md-desktop-workflow-icons" },
-  { id: "milo-workflow-icons", name: "Milo Workflow Icons S2", sourceType: "package", packageName: "@a4u/a4u-milo-workflow-icons-s2", outputDir: "milo-workflow-icons" },
-  { id: "ps-mobile", name: "Ps Mobile S2", sourceType: "package", packageName: "@a4u/a4u-ps-mobile-s2", outputDir: "ps-mobile" },
-  { id: "s2-acrobat-dc", name: "S2 Acrobat DC", sourceType: "package", packageName: "@a4u/a4u-s2-acrobat-dc", outputDir: "s2-acrobat-dc" },
-  { id: "squirrel", name: "Squirrel/Pr Mobile", sourceType: "package", packageName: "@a4u/a4u-squirrel", outputDir: "squirrel" },
-  { id: "stock-e-com-icons", name: "Stock E-com Icons S2", sourceType: "package", packageName: "@a4u/a4u-stock-e-com-icons-s2", outputDir: "stock-e-com-icons" },
-  { id: "workfront", name: "Workfront S2", sourceType: "package", packageName: "@a4u/a4u-workfront-s2", outputDir: "workfront" },
+  { id: "default", name: "Default", sourceType: "default", packageName: null, outputDir: null, exportName: null },
+  { id: "adobe-concept", name: "Adobe Concept S2", sourceType: "package", packageName: "@a4u/a4u-adobe-concept-s2", outputDir: "adobe-concept", exportName: "adobeConceptIcons" },
+  { id: "adobe-connect", name: "Adobe Connect S2", sourceType: "package", packageName: "@a4u/a4u-adobe-connect-s2", outputDir: "adobe-connect", exportName: "adobeConnectIcons" },
+  { id: "adobe-com", name: "Adobe.com S2", sourceType: "gateway", packageName: null, outputDir: "adobe-com", exportName: null, sourceUrl: "https://a4u-gateway.corp.adobe.com/packages/661812de248c150261377f31/overview" },
+  { id: "ai-web", name: "Ai Web S2", sourceType: "package", packageName: "@a4u/a4u-ai-web-s2", outputDir: "ai-web", exportName: "aiWebIcons" },
+  { id: "cc-express", name: "CC Express S2", sourceType: "package", packageName: "@a4u/a4u-cc-express-s2", outputDir: "cc-express", exportName: "ccExpressIcons" },
+  { id: "firefly", name: "Firefly S2", sourceType: "package", packageName: "@a4u/a4u-firefly-s2", outputDir: "firefly", exportName: "fireflyIcons" },
+  { id: "fr", name: "Fr S2", sourceType: "package", packageName: "@a4u/a4u-fr-s2", outputDir: "fr", exportName: "frIcons" },
+  { id: "lr-mobile", name: "Lr Mobile S2", sourceType: "package", packageName: "@a4u/a4u-lr-mobile-s2", outputDir: "lr-mobile", exportName: "lrMobileIcons" },
+  { id: "lr-web", name: "Lr Web S2", sourceType: "package", packageName: "@a4u/a4u-lr-web-s2", outputDir: "lr-web", exportName: "lrWebIcons" },
+  { id: "md-desktop-workflow-icons", name: "Md Desktop Workflow Icons S2", sourceType: "package", packageName: "@a4u/a4u-md-desktop-workflow-icons-s2", outputDir: "md-desktop-workflow-icons", exportName: "mdDesktopWorkflowIcons" },
+  { id: "milo-workflow-icons", name: "Milo Workflow Icons S2", sourceType: "package", packageName: "@a4u/a4u-milo-workflow-icons-s2", outputDir: "milo-workflow-icons", exportName: "miloWorkflowIcons" },
+  { id: "ps-mobile", name: "Ps Mobile S2", sourceType: "package", packageName: "@a4u/a4u-ps-mobile-s2", outputDir: "ps-mobile", exportName: "psMobileIcons" },
+  { id: "s2-acrobat-dc", name: "S2 Acrobat DC", sourceType: "package", packageName: "@a4u/a4u-s2-acrobat-dc", outputDir: "s2-acrobat-dc", exportName: "s2AcrobatDcIcons" },
+  { id: "squirrel", name: "Squirrel/Pr Mobile", sourceType: "package", packageName: "@a4u/a4u-squirrel", outputDir: "squirrel", exportName: "squirrelIcons" },
+  { id: "stock-e-com-icons", name: "Stock E-com Icons S2", sourceType: "package", packageName: "@a4u/a4u-stock-e-com-icons-s2", outputDir: "stock-e-com-icons", exportName: "stockEComIcons" },
+  { id: "workfront", name: "Workfront S2", sourceType: "package", packageName: "@a4u/a4u-workfront-s2", outputDir: "workfront", exportName: "workfrontIcons" },
 ];
 
 const footerControls = style({
@@ -93,36 +94,36 @@ function buildIconSetAddendum(iconSet: IconSetOption): string {
     return "";
   }
 
-  const sourceLines =
-    iconSet.sourceType === "package" && iconSet.packageName
-      ? [
-          "1. Install the source package:",
-          `   \`pnpm add ${iconSet.packageName}\``,
-        ]
-      : [
-          "1. Retrieve the icon package from:",
-          `   \`${iconSet.sourceUrl ?? ""}\``,
-          "   Download or extract the 20px SVG assets to a local directory before converting them.",
-        ];
-
-  const builderInput =
-    iconSet.sourceType === "package" && iconSet.packageName
-      ? `node_modules/${iconSet.packageName}/assets/svg/S2_Icon_*_20_N.svg`
-      : "<local-path>/assets/svg/S2_Icon_*_20_N.svg";
+  if (iconSet.sourceType === "gateway") {
+    return [
+      "## Additional icon instructions",
+      `Use ${iconSet.name} only for product-specific icons that do not exist in \`@react-spectrum/s2/icons/*\`.`,
+      "",
+      "1. Retrieve the icon package from:",
+      `   \`${iconSet.sourceUrl ?? ""}\``,
+      "   This set is not available as a standard npm package.",
+      "2. Keep using `@react-spectrum/s2/icons/*` when the same icon exists in both sources.",
+      "3. Only 20px icons are compatible with the S2 icon system.",
+    ].join("\n");
+  }
 
   return [
     "## Additional icon instructions",
     `Use ${iconSet.name} only for product-specific icons that do not exist in \`@react-spectrum/s2/icons/*\`.`,
     "",
-    ...sourceLines,
+    "1. Install the package (if not already installed):",
+    `   \`pnpm add ${iconSet.packageName}\``,
     "",
-    "2. Convert only the 20px SVGs into React components:",
-    `   \`npx @react-spectrum/s2-icon-builder -i '${builderInput}' -o 'src/icons/${iconSet.outputDir}'\``,
+    `2. Import the pre-configured icon set module and use icons as components:`,
+    `   \`import { ${iconSet.exportName} } from "../icons/${iconSet.outputDir}";\``,
+    `   \`<${iconSet.exportName}.IconName />\``,
     "",
-    `3. Import generated icons from \`src/icons/${iconSet.outputDir}\`.`,
-    "4. Keep using `@react-spectrum/s2/icons/*` when the same icon exists in both sources.",
-    "5. Only 20px icons work in the standard S2 pipeline without modification.",
-    "6. Commit the generated icon components if you want to avoid a deploy-time dependency on internal registries.",
+    `   The module at \`src/icons/${iconSet.outputDir}.ts\` uses Vite \`import.meta.glob\` to read SVGs`,
+    "   from the installed package at build time and convert them to S2 icon components automatically.",
+    "   No build step or code generation is needed.",
+    "",
+    "3. Keep using `@react-spectrum/s2/icons/*` when the same icon exists in both sources.",
+    "4. Only 20px icons are included via the glob pattern.",
   ].join("\n");
 }
 

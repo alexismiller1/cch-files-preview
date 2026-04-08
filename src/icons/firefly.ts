@@ -1,0 +1,8 @@
+import { createIconsFromGlob } from "../utils/createIconsFromGlob";
+
+const svgs = import.meta.glob(
+  "/node_modules/@a4u/a4u-firefly-s2/assets/svg/S2_Icon_*_20_N.svg",
+  { eager: true, query: "?raw", import: "default" },
+) as Record<string, string>;
+
+export const fireflyIcons = createIconsFromGlob(svgs);
