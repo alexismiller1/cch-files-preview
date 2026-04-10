@@ -6,6 +6,7 @@
  */
 :root {
   --spectrum-background-layer-1-color: #f8f8f8;
+  --breakpoint-mobile: 899px;
 }
 :root[data-color-scheme="dark"] {
   --spectrum-background-layer-1-color: #1b1b1b;

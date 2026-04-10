@@ -71,6 +71,13 @@
   gap: 4px;
 }
 
+/* Desktop actions wrapper (Picker + Button + divider) */
+.header-desktop-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 /* Divider between Desktop apps button and toolbar icons */
 .header-divider {
   width: 2px;
@@ -78,4 +85,38 @@
   margin: 0 4px;
   background: var(--spectrum-gray-200, #e1e1e1);
   flex-shrink: 0;
+}
+
+/* Hamburger — hidden by default, shown at mobile */
+.header-hamburger {
+  display: none;
+  flex-shrink: 0;
+}
+
+/* Apps button — hidden by default, shown at mobile */
+.header-mobile-apps {
+  display: none;
+}
+
+/* ─── Mobile (container query on app-frame) ─── */
+@container app-frame (max-width: 899px) {
+  .header-hamburger {
+    display: flex;
+  }
+
+  .header-desktop-actions {
+    display: none;
+  }
+
+  .header-mobile-apps {
+    display: flex;
+  }
+
+  .header {
+    padding-left: 16px;
+  }
+
+  .header-logo {
+    padding-right: 0;
+  }
 }

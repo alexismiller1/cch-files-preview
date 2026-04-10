@@ -5,6 +5,8 @@
   height: 100%;
   background-color: var(--spectrum-background-layer-1-color, #f8f8f8);
   font-family: "Adobe Clean Spectrum VF", "Adobe Clean", sans-serif;
+  container-type: inline-size;
+  container-name: app-frame;
 }
 
 /* ─── Body ─── */
@@ -40,4 +42,21 @@
   background: var(--spectrum-background-base-color, white);
   border-radius: 16px 16px 0 0;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* ─── Mobile (container query on app-frame width) ─── */
+@container app-frame (max-width: 899px) {
+  .primary-nav {
+    display: none;
+  }
+
+  .app-frame-content {
+    border-radius: 0;
+    box-shadow: none;
+    margin-right: 0;
+  }
+
+  .app-frame-right-panel {
+    display: none;
+  }
 }

@@ -1,5 +1,5 @@
-/* Hide Top App Bar when parent container width is less than 768px */
-@container app-shell (max-width: 767px) {
+/* Hide Top App Bar at mobile breakpoint */
+@container app-shell (max-width: 899px) {
   .top-app-bar {
     display: none !important;
   }

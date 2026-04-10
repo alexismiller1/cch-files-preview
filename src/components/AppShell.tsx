@@ -19,7 +19,7 @@ function AppShell({ windowContext = "browser" }: AppShellProps) {
   const { flags } = useDisplayConfig();
   const [pinnedAppIds, setPinnedAppIds] = useState<string[]>([]);
   const [topAppBarExpanded, setTopAppBarExpanded] = useState(true);
-  const isNarrowViewport = useMediaQuery("(max-width: 767px)");
+  const isNarrowViewport = useMediaQuery("(max-width: 899px)");
   /** Wide layout: collapsed TAB leaves AppsAll visible — inset header so the product icon clears it */
   const reserveSpaceForCollapsedTabButton = !isNarrowViewport && !topAppBarExpanded;
 

@@ -50,7 +50,7 @@
   align-items: center;
 }
 
-@container app-shell (max-width: 767px) {
+@container app-shell (max-width: 899px) {
   .app-header-bar__mobile-tab-toggle {
     display: flex;
   }

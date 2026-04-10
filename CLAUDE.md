@@ -88,6 +88,9 @@ Change the desktop wallpaper gradient or set an image background at runtime. Per
 ## Adobe Product Icons
 Use SVGs from `src/assets/adobe-mnemonics/` for all Adobe product icons (Photoshop, Lightroom, Firefly, etc.) unless noted otherwise. Files are named by product code (e.g. `ps_appicon.svg`, `lr_appicon.svg`, `fi_appicon.svg`).
 
+## Breakpoints
+- **Mobile** (aliases: small breakpoint, mobile design) — below 900px (`max-width: 899px`). Use the CSS custom property `var(--breakpoint-mobile)` defined in `src/index.css`.
+
 ## Key Rules
 - Use sentence case for all text (not Title Case)
 - Follow S2 design system patterns (see .agents/rules/)

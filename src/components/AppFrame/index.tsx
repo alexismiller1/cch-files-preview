@@ -23,7 +23,7 @@ export function AppFrame({ insetLogo }: AppFrameProps) {
 
   return (
     <div className="app-frame">
-      <Header insetLogo={insetLogo} />
+      <Header insetLogo={insetLogo} selectedNavId={navId} onNavSelect={setNavId} />
 
       <div className="app-frame-body">
         <PrimaryNav selectedId={navId} onSelect={setNavId} />
