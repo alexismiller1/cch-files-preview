@@ -3,6 +3,7 @@ import HomeIcon from "@react-spectrum/s2/icons/Home";
 import AppsIcon from "@react-spectrum/s2/icons/Apps";
 import FolderIcon from "@react-spectrum/s2/icons/Folder";
 import RibbonIcon from "@react-spectrum/s2/icons/Ribbon";
+import ToolsIcon from "@react-spectrum/s2/icons/Tools";
 import "./PrimaryNav.css";
 
 export const NAV_ITEMS = [
@@ -10,6 +11,7 @@ export const NAV_ITEMS = [
   { id: "apps", label: "Apps", Icon: AppsIcon },
   { id: "files", label: "Files", Icon: FolderIcon },
   { id: "benefits", label: "Benefits", Icon: RibbonIcon },
+  { id: "create", label: "Create", Icon: ToolsIcon },
 ];
 
 type PrimaryNavProps = {
