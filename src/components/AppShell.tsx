@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSelectedApp } from "../context/SelectedAppContext";
+import { useDisplayConfig } from "../context/DisplayConfigContext";
 import { useMediaQuery } from "../hooks/useMediaQuery.ts";
 import AppHeaderBar from "./AppHeaderBar/index.tsx";
 import TopAppBar from "./TopAppBar/index.tsx";
@@ -14,6 +15,7 @@ type AppShellProps = {
 
 function AppShell({ windowContext = "browser" }: AppShellProps) {
   const { selectedAppId, setSelectedAppId } = useSelectedApp();
+  const { flags } = useDisplayConfig();
   const [pinnedAppIds, setPinnedAppIds] = useState<string[]>([]);
   const [topAppBarExpanded, setTopAppBarExpanded] = useState(true);
   const isNarrowViewport = useMediaQuery("(max-width: 767px)");
@@ -24,18 +26,22 @@ function AppShell({ windowContext = "browser" }: AppShellProps) {
     <div className="app-shell">
       {windowContext === "browser" && (
         <>
-          <TopAppBar
-            selectedAppId={selectedAppId}
-            onAppSelect={setSelectedAppId}
-            pinnedAppIds={pinnedAppIds}
-            onPinnedAppIdsChange={setPinnedAppIds}
-            onExpandedChange={setTopAppBarExpanded}
-          />
-          <AppHeaderBar
-            selectedAppId={selectedAppId}
-            onAppSelect={setSelectedAppId}
-            reserveSpaceForCollapsedTabButton={reserveSpaceForCollapsedTabButton}
-          />
+          {flags.topAppBar && (
+            <TopAppBar
+              selectedAppId={selectedAppId}
+              onAppSelect={setSelectedAppId}
+              pinnedAppIds={pinnedAppIds}
+              onPinnedAppIdsChange={setPinnedAppIds}
+              onExpandedChange={setTopAppBarExpanded}
+            />
+          )}
+          {flags.appHeaderBar && (
+            <AppHeaderBar
+              selectedAppId={selectedAppId}
+              onAppSelect={setSelectedAppId}
+              reserveSpaceForCollapsedTabButton={reserveSpaceForCollapsedTabButton}
+            />
+          )}
         </>
       )}
       <div className="app-shell-body" />

@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelectedApp } from "../context/SelectedAppContext";
+import { useDisplayConfig } from "../context/DisplayConfigContext";
 import { displayHostnameForAppId } from "../utils/appDisplayHostname";
 import AppShell from "../components/AppShell";
 import StatusBar from "../components/StatusBar";
 import SafariBrowserBar from "../components/SafariBrowserBar";
 import { ResponsiveTester } from "../components/ResponsiveTester";
 import { DeviceSwitcher, type DeviceType } from "../components/DeviceSwitcher";
+import { DisplayPresetPanel } from "../components/DisplayPresetPanel";
 import { THEME_COLORS } from "../themeColors";
 import { ThemeToggle } from "../components/ThemeToggle";
 import "../App.css";
@@ -76,6 +78,7 @@ export function DesktopView({ theme, setTheme }: DesktopViewProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedAppId } = useSelectedApp();
+  const { preset, flags } = useDisplayConfig();
   const [dateTime, setDateTime] = useState(() => formatMenubarDateTime(new Date()));
   /** Browser chrome only — desktop-app chrome switch removed from UI */
   const windowContext = "browser" as const;
@@ -109,6 +112,7 @@ export function DesktopView({ theme, setTheme }: DesktopViewProps) {
   const colors = THEME_COLORS[theme];
 
   const isDesktopDevice = device === "desktop";
+  const isFullDesktop = preset === "full-desktop";
   const windowWidth = browserWindowWidth;
   const setWindowWidth = setBrowserWindowWidth;
   const minW = 320;
@@ -161,10 +165,11 @@ export function DesktopView({ theme, setTheme }: DesktopViewProps) {
     <div
       className="desktop"
       data-theme={theme}
+      data-display-preset={preset}
       data-window-context={windowContext}
       data-device={device}
       data-resizing={resizing || undefined}
-      data-window-width={isDesktopDevice && windowWidth != null ? String(windowWidth) : undefined}
+      data-window-width={isDesktopDevice && isFullDesktop && windowWidth != null ? String(windowWidth) : undefined}
       style={
         {
           "--color-base": colors.base,
@@ -172,79 +177,85 @@ export function DesktopView({ theme, setTheme }: DesktopViewProps) {
           "--color-panel": colors.panel,
           "--divider-width": colors.divider.width,
           "--color-divider": colors.divider.color,
-          ...(isDesktopDevice && windowWidth != null && {
+          ...(isDesktopDevice && isFullDesktop && windowWidth != null && {
             "--desktop-window-width": `${desktopWindowCssWidth}px`,
           }),
         } as React.CSSProperties
       }
     >
       {/* Menubar */}
-      <header className="menubar">
-        <div className="menubar-left">
-          <span className="apple-logo" aria-hidden>
-            <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
-              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-            </svg>
-          </span>
-          {["Browser", ...MENU_ITEMS_REST].map((item) => (
-            <button type="button" className="menubar-item" key={item}>
-              {item}
-            </button>
-          ))}
-        </div>
-        <div className="menubar-right">
-          <span className="menubar-icon" title="Volume" aria-hidden>
-            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
-            </svg>
-          </span>
-          <span className="menubar-icon" title="Bluetooth" aria-hidden>
-            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-              <path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z" />
-            </svg>
-          </span>
-          <span className="menubar-icon" title="Wi‑Fi" aria-hidden>
-            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-              <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.7 2.7 7.3 2.7 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z" />
-            </svg>
-          </span>
-          <span className="menubar-icon" title="Search" aria-hidden>
-            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-            </svg>
-          </span>
-          <span className="menubar-time">{dateTime}</span>
-        </div>
-      </header>
+      {flags.desktopChrome && (
+        <header className="menubar">
+          <div className="menubar-left">
+            <span className="apple-logo" aria-hidden>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+              </svg>
+            </span>
+            {["Browser", ...MENU_ITEMS_REST].map((item) => (
+              <button type="button" className="menubar-item" key={item}>
+                {item}
+              </button>
+            ))}
+          </div>
+          <div className="menubar-right">
+            <span className="menubar-icon" title="Volume" aria-hidden>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
+              </svg>
+            </span>
+            <span className="menubar-icon" title="Bluetooth" aria-hidden>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                <path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z" />
+              </svg>
+            </span>
+            <span className="menubar-icon" title="Wi‑Fi" aria-hidden>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.7 2.7 7.3 2.7 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z" />
+              </svg>
+            </span>
+            <span className="menubar-icon" title="Search" aria-hidden>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+              </svg>
+            </span>
+            <span className="menubar-time">{dateTime}</span>
+          </div>
+        </header>
+      )}
 
       {/* Desktop area */}
-      <main className="desktop-area">
-        <div className="desktop-icons" />
-      </main>
+      {flags.desktopChrome && (
+        <main className="desktop-area">
+          <div className="desktop-icons" />
+        </main>
+      )}
 
       {/* Dock */}
-      <nav className="dock" aria-label="Application dock">
-        <div className="dock-inner">
-          {DOCK_APPS.map((app) => {
-            const isOpen = app.name === "Finder" || app.name === "Safari";
-            return (
-              <button
-                type="button"
-                className={`dock-item ${isOpen ? "dock-item--on" : ""} ${app.name === "Creative Cloud" ? "dock-item--creative-cloud" : ""}`}
-                key={app.name}
-                title={app.name}
-                aria-current={isOpen ? "true" : undefined}
-              >
-                <img src={theme === "dark" ? app.dark : app.light} alt={app.name} className="dock-icon" />
-              </button>
-            );
-          })}
-        </div>
-      </nav>
+      {flags.desktopChrome && (
+        <nav className="dock" aria-label="Application dock">
+          <div className="dock-inner">
+            {DOCK_APPS.map((app) => {
+              const isOpen = app.name === "Finder" || app.name === "Safari";
+              return (
+                <button
+                  type="button"
+                  className={`dock-item ${isOpen ? "dock-item--on" : ""} ${app.name === "Creative Cloud" ? "dock-item--creative-cloud" : ""}`}
+                  key={app.name}
+                  title={app.name}
+                  aria-current={isOpen ? "true" : undefined}
+                >
+                  <img src={theme === "dark" ? app.dark : app.light} alt={app.name} className="dock-icon" />
+                </button>
+              );
+            })}
+          </div>
+        </nav>
+      )}
 
       <div ref={containerRef} className="responsive-window-container">
         <div className="desktop-window-wrap">
-          {isDesktopDevice && (
+          {isDesktopDevice && isFullDesktop && (
             <div
               className="desktop-window-resize-handle desktop-window-resize-handle--left"
               onMouseDown={handleResizeStart("left")}
@@ -253,38 +264,40 @@ export function DesktopView({ theme, setTheme }: DesktopViewProps) {
           )}
           {isDesktopDevice ? (
             <div className="desktop-window">
-              <div className="browser-chrome-toolbar">
-                <div className="browser-chrome-traffic-lights">
-                  <span className="browser-chrome-dot browser-chrome-dot--close" />
-                  <span className="browser-chrome-dot browser-chrome-dot--minimize" />
-                  <span className="browser-chrome-dot browser-chrome-dot--maximize" />
+              {flags.browserChrome && (
+                <div className="browser-chrome-toolbar">
+                  <div className="browser-chrome-traffic-lights">
+                    <span className="browser-chrome-dot browser-chrome-dot--close" />
+                    <span className="browser-chrome-dot browser-chrome-dot--minimize" />
+                    <span className="browser-chrome-dot browser-chrome-dot--maximize" />
+                  </div>
+                  <div className="browser-chrome-nav">
+                    <span className="browser-chrome-btn" aria-hidden>
+                      <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+                      </svg>
+                    </span>
+                    <span className="browser-chrome-btn" aria-hidden>
+                      <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+                      </svg>
+                    </span>
+                    <span className="browser-chrome-btn" aria-hidden>
+                      <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                        <path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+                      </svg>
+                    </span>
+                  </div>
+                  <div className="browser-chrome-url-bar">
+                    <span className="browser-chrome-url-icon" aria-hidden>
+                      <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                      </svg>
+                    </span>
+                    <span className="browser-chrome-url-text">{displayHostnameForAppId(selectedAppId)}</span>
+                  </div>
                 </div>
-                <div className="browser-chrome-nav">
-                  <span className="browser-chrome-btn" aria-hidden>
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                      <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-                    </svg>
-                  </span>
-                  <span className="browser-chrome-btn" aria-hidden>
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                      <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-                    </svg>
-                  </span>
-                  <span className="browser-chrome-btn" aria-hidden>
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                      <path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
-                    </svg>
-                  </span>
-                </div>
-                <div className="browser-chrome-url-bar">
-                  <span className="browser-chrome-url-icon" aria-hidden>
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
-                      <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
-                    </svg>
-                  </span>
-                  <span className="browser-chrome-url-text">{displayHostnameForAppId(selectedAppId)}</span>
-                </div>
-              </div>
+              )}
               <div className="desktop-window-content">
                 <AppShell windowContext="browser" />
               </div>
@@ -327,7 +340,7 @@ export function DesktopView({ theme, setTheme }: DesktopViewProps) {
               </div>
             </div>
           )}
-          {isDesktopDevice && (
+          {isDesktopDevice && isFullDesktop && (
             <div
               className="desktop-window-resize-handle desktop-window-resize-handle--right"
               onMouseDown={handleResizeStart("right")}
@@ -335,7 +348,7 @@ export function DesktopView({ theme, setTheme }: DesktopViewProps) {
             />
           )}
         </div>
-        {isDesktopDevice && (
+        {flags.responsiveTester && isDesktopDevice && (
           <div className="responsive-tester-wrap">
             <ResponsiveTester
               width={windowWidth}
@@ -348,12 +361,19 @@ export function DesktopView({ theme, setTheme }: DesktopViewProps) {
       </div>
 
       {/* Bottom left: device switcher */}
-      <DeviceSwitcher device={device} onDeviceChange={setDevice} />
+      {flags.deviceSwitcher && (
+        <DeviceSwitcher device={device} onDeviceChange={setDevice} />
+      )}
+
+      {/* Bottom left: display preset panel */}
+      <DisplayPresetPanel />
 
       {/* Bottom right: theme toggle */}
-      <div className="bottom-controls-wrap">
-        <ThemeToggle theme={theme} onToggle={() => setTheme((t) => (t === "dark" ? "light" : "dark"))} />
-      </div>
+      {flags.themeToggle && (
+        <div className="bottom-controls-wrap">
+          <ThemeToggle theme={theme} onToggle={() => setTheme((t) => (t === "dark" ? "light" : "dark"))} />
+        </div>
+      )}
 
     </div>
   );

@@ -683,6 +683,37 @@
   transform: translateX(18px);
 }
 
+/* ─── Display preset overrides ─── */
+
+/* Content-only: remove desktop chrome spacing, full bleed */
+.desktop[data-display-preset="content-only"] .responsive-window-container {
+  top: 0;
+  bottom: 0;
+}
+
+.desktop[data-display-preset="content-only"] {
+  background: var(--color-base, #fff);
+}
+
+.desktop[data-display-preset="content-only"][data-theme="dark"] {
+  background: var(--color-base, #1e1e1e);
+}
+
+.desktop[data-display-preset="content-only"] .desktop-window {
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.desktop[data-display-preset="content-only"] .desktop-window-wrap {
+  width: 100% !important;
+}
+
+/* Preset panel positioning — stacks above device switcher when both visible */
+.desktop[data-display-preset="full-desktop"] .display-preset-panel {
+  bottom: 90px;
+}
+
 /* Light theme overrides */
 .desktop[data-theme="light"] {
   background: linear-gradient(160deg, #c5e8dc 0%, #a8d0c0 50%, #8ab5a8 100%);

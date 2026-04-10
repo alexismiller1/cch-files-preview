@@ -45,6 +45,13 @@ const apiKey = ims.adobeid.client_id;       // x-api-key
 
 Do NOT use separate API key environment variables.
 
+## Display Presets
+Toggle UI chrome visibility using the floating panel at the bottom-left corner. Two presets:
+- **Full desktop** — full macOS shell (menubar, dock, browser chrome, all controls)
+- **Content only** — TopAppBar + AppHeaderBar + page content, full bleed (no desktop/browser chrome, no window decorations)
+
+Persists to localStorage. Context: `src/context/DisplayConfigContext.tsx`, panel: `src/components/DisplayPresetPanel.tsx`.
+
 ## Key Rules
 - Use sentence case for all text (not Title Case)
 - Follow S2 design system patterns (see .agents/rules/)
