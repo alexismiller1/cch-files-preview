@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { Button, ActionButton, Avatar, Picker, PickerItem, MenuTrigger, Menu, MenuItem, Text } from "@react-spectrum/s2";
+import { Button, ActionButton, Avatar, Picker, PickerItem, MenuTrigger, Menu, MenuItem, Text, Divider } from "@react-spectrum/s2";
 import GiftIcon from "@react-spectrum/s2/icons/Gift";
 import HelpCircleIcon from "@react-spectrum/s2/icons/HelpCircle";
 import BellIcon from "@react-spectrum/s2/icons/Bell";
@@ -63,16 +63,11 @@ export function Header({ insetLogo, selectedNavId, onNavSelect }: HeaderProps) {
       {/* Right actions — hidden at mobile breakpoint */}
       <div className="header-desktop-actions">
         <Picker aria-label="Explore plans" placeholder="Explore plans" size="M" isQuiet UNSAFE_style={{ marginRight: 8 }}>
-          <PickerItem id="all-plans">All plans</PickerItem>
-          <PickerItem id="individual">Individual</PickerItem>
-          <PickerItem id="business">Business</PickerItem>
-          <PickerItem id="education">Education</PickerItem>
         </Picker>
-
         <Button variant="primary" size="M">Desktop apps</Button>
-
-        <div className="header-divider" />
       </div>
+
+      <Divider size="M" orientation="vertical" UNSAFE_style={{ margin: '12px 0', marginLeft: 4 }} />
 
       <div className="header-toolbar">
         <ActionButton isQuiet aria-label="What's new"><GiftIcon /></ActionButton>
