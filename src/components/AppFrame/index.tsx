@@ -2,10 +2,12 @@ import { type ReactNode, useState, type ComponentType } from "react";
 import { Header } from "../Header";
 import { PrimaryNav } from "../PrimaryNav";
 import { HomePage } from "../../pages/HomePage";
+import { AppsPage } from "../../pages/AppsPage";
 import "./AppFrame.css";
 
 const PAGE_MAP: Record<string, ComponentType> = {
   home: HomePage,
+  apps: AppsPage,
 };
 
 function BlankPage() {

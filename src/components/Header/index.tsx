@@ -1,9 +1,9 @@
-import { SearchField, Button, ActionButton, Avatar } from "@react-spectrum/s2";
+import { Button, ActionButton, Avatar, Picker, PickerItem } from "@react-spectrum/s2";
 import GiftIcon from "@react-spectrum/s2/icons/Gift";
 import HelpCircleIcon from "@react-spectrum/s2/icons/HelpCircle";
 import BellIcon from "@react-spectrum/s2/icons/Bell";
-import ChevronIcon from "@react-spectrum/s2/icons/ChevronDown";
 import adobeLogo from "../../assets/adobe-logo.svg";
+import avatarImg from "../../assets/avatars/pen_avatar_128px.png";
 import "./Header.css";
 
 type HeaderProps = {
@@ -20,19 +20,23 @@ export function Header({ insetLogo }: HeaderProps) {
       <div className="header-spacer" />
 
       {/* Right actions */}
-      <button type="button" className="header-explore-plans">
-        <span>Explore plans</span>
-        <ChevronIcon />
-      </button>
+      <Picker aria-label="Explore plans" placeholder="Explore plans" size="M" isQuiet UNSAFE_style={{ marginRight: 8 }}>
+        <PickerItem id="all-plans">All plans</PickerItem>
+        <PickerItem id="individual">Individual</PickerItem>
+        <PickerItem id="business">Business</PickerItem>
+        <PickerItem id="education">Education</PickerItem>
+      </Picker>
 
       <Button variant="primary" size="M">Desktop apps</Button>
 
       <div className="header-divider" />
 
-      <ActionButton isQuiet aria-label="What's new"><GiftIcon /></ActionButton>
-      <ActionButton isQuiet aria-label="Help"><HelpCircleIcon /></ActionButton>
-      <ActionButton isQuiet aria-label="Notifications"><BellIcon /></ActionButton>
-      <Avatar src="" alt="User" size={24} />
+      <div className="header-toolbar">
+        <ActionButton isQuiet aria-label="What's new"><GiftIcon /></ActionButton>
+        <ActionButton isQuiet aria-label="Help"><HelpCircleIcon /></ActionButton>
+        <ActionButton isQuiet aria-label="Notifications"><BellIcon /></ActionButton>
+        <Avatar src={avatarImg} alt="User" size={24} UNSAFE_style={{ marginLeft: 8 }} />
+      </div>
     </header>
   );
 }
