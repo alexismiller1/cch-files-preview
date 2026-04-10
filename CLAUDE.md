@@ -52,6 +52,16 @@ Toggle UI chrome visibility using the floating panel at the bottom-left corner. 
 
 Persists to localStorage. Context: `src/context/DisplayConfigContext.tsx`, panel: `src/components/DisplayPresetPanel.tsx`.
 
+## Component Shortcuts
+When asked to show/hide individual components, edit the relevant flag in the active preset in `src/context/DisplayConfigContext.tsx`:
+
+| Command | Aliases | Flag | File |
+|---------|---------|------|------|
+| Show/Hide Top App Bar | TAB, top app bar, top bar | `topAppBar` | `src/context/DisplayConfigContext.tsx` |
+
+- "Hide TAB" → set `topAppBar: false` in **all** presets in `PRESET_FLAGS`
+- "Show TAB" → set `topAppBar: true` in **all** presets in `PRESET_FLAGS`
+
 ## Key Rules
 - Use sentence case for all text (not Title Case)
 - Follow S2 design system patterns (see .agents/rules/)
