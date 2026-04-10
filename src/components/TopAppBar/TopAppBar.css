@@ -1,0 +1,344 @@
+/* Hide Top App Bar when parent container width is less than 768px */
+@container app-shell (max-width: 767px) {
+  .top-app-bar {
+    display: none !important;
+  }
+}
+
+/* Top App Bar - fixed to top of window, full width, no light/dark mode */
+.top-app-bar {
+  width: 100%;
+  position: relative;
+  /* Stay above AppHeaderBar so overflow (AppsAll when height: 0) stays hit-testable */
+  z-index: 1;
+  flex-shrink: 0;
+  overflow: visible;
+  font-family: "Adobe Clean Spectrum VF", "Adobe Clean", sans-serif;
+  transition: height 0.25s ease-out;
+}
+
+.top-app-bar--expanded {
+  height: 56px;
+}
+
+.top-app-bar--expanded.top-app-bar--edit-mode {
+  height: 72px;
+}
+
+.top-app-bar--collapsed {
+  height: 0;
+}
+
+.top-app-bar__collapse-btn-wrap {
+  position: absolute;
+  left: 16px;
+  top: 12px;
+  z-index: 2;
+  /* Ensure Spectrum button is above full-bleed content sibling */
+  pointer-events: auto;
+  transition: top 0.25s ease-out;
+}
+
+.top-app-bar__done-btn-wrap {
+  position: absolute;
+  right: 16px;
+  top: 12px;
+  z-index: 2;
+  pointer-events: auto;
+  transition: top 0.25s ease-out;
+}
+
+.top-app-bar--edit-mode .top-app-bar__collapse-btn-wrap,
+.top-app-bar--edit-mode .top-app-bar__done-btn-wrap {
+  /* Vertically center M (~32px) buttons in 72px edit bar: (72 - 32) / 2 */
+  top: 20px;
+}
+
+.top-app-bar--edit-mode .top-app-bar__content {
+  padding-right: 96px;
+  /* Unpin control sits above the icon (negative top/right); hidden would clip it */
+  overflow: visible;
+  /* Stretch the apps row to full bar height so each tab’s hit area is the full 72px strip */
+  align-items: stretch;
+}
+
+.top-app-bar--expanded.top-app-bar--edit-mode .top-app-bar__content {
+  height: 72px;
+}
+
+.top-app-bar__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  padding: 0 64px;
+  position: relative;
+  overflow: hidden;
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.25s ease-out,
+    height 0.25s ease-out;
+  /* Full-width layer was winning hit-testing over the AppsAll sibling; pass through to the button */
+  pointer-events: none;
+}
+
+/* Subtle scrim for readability over product backgrounds */
+.top-app-bar__content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.top-app-bar__apps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.top-app-bar--edit-mode .top-app-bar__apps {
+  align-items: stretch;
+  align-self: stretch;
+  min-height: 100%;
+  flex: 1 1 auto;
+}
+
+.top-app-bar--collapsed .top-app-bar__content {
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+}
+
+.top-app-bar__app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1px;
+  gap: 2px;
+  width: 80px;
+  height: 100%;
+  cursor: pointer;
+}
+
+.top-app-bar__app--edit {
+  position: relative;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.top-app-bar__app--edit:not(.top-app-bar__app--drag-placeholder):not(.top-app-bar__app--drag-float) {
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.top-app-bar__app--edit:active {
+  cursor: grabbing;
+}
+
+/* In-strip slot only: invisible; the live preview is .top-app-bar__app--drag-float */
+.top-app-bar__app--drag-placeholder {
+  opacity: 0;
+  pointer-events: none;
+  flex-shrink: 0;
+  width: 80px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.top-app-bar__app--drag-float {
+  pointer-events: none;
+  transition: none;
+  /* Portaled to body: must repeat bar typography (otherwise labels fall back to UA serif) */
+  font-family: "Adobe Clean Spectrum VF", "Adobe Clean", sans-serif;
+  /* Portaled: inline height = tab cell height at drag start; center content like the in-strip tab (not flex-start) */
+  box-sizing: border-box;
+  min-height: 0;
+  max-height: none;
+  justify-content: center;
+  padding-top: 1px;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+  backface-visibility: hidden;
+}
+
+/* Scale lives here so outer translate can follow the pointer without transition lag */
+.top-app-bar__app-drag-float-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
+  transition: transform 0.22s ease-out;
+}
+
+.top-app-bar__app-drag-float-inner--lifted {
+  transform: scale(1.1);
+}
+
+.top-app-bar--dragging-tab {
+  cursor: grabbing;
+}
+
+/* Icon + unpin (X) control — X sits top-right of the 24×24 product icon */
+.top-app-bar__app-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.top-app-bar__app-unpin {
+  position: absolute;
+  top: -10px;
+  right: -14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.45);
+  color: #ffffff;
+  cursor: pointer;
+  z-index: 2;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.top-app-bar__app-unpin--hidden-when-dragging {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.top-app-bar__app-unpin:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.top-app-bar__app-unpin:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 1px;
+}
+
+/* Matches UiDashS2Icon viewBox 10×10 (S2 size 100 / original scale) */
+.top-app-bar__app-unpin svg {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+
+.top-app-bar__app--selected {
+  position: relative;
+}
+
+.top-app-bar__app--selected::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 1px;
+}
+
+.top-app-bar--edit-mode .top-app-bar__app--selected::after {
+  display: none;
+}
+
+.top-app-bar__app-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.top-app-bar__app-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Icon + label stack; drag handle is absolutely positioned below label (no extra tab height) */
+.top-app-bar__app-edit-main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+/* Figma S2 UIDragHandle (158:7166) — below app label in edit mode; rotated 90° */
+.top-app-bar__app-drag-handle {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  opacity: 0.8;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.top-app-bar__app-drag-handle svg {
+  width: 10px;
+  height: 10px;
+  transform: rotate(90deg);
+  flex-shrink: 0;
+}
+
+.top-app-bar__app-label {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: #F8F8F8;
+  text-align: center;
+}
+
+/* White text for contrast on product backgrounds */
+
+.top-app-bar__add-btn-wrap {
+  margin-left: 4px;
+}
+
+/* Wrapper for Spectrum Menu when rendered without MenuTrigger (positioning via inline style; panel styling so dropdown is visible) */
+.top-app-bar__more-menu-wrap {
+  padding: 8px;
+  background: var(--s2-container-bg, var(--spectrum-global-color-gray-50, #f4f4f4));
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  min-width: 180px;
+}
+
+/* Size menu item icons to 20x20 – both wrapper and img so no grey box shows (Spectrum Menu defaults to 40px) */
+.top-app-bar__more-menu-wrap [role="menuitem"] div:has(> img) {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+}
+.top-app-bar__more-menu-wrap [role="menuitem"] img {
+  width: 20px;
+  height: 20px;
+}
+

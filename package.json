@@ -17,6 +17,7 @@
     "react": "^19.0.0",
     "react-aria-components": "^1.15.1",
     "react-dom": "^19.0.0",
+    "react-router-dom": "^7.14.0",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
@@ -42,6 +43,14 @@
     "overrides": {
       "@react-aria/collections": "3.0.0",
       "@react-aria/landmark": "3.0.2"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@swc/core",
+      "core-js",
+      "esbuild",
+      "lmdb",
+      "msgpackr-extract"
+    ]
   }
 }

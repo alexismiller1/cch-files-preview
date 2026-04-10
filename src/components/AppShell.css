@@ -1,0 +1,19 @@
+/* App shell container - inline-size for Top App Bar container query */
+.app-shell {
+  container-type: inline-size;
+  container-name: app-shell;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  font-family: "Adobe Clean Spectrum VF", "Adobe Clean", sans-serif;
+}
+
+.app-shell-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
