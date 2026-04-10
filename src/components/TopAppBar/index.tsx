@@ -527,22 +527,25 @@ export function TopAppBar({
     options?: { isDragFloatPreview?: boolean }
   ) => {
     const showDragHandle = !draggingAppId || Boolean(options?.isDragFloatPreview);
+    const canUnpin = app.id !== "home";
     return (
       <div className="top-app-bar__app-edit-main">
         <div className="top-app-bar__app-icon-wrap">
-          <button
-            type="button"
-            className={`top-app-bar__app-unpin${draggingAppId ? " top-app-bar__app-unpin--hidden-when-dragging" : ""}`}
-            draggable={false}
-            tabIndex={-1}
-            aria-label={`Remove ${app.label} from tab bar`}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleRemoveFromTab(app.id);
-            }}
-          >
-            <UiDashS2Icon />
-          </button>
+          {canUnpin && (
+            <button
+              type="button"
+              className={`top-app-bar__app-unpin${draggingAppId ? " top-app-bar__app-unpin--hidden-when-dragging" : ""}`}
+              draggable={false}
+              tabIndex={-1}
+              aria-label={`Remove ${app.label} from tab bar`}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleRemoveFromTab(app.id);
+              }}
+            >
+              <UiDashS2Icon />
+            </button>
+          )}
           <div className="top-app-bar__app-icon" aria-hidden>
             {APP_ICONS[app.id] && (
               <img src={APP_ICONS[app.id]} alt="" width={24} height={24} />
