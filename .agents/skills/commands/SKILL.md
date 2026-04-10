@@ -25,12 +25,12 @@ Change the desktop wallpaper at runtime:
 |---------|-------------|
 | `Change desktop background` | Randomize the gradient wallpaper |
 | `Change desktop background <image-url>` | Use an image as the wallpaper |
-| `Reset desktop background` | Revert to the default green gradient |
+| `Reset desktop background` | Revert to the default gradient |
 
 ### Usage
 - `Change desktop background` — generates a new random gradient
 - `Change desktop background https://example.com/photo.jpg` — sets an image wallpaper
-- `Reset desktop background` — restores the original green
+- `Reset desktop background` — restores the default pink-to-blue gradient
 
 ## Tips
 - Commands are case-insensitive

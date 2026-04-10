@@ -84,3 +84,4 @@ Use SVGs from `src/assets/adobe-mnemonics/` for all Adobe product icons (Photosh
 - Use sentence case for all text (not Title Case)
 - Follow S2 design system patterns (see .agents/rules/)
 - Vite only (no webpack/parcel)
+- **Default change scope:** Assume all changes target the page content inside the browser chrome window (`src/pages/`, `src/components/` rendered inside `<AppShell>`), not the desktop shell (menubar, dock, desktop icons) or browser chrome (toolbar, URL bar). Only modify `DesktopView.tsx`, menubar, dock, or browser chrome when explicitly asked (e.g. "update browser chrome", "change desktop icon", "change desktop background").
