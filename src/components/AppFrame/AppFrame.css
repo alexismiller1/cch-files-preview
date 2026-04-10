@@ -1,0 +1,43 @@
+/* ─── App frame ─── */
+.app-frame {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--spectrum-background-layer-1-color, #f8f8f8);
+  font-family: "Adobe Clean Spectrum VF", "Adobe Clean", sans-serif;
+}
+
+/* ─── Body ─── */
+.app-frame-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ─── Page area (holds content + optional right panel) ─── */
+.app-frame-page {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* ─── Content panel ─── */
+.app-frame-content {
+  flex: 1;
+  min-width: 0;
+  margin-right: 12px;
+  background: var(--spectrum-background-base-color, white);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* ─── Right panel ─── */
+.app-frame-right-panel {
+  width: 320px;
+  flex-shrink: 0;
+  margin-right: 12px;
+  background: var(--spectrum-background-base-color, white);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}

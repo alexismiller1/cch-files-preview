@@ -4,6 +4,7 @@ import { useDisplayConfig } from "../context/DisplayConfigContext";
 import { useMediaQuery } from "../hooks/useMediaQuery.ts";
 import AppHeaderBar from "./AppHeaderBar/index.tsx";
 import TopAppBar from "./TopAppBar/index.tsx";
+import { AppFrame } from "./AppFrame";
 import "./AppShell.css";
 
 type WindowContext = "desktop" | "browser";
@@ -35,7 +36,7 @@ function AppShell({ windowContext = "browser" }: AppShellProps) {
               onExpandedChange={setTopAppBarExpanded}
             />
           )}
-          {flags.appHeaderBar && (
+          {flags.appHeaderBar && selectedAppId !== "home" && (
             <AppHeaderBar
               selectedAppId={selectedAppId}
               onAppSelect={setSelectedAppId}
@@ -44,7 +45,11 @@ function AppShell({ windowContext = "browser" }: AppShellProps) {
           )}
         </>
       )}
-      <div className="app-shell-body" />
+      <div className="app-shell-body">
+        {selectedAppId === "home" && (
+          <AppFrame insetLogo={reserveSpaceForCollapsedTabButton} />
+        )}
+      </div>
     </div>
   );
 }

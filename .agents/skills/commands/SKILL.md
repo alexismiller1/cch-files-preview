@@ -12,10 +12,16 @@ Toggle UI components by typing these commands in chat:
 | Command | Aliases | What it does |
 |---------|---------|-------------|
 | Show/Hide Top App Bar | `TAB`, `top app bar`, `top bar` | Toggles the Top App Bar in all display presets |
+| Show/Hide search | `search`, `search bar` | Toggles the header search field in the app frame |
+| Add/Remove right panel | `right panel` | Adds or removes the right panel on a specific page |
 
 ### Usage
 - `Hide TAB` — hides the Top App Bar
 - `Show TAB` — shows the Top App Bar
+- `Show search` — shows the header search component
+- `Hide search` — hides the header search component
+- `Add right panel to Apps page` — adds `app-frame-right-panel` to the Apps page
+- `Remove right panel on Home page` — removes `app-frame-right-panel` from the Home page
 
 ## Desktop Background
 

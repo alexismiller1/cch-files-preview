@@ -1,0 +1,74 @@
+/* ─── Header ─── */
+.header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 56px;
+  flex-shrink: 0;
+  padding: 0 24px;
+}
+
+.header-logo {
+  flex-shrink: 0;
+  padding-left: 0;
+  padding-right: 40px;
+  transition: padding-left 0.25s ease-out;
+}
+
+.header--inset-logo .header-logo {
+  padding-left: 32px;
+}
+
+.header-logo-img {
+  display: block;
+  width: 66px;
+  height: 16px;
+}
+
+/* Search – centered absolutely within header */
+.header-search {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 12px;
+  width: 420px;
+}
+
+.header-spacer {
+  flex: 1;
+}
+
+/* "Explore plans" unstyled picker-like button */
+.header-explore-plans {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  color: var(--spectrum-neutral-content-color-default, #292929);
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.header-explore-plans:hover {
+  background: var(--spectrum-gray-100, rgba(0, 0, 0, 0.05));
+}
+
+.header-explore-plans svg {
+  width: 10px;
+  height: 10px;
+}
+
+/* Divider between Desktop apps button and toolbar icons */
+.header-divider {
+  width: 2px;
+  height: 32px;
+  margin: 0 4px;
+  background: var(--spectrum-gray-200, #e1e1e1);
+  flex-shrink: 0;
+}

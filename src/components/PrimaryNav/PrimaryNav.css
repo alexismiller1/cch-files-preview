@@ -1,0 +1,35 @@
+/* ─── Primary navigation (left nav) ─── */
+.primary-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  width: 64px;
+  flex-shrink: 0;
+  padding: 16px 2px;
+}
+
+.primary-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-bottom: 4px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.primary-nav-item:not(.primary-nav-item--active):hover button {
+  background: var(--spectrum-gray-100, rgba(0, 0, 0, 0.05));
+}
+
+.primary-nav-item button {
+  cursor: pointer;
+}
+
+.primary-nav-label {
+  font-size: 12px;
+  line-height: 14px;
+  text-align: center;
+  white-space: nowrap;
+}

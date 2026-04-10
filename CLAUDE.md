@@ -12,6 +12,10 @@ React + Vite prototype template with React Spectrum S2 and Adobe services.
 - Entry: src/main.tsx → src/App.tsx
 - Auth: IMS singleton via `useIMS()` hook from src/contexts/useIMS.ts
 - UI: React Spectrum S2 only (import from @react-spectrum/s2)
+- App frame: `src/components/AppFrame/` (Header + PrimaryNav + page slot). Pages render inside AppFrame providing their own `.app-frame-content` and optionally `.app-frame-right-panel`. Header: `src/components/Header/`
+- **Primary navigation** (aliases: primary nav, left nav) → `src/components/PrimaryNav/`
+- **Page content** (aliases: page, home page, apps page, etc.) → `.app-frame-content` in each page component under `src/pages/`. Different pages are identified by name (e.g. "home page" → `HomePage`, "apps page" → `AppsPage`).
+- **Right panel** → `.app-frame-right-panel`, optional per page
 
 ## Services (IMPORTANT)
 
@@ -61,6 +65,10 @@ When asked to show/hide individual components, edit the relevant flag in the act
 
 - "Hide TAB" → set `topAppBar: false` in **all** presets in `PRESET_FLAGS`
 - "Show TAB" → set `topAppBar: true` in **all** presets in `PRESET_FLAGS`
+- "Show search" → ensure the `<div className="header-search">` block is present (not commented out/removed) in `src/components/Header/index.tsx`
+- "Hide search" → remove or comment out the `<div className="header-search">` block in `src/components/Header/index.tsx`
+- "Add right panel to `<Page>`" → add `<div className="app-frame-right-panel" />` to the page component in `src/pages/` (e.g. `AppsPage.tsx`)
+- "Remove right panel on `<Page>`" → remove `<div className="app-frame-right-panel" />` from the page component in `src/pages/`
 
 ## Desktop Background
 Change the desktop wallpaper gradient or set an image background at runtime. Persists to localStorage. Context: `src/context/DesktopBackgroundContext.tsx`.
