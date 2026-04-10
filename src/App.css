@@ -3,7 +3,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(160deg, #1e5f4a 0%, #1a4d3d 40%, #0d3328 100%);
+  background: linear-gradient(160deg, hsl(335,50%,32%) 0%, hsl(260,48%,28%) 40%, hsl(200,55%,21%) 100%);
   position: relative;
   font-family: "SF Pro", "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
 }
@@ -711,7 +711,7 @@
 
 /* Light theme overrides */
 .desktop[data-theme="light"] {
-  background: linear-gradient(160deg, #c5e8dc 0%, #a8d0c0 50%, #8ab5a8 100%);
+  background: linear-gradient(160deg, hsl(335,38%,84%) 0%, hsl(260,28%,74%) 50%, hsl(200,22%,63%) 100%);
 }
 
 .desktop[data-theme="light"] .menubar {

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelectedApp } from "../context/SelectedAppContext";
 import { useDisplayConfig } from "../context/DisplayConfigContext";
+import { useDesktopBackground } from "../context/DesktopBackgroundContext";
 import { displayHostnameForAppId } from "../utils/appDisplayHostname";
 import AppShell from "../components/AppShell";
 import StatusBar from "../components/StatusBar";
@@ -78,6 +79,7 @@ export function DesktopView({ theme, setTheme }: DesktopViewProps) {
   const navigate = useNavigate();
   const { selectedAppId } = useSelectedApp();
   const { preset, flags } = useDisplayConfig();
+  const { background } = useDesktopBackground();
   const [dateTime, setDateTime] = useState(() => formatMenubarDateTime(new Date()));
   /** Browser chrome only — desktop-app chrome switch removed from UI */
   const windowContext = "browser" as const;
@@ -178,6 +180,12 @@ export function DesktopView({ theme, setTheme }: DesktopViewProps) {
           "--color-divider": colors.divider.color,
           ...(isDesktopDevice && isFullDesktop && windowWidth != null && {
             "--desktop-window-width": `${desktopWindowCssWidth}px`,
+          }),
+          ...(background.type === "gradient" && {
+            background: theme === "dark" ? background.dark : background.light,
+          }),
+          ...(background.type === "image" && {
+            background: `url(${background.url}) center/cover no-repeat`,
           }),
         } as React.CSSProperties
       }

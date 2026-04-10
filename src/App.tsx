@@ -3,6 +3,7 @@ import { Provider } from "@react-spectrum/s2";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SelectedAppProvider } from "./context/SelectedAppContext";
 import { DisplayConfigProvider } from "./context/DisplayConfigContext";
+import { DesktopBackgroundProvider } from "./context/DesktopBackgroundContext";
 import { DesktopView } from "./pages/DesktopView";
 
 const THEME_STORAGE_KEY = "app-theme";
@@ -120,9 +121,11 @@ function App() {
             path="/*"
             element={
               <DisplayConfigProvider>
-                <SelectedAppProvider>
-                  <DesktopView theme={theme} setTheme={setTheme} />
-                </SelectedAppProvider>
+                <DesktopBackgroundProvider>
+                  <SelectedAppProvider>
+                    <DesktopView theme={theme} setTheme={setTheme} />
+                  </SelectedAppProvider>
+                </DesktopBackgroundProvider>
               </DisplayConfigProvider>
             }
           />
