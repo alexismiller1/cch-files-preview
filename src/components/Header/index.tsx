@@ -17,11 +17,6 @@ export function Header({ insetLogo }: HeaderProps) {
         <img src={adobeLogo} alt="Adobe" className="header-logo-img" />
       </div>
 
-      {/* Centered search */}
-      <div className="header-search">
-        <SearchField aria-label="Search Adobe" placeholder="Search Adobe" size="M" />
-      </div>
-
       <div className="header-spacer" />
 
       {/* Right actions */}
