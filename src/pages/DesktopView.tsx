@@ -7,10 +7,9 @@ import AppShell from "../components/AppShell";
 import StatusBar from "../components/StatusBar";
 import SafariBrowserBar from "../components/SafariBrowserBar";
 import { ResponsiveTester } from "../components/ResponsiveTester";
-import { DeviceSwitcher, type DeviceType } from "../components/DeviceSwitcher";
-import { DisplayPresetPanel } from "../components/DisplayPresetPanel";
+import { type DeviceType } from "../components/DeviceSwitcher";
+import { SettingsFab } from "../components/SettingsFab";
 import { THEME_COLORS } from "../themeColors";
-import { ThemeToggle } from "../components/ThemeToggle";
 import "../App.css";
 
 import finderLight from "../assets/dock-icons/light/Finder.png";
@@ -360,20 +359,13 @@ export function DesktopView({ theme, setTheme }: DesktopViewProps) {
         )}
       </div>
 
-      {/* Bottom left: device switcher */}
-      {flags.deviceSwitcher && (
-        <DeviceSwitcher device={device} onDeviceChange={setDevice} />
-      )}
-
-      {/* Bottom left: display preset panel */}
-      <DisplayPresetPanel />
-
-      {/* Bottom right: theme toggle */}
-      {flags.themeToggle && (
-        <div className="bottom-controls-wrap">
-          <ThemeToggle theme={theme} onToggle={() => setTheme((t) => (t === "dark" ? "light" : "dark"))} />
-        </div>
-      )}
+      {/* Bottom left: settings FAB */}
+      <SettingsFab
+        theme={theme}
+        onThemeToggle={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
+        device={device}
+        onDeviceChange={setDevice}
+      />
 
     </div>
   );

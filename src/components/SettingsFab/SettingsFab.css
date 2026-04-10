@@ -1,0 +1,188 @@
+.settings-fab {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* Trigger button */
+.settings-fab__trigger {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(50, 50, 55, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: rgba(255, 255, 255, 0.85);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.25);
+  transition: background 0.15s ease, transform 0.2s ease;
+}
+
+.settings-fab__trigger:hover {
+  background: rgba(60, 60, 65, 0.85);
+}
+
+.settings-fab__trigger--open {
+  background: rgba(70, 70, 75, 0.9);
+}
+
+.settings-fab__trigger--open svg {
+  transform: rotate(180deg);
+}
+
+.settings-fab__trigger svg {
+  transition: transform 0.25s ease;
+}
+
+.desktop[data-theme="light"] .settings-fab__trigger {
+  background: rgba(220, 220, 225, 0.85);
+  color: rgba(0, 0, 0, 0.75);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.desktop[data-theme="light"] .settings-fab__trigger:hover {
+  background: rgba(210, 210, 215, 0.9);
+}
+
+.desktop[data-theme="light"] .settings-fab__trigger--open {
+  background: rgba(200, 200, 205, 0.95);
+}
+
+/* Panel */
+.settings-fab__panel {
+  background: rgba(40, 40, 45, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.35);
+  animation: settings-fab-in 0.15s ease;
+}
+
+@keyframes settings-fab-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.desktop[data-theme="light"] .settings-fab__panel {
+  background: rgba(240, 240, 242, 0.92);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* Section */
+.settings-fab__section--disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.settings-fab__section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-fab__label {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-left: 2px;
+}
+
+.desktop[data-theme="light"] .settings-fab__label {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+/* Row of chips */
+.settings-fab__row {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 3px;
+}
+
+.desktop[data-theme="light"] .settings-fab__row {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* Chip */
+.settings-fab__chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  color: rgba(255, 255, 255, 0.75);
+  background: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.desktop[data-theme="light"] .settings-fab__chip {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.settings-fab__chip:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.desktop[data-theme="light"] .settings-fab__chip:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.settings-fab__chip--active {
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 1);
+}
+
+.desktop[data-theme="light"] .settings-fab__chip--active {
+  background: rgba(255, 255, 255, 0.85);
+  color: rgba(0, 0, 0, 0.9);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.settings-fab__chip-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.settings-fab__chip-icon svg {
+  width: 14px;
+  height: 14px;
+}

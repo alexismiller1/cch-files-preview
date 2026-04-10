@@ -709,11 +709,6 @@
   width: 100% !important;
 }
 
-/* Preset panel positioning — stacks above device switcher when both visible */
-.desktop[data-display-preset="full-desktop"] .display-preset-panel {
-  bottom: 90px;
-}
-
 /* Light theme overrides */
 .desktop[data-theme="light"] {
   background: linear-gradient(160deg, #c5e8dc 0%, #a8d0c0 50%, #8ab5a8 100%);
