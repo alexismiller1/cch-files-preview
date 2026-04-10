@@ -29,7 +29,7 @@
   flex: 1;
   min-width: 0;
   margin-right: 12px;
-  background: var(--spectrum-background-base-color, white);
+  background: var(--s2-container-bg, white);
   border-radius: 16px 16px 0 0;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
@@ -39,7 +39,7 @@
   width: 320px;
   flex-shrink: 0;
   margin-right: 12px;
-  background: var(--spectrum-background-base-color, white);
+  background: var(--s2-container-bg, white);
   border-radius: 16px 16px 0 0;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }

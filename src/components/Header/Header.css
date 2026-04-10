@@ -20,10 +20,13 @@
   padding-left: 32px;
 }
 
-.header-logo-img {
+.header-logo-svg {
   display: block;
-  width: 66px;
-  height: 16px;
+  color: #EB1000;
+}
+
+[data-color-scheme="dark"] .header-logo-svg {
+  color: #FFFFFF;
 }
 
 /* Search – centered absolutely within header */
@@ -83,7 +86,7 @@
   width: 2px;
   height: 32px;
   margin: 0 4px;
-  background: var(--spectrum-gray-200, #e1e1e1);
+  background: var(--spectrum-gray-300, #cacaca);
   flex-shrink: 0;
 }
 

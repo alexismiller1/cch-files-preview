@@ -16,6 +16,7 @@ React + Vite prototype template with React Spectrum S2 and Adobe services.
 - **Primary navigation** (aliases: primary nav, left nav) → `src/components/PrimaryNav/`
 - **Page content** (aliases: page, home page, apps page, etc.) → `.app-frame-content` in each page component under `src/pages/`. Different pages are identified by name (e.g. "home page" → `HomePage`, "apps page" → `AppsPage`).
 - **Right panel** → `.app-frame-right-panel`, optional per page
+- **U-nav** (aliases: universal nav) → top-right area of the Header component (`src/components/Header/`): toolbar icons (Gift, Help, Notifications), app switcher button (mobile), and avatar
 
 ## Services (IMPORTANT)
 
