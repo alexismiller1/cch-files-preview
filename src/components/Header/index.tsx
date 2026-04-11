@@ -1,11 +1,13 @@
 import { useMemo, useRef, useState } from "react";
-import { Button, ActionButton, Avatar, Picker, PickerItem, MenuTrigger, Menu, MenuItem, Text, Divider } from "@react-spectrum/s2";
+import { Button, ActionButton, Avatar, Picker, MenuTrigger, Menu, MenuItem, Text, Divider } from "@react-spectrum/s2";
 import GiftIcon from "@react-spectrum/s2/icons/Gift";
 import HelpCircleIcon from "@react-spectrum/s2/icons/HelpCircle";
 import BellIcon from "@react-spectrum/s2/icons/Bell";
 import MenuHamburgerIcon from "@react-spectrum/s2/icons/MenuHamburger";
 import AppsAllIcon from "@react-spectrum/s2/icons/AppsAll";
+import CloudIcon from "@react-spectrum/s2/icons/Cloud";
 import { useSelectedApp } from "../../context/SelectedAppContext";
+import { useDisplayConfig } from "../../context/DisplayConfigContext";
 import { DEFAULT_APPS, dedupeAppsById, MORE_APPS } from "../topAppBarApps";
 import { AppSwitcher } from "../AppSwitcher";
 import { NAV_ITEMS } from "../PrimaryNav";
@@ -28,12 +30,14 @@ type HeaderProps = {
 
 export function Header({ insetLogo, selectedNavId, onNavSelect }: HeaderProps) {
   const { selectedAppId, setSelectedAppId } = useSelectedApp();
+  const { appMode } = useDisplayConfig();
+  const isCCDesktop = appMode === "cc-desktop";
   const [appSwitcherOpen, setAppSwitcherOpen] = useState(false);
   const appSwitcherTriggerRef = useRef<HTMLDivElement>(null);
   const webApps = useMemo(() => dedupeAppsById([...DEFAULT_APPS, ...MORE_APPS]), []);
 
   return (
-    <header className={`header${insetLogo ? " header--inset-logo" : ""}`}>
+    <header className={`header${insetLogo ? " header--inset-logo" : ""}${isCCDesktop ? " header--cc-desktop" : ""}`}>
       {/* Hamburger menu — visible only at mobile breakpoint */}
       <div className="header-hamburger">
         <MenuTrigger>
@@ -54,25 +58,40 @@ export function Header({ insetLogo, selectedNavId, onNavSelect }: HeaderProps) {
         </MenuTrigger>
       </div>
 
-      <div className="header-logo">
-        <AdobeLogo className="header-logo-svg" />
-      </div>
+      {isCCDesktop ? (
+        <div className="header-window-controls">
+          <span className="header-window-dot header-window-dot--close" />
+          <span className="header-window-dot header-window-dot--minimize" />
+          <span className="header-window-dot header-window-dot--maximize" />
+        </div>
+      ) : (
+        <div className="header-logo">
+          <AdobeLogo className="header-logo-svg" />
+        </div>
+      )}
 
       <div className="header-spacer" />
 
-      {/* Right actions — hidden at mobile breakpoint */}
-      <div className="header-desktop-actions">
-        <Picker aria-label="Explore plans" placeholder="Explore plans" size="M" isQuiet UNSAFE_style={{ marginRight: 8 }}>
-        </Picker>
-        <Button variant="primary" size="M">Desktop apps</Button>
-      </div>
+      {/* Right actions — hidden at mobile breakpoint and in CCD mode */}
+      {!isCCDesktop && (
+        <>
+          <div className="header-desktop-actions">
+            <Picker aria-label="Explore plans" placeholder="Explore plans" size="M" isQuiet UNSAFE_style={{ marginRight: 8 }}>
+            </Picker>
+            <Button variant="primary" size="M">Desktop apps</Button>
+          </div>
 
-      <Divider size="M" orientation="vertical" UNSAFE_style={{ margin: '12px 0', marginLeft: 4 }} />
+          <Divider size="M" orientation="vertical" UNSAFE_style={{ margin: '12px 0', marginLeft: 4 }} />
+        </>
+      )}
 
       <div className="header-toolbar">
         <ActionButton isQuiet aria-label="What's new"><GiftIcon /></ActionButton>
         <ActionButton isQuiet aria-label="Help"><HelpCircleIcon /></ActionButton>
         <ActionButton isQuiet aria-label="Notifications"><BellIcon /></ActionButton>
+        {isCCDesktop && (
+          <ActionButton isQuiet aria-label="Cloud activity"><CloudIcon /></ActionButton>
+        )}
         <div ref={appSwitcherTriggerRef} className="header-mobile-apps">
           <ActionButton
             isQuiet

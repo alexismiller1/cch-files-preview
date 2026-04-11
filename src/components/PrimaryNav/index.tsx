@@ -4,6 +4,8 @@ import AppsIcon from "@react-spectrum/s2/icons/Apps";
 import FolderIcon from "@react-spectrum/s2/icons/Folder";
 import RibbonIcon from "@react-spectrum/s2/icons/Ribbon";
 import ToolsIcon from "@react-spectrum/s2/icons/Tools";
+import MarketIcon from "@react-spectrum/s2/icons/Market";
+import { useDisplayConfig } from "../../context/DisplayConfigContext";
 import "./PrimaryNav.css";
 
 export const NAV_ITEMS = [
@@ -14,15 +16,20 @@ export const NAV_ITEMS = [
   { id: "create", label: "Create", Icon: ToolsIcon },
 ];
 
+const CCD_NAV_ITEM = { id: "stock-marketplace", label: "Stock & Marketplace", Icon: MarketIcon };
+
 type PrimaryNavProps = {
   selectedId: string;
   onSelect: (id: string) => void;
 };
 
 export function PrimaryNav({ selectedId, onSelect }: PrimaryNavProps) {
+  const { appMode } = useDisplayConfig();
+  const items = appMode === "cc-desktop" ? [...NAV_ITEMS, CCD_NAV_ITEM] : NAV_ITEMS;
+
   return (
     <nav className="primary-nav" aria-label="Primary navigation">
-      {NAV_ITEMS.map(({ id, label, Icon }) => {
+      {items.map(({ id, label, Icon }) => {
         const active = id === selectedId;
         return (
           <div

@@ -50,12 +50,19 @@ const apiKey = ims.adobeid.client_id;       // x-api-key
 
 Do NOT use separate API key environment variables.
 
+## App Mode
+Global mode toggle in the settings FAB (bottom-left). Two modes:
+- **CC Home** (aliases: CCH, CC Home) — Default. Browser-based Creative Cloud experience with full chrome and all device options.
+- **CC Desktop** (aliases: CCD, CC Desktop) — Native desktop app experience. Forces: device locked to Desktop, browser chrome hidden, TAB hidden, Adobe logo replaced by OS window controls (close/minimize/maximize) in Header. Switching to CCD resets the selected page to Adobe Home.
+
+Persists to localStorage (`app-mode`). Context: `src/context/DisplayConfigContext.tsx` (`AppMode` type, `appMode` / `setAppMode`). The `data-app-mode` attribute is set on the root `.desktop` element for CSS targeting.
+
 ## Display Presets
 Toggle UI chrome visibility using the floating panel at the bottom-left corner. Two presets:
 - **Full desktop** — full macOS shell (menubar, dock, browser chrome, all controls)
 - **Content only** — TopAppBar + AppHeaderBar + page content, full bleed (no desktop/browser chrome, no window decorations)
 
-Persists to localStorage. Context: `src/context/DisplayConfigContext.tsx`, panel: `src/components/DisplayPresetPanel.tsx`.
+Persists to localStorage. Context: `src/context/DisplayConfigContext.tsx`, panel: `src/components/SettingsFab/`.
 
 ## Component Shortcuts
 When asked to show/hide individual components, edit the relevant flag in the active preset in `src/context/DisplayConfigContext.tsx`:

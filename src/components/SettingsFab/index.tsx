@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useDisplayConfig, type DisplayPreset } from "../../context/DisplayConfigContext";
+import { useDisplayConfig, type AppMode, type DisplayPreset } from "../../context/DisplayConfigContext";
 import PropertiesIcon from "@react-spectrum/s2/icons/Properties";
 import DeviceDesktopIcon from "@react-spectrum/s2/icons/DeviceDesktop";
 import FullScreenIcon from "@react-spectrum/s2/icons/FullScreen";
@@ -7,8 +7,16 @@ import DeviceTabletIcon from "@react-spectrum/s2/icons/DeviceTablet";
 import DevicePhoneIcon from "@react-spectrum/s2/icons/DevicePhone";
 import LightenIcon from "@react-spectrum/s2/icons/Lighten";
 import BrightnessContrastIcon from "@react-spectrum/s2/icons/BrightnessContrast";
+import HomeIcon from "@react-spectrum/s2/icons/Home";
+import AppIcon from "@react-spectrum/s2/icons/App";
+import { useSelectedApp } from "../../context/SelectedAppContext";
 import type { DeviceType } from "../DeviceSwitcher";
 import "./SettingsFab.css";
+
+const APP_MODES: { id: AppMode; label: string; icon: React.ReactNode }[] = [
+  { id: "cc-home", label: "CC Home", icon: <HomeIcon /> },
+  { id: "cc-desktop", label: "CC Desktop", icon: <AppIcon /> },
+];
 
 const VIEW_PRESETS: { id: DisplayPreset; label: string; icon: React.ReactNode }[] = [
   { id: "full-desktop", label: "Full desktop", icon: <DeviceDesktopIcon /> },
@@ -31,8 +39,11 @@ type SettingsFabProps = {
 
 export function SettingsFab({ theme, onThemeToggle, device, onDeviceChange }: SettingsFabProps) {
   const [open, setOpen] = useState(false);
-  const { preset, setPreset } = useDisplayConfig();
+  const { setSelectedAppId } = useSelectedApp();
+  const { appMode, setAppMode, preset, setPreset } = useDisplayConfig();
+  const isCCDesktop = appMode === "cc-desktop";
   const isContentOnly = preset === "content-only";
+  const isDeviceDisabled = isContentOnly || isCCDesktop;
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -50,6 +61,34 @@ export function SettingsFab({ theme, onThemeToggle, device, onDeviceChange }: Se
     <div className="settings-fab" ref={panelRef}>
       {open && (
         <div className="settings-fab__panel">
+          {/* App mode */}
+          <div className="settings-fab__section">
+            <span className="settings-fab__label">App mode</span>
+            <div className="settings-fab__row" role="tablist">
+              {APP_MODES.map((m) => (
+                <button
+                  key={m.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={appMode === m.id}
+                  className={`settings-fab__chip ${appMode === m.id ? "settings-fab__chip--active" : ""}`}
+                  onClick={() => {
+                    setAppMode(m.id);
+                    if (m.id === "cc-desktop") {
+                      setSelectedAppId("home");
+                      if (device !== "desktop") {
+                        onDeviceChange("desktop");
+                      }
+                    }
+                  }}
+                >
+                  <span className="settings-fab__chip-icon" aria-hidden>{m.icon}</span>
+                  {m.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* View */}
           <div className="settings-fab__section">
             <span className="settings-fab__label">View</span>
@@ -76,7 +115,7 @@ export function SettingsFab({ theme, onThemeToggle, device, onDeviceChange }: Se
           </div>
 
           {/* Device */}
-          <div className={`settings-fab__section ${isContentOnly ? "settings-fab__section--disabled" : ""}`}>
+          <div className={`settings-fab__section ${isDeviceDisabled ? "settings-fab__section--disabled" : ""}`}>
             <span className="settings-fab__label">Device</span>
             <div className="settings-fab__row" role="tablist">
               {DEVICES.map((d) => (
@@ -85,9 +124,9 @@ export function SettingsFab({ theme, onThemeToggle, device, onDeviceChange }: Se
                   type="button"
                   role="tab"
                   aria-selected={device === d.id}
-                  aria-disabled={isContentOnly || undefined}
+                  aria-disabled={isDeviceDisabled || undefined}
                   className={`settings-fab__chip ${device === d.id ? "settings-fab__chip--active" : ""}`}
-                  onClick={isContentOnly ? undefined : () => onDeviceChange(d.id)}
+                  onClick={isDeviceDisabled ? undefined : () => onDeviceChange(d.id)}
                 >
                   <span className="settings-fab__chip-icon" aria-hidden>{d.icon}</span>
                   {d.label}
