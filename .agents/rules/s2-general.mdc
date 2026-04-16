@@ -53,3 +53,4 @@ alwaysApply: true
 - 16px for padding in general
 - 32px is the step adove 16px for padding
 - 40px is the step above 32px for padding
+- Page-level and panel-level padding values are defined in CLAUDE.md and take precedence over these general spacing steps.

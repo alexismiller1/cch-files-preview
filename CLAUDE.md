@@ -14,9 +14,16 @@ React + Vite prototype template with React Spectrum S2 and Adobe services.
 - UI: React Spectrum S2 only (import from @react-spectrum/s2)
 - App frame: `src/components/AppFrame/` (Header + PrimaryNav + page slot). Pages render inside AppFrame providing their own `.app-frame-content` and optionally `.app-frame-right-panel`. Header: `src/components/Header/`
 - **Primary navigation** (aliases: primary nav, left nav) → `src/components/PrimaryNav/`
-- **Page content** (aliases: page, home page, apps page, etc.) → `.app-frame-content` in each page component under `src/pages/`. Different pages are identified by name (e.g. "home page" → `HomePage`, "apps page" → `AppsPage`).
-- **Right panel** → `.app-frame-right-panel`, optional per page
+- **Page content** (aliases: page, home page, apps page, app-frame-content, etc.) → `.app-frame-content` in each page component under `src/pages/`. Different pages are identified by name (e.g. "home page" → `HomePage`, "apps page" → `AppsPage`).
+- **Panel content** (aliases: right panel, app-frame-right-panel, app-frame-panel, app-frame-left-panel) → `.app-frame-right-panel`, optional per page
 - **U-nav** (aliases: universal nav) → top-right area of the Header component (`src/components/Header/`): toolbar icons (Gift, Help, Notifications), app switcher button (mobile), and avatar
+
+### Layout
+- Page content max-width: `max-width: 1200px; margin-inline: auto;` — applied inside `.app-frame-content`. Full-bleed is allowed only when explicitly requested.
+- Page content padding: `padding: 40px;` on desktop, `padding: 24px;` on mobile (use `@container app-frame (max-width: 899px)`)
+- Panel content padding: `padding: 24px;`
+- Content section gap: same value as content padding (40px desktop, 24px mobile) between sibling sections
+- Page structure inside `.app-frame-content`: use `<header>`, `<main>`, `<footer>` semantic elements. Never wrap `<main>` in a `<div>`.
 
 ## Services (IMPORTANT)
 
@@ -95,6 +102,7 @@ Change the desktop wallpaper gradient or set an image background at runtime. Per
 
 ## Adobe Product Icons
 Use SVGs from `src/assets/adobe-mnemonics/` for all Adobe product icons (Photoshop, Lightroom, Firefly, etc.) unless noted otherwise. Files are named by product code (e.g. `ps_appicon.svg`, `lr_appicon.svg`, `fi_appicon.svg`).
+
 
 ## Breakpoints
 - **Mobile** (aliases: small breakpoint, mobile design) — below 900px (`max-width: 899px`). Use the CSS custom property `var(--breakpoint-mobile)` defined in `src/index.css`.
