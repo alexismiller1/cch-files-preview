@@ -67,7 +67,7 @@ const DOCK_APPS = [
   { name: "Trash", light: trashLight, dark: trashDark },
 ];
 
-const HOME_PATH = "/home";
+const HOME_PATH = "/";
 
 type DesktopViewProps = {
   theme: "light" | "dark";
@@ -112,7 +112,7 @@ export function DesktopView({ theme, setTheme }: DesktopViewProps) {
 
   useEffect(() => {
     const path = location.pathname.replace(/\/$/, "") || "/";
-    if (path === "/") {
+    if (path !== "/") {
       navigate(HOME_PATH, { replace: true });
     }
   }, [location.pathname, navigate]);
