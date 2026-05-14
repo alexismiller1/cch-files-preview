@@ -86,19 +86,7 @@ When asked to show/hide individual components, edit the relevant flag in the act
 - "Remove right panel on `<Page>`" → remove `<div className="app-frame-right-panel" />` from the page component in `src/pages/`
 
 ## Desktop Background
-Change the desktop wallpaper gradient or set an image background at runtime. Persists to localStorage. Context: `src/context/DesktopBackgroundContext.tsx`.
-
-| Command | What it does |
-|---------|-------------|
-| Change desktop background | Generate a randomized gradient (similar brightness/saturation to the default green) |
-| Change desktop background `<image-url>` | Use the provided image URL as the desktop wallpaper |
-| Reset desktop background | Revert to the default gradient |
-
-20 pre-generated palettes are in `GRADIENT_PALETTES` in the context file (indices 0–19: red, orange-red, orange, gold, yellow, lime, green, emerald, teal, cyan, sky, azure, blue, indigo, violet, purple, orchid, magenta, pink, rose).
-
-- "Change desktop background" → pick a random palette index (0–19), copy its `dark` value into `.desktop { background: … }` in `src/App.css` (line 6) and its `light` value into `.desktop[data-theme="light"] { background: … }` (line 714). Use the HSL gradient string from `GRADIENT_PALETTES[index]` directly.
-- "Change desktop background `<url>`" → call `setImageBackground(url)` from `useDesktopBackground()`
-- "Reset desktop background" → restore the default pink-to-blue: dark `linear-gradient(160deg, hsl(335,50%,32%) 0%, hsl(260,48%,28%) 40%, hsl(200,55%,21%) 100%)`, light `linear-gradient(160deg, hsl(335,38%,84%) 0%, hsl(260,28%,74%) 50%, hsl(200,22%,63%) 100%)`
+See skill: `.agents/skills/cc-change-background/`
 
 ## Adobe Product Icons
 Use SVGs from `src/assets/adobe-mnemonics/` for all Adobe product icons (Photoshop, Lightroom, Firefly, etc.) unless noted otherwise. Files are named by product code (e.g. `ps_appicon.svg`, `lr_appicon.svg`, `fi_appicon.svg`).
