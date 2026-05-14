@@ -5,39 +5,19 @@ description: Lists all available project-specific chat commands and shortcuts. U
 
 # Project Commands
 
-## Component Shortcuts
+Invoke these skills by typing `/skill-name` or a natural language trigger:
 
-Toggle UI components by typing these commands in chat:
-
-| Command | Aliases | What it does |
-|---------|---------|-------------|
-| Show/Hide Top App Bar | `TAB`, `top app bar`, `top bar` | Toggles the Top App Bar in all display presets |
-| Show/Hide search | `search`, `search bar` | Toggles the header search field in the app frame |
-| Add/Remove right panel | `right panel` | Adds or removes the right panel on a specific page |
-
-### Usage
-- `Hide TAB` — hides the Top App Bar
-- `Show TAB` — shows the Top App Bar
-- `Show search` — shows the header search component
-- `Hide search` — hides the header search component
-- `Add right panel to Apps page` — adds `app-frame-right-panel` to the Apps page
-- `Remove right panel on Home page` — removes `app-frame-right-panel` from the Home page
-
-## Desktop Background
-
-Change the desktop wallpaper at runtime:
-
-| Command | What it does |
-|---------|-------------|
-| `Change desktop background` | Randomize the gradient wallpaper |
-| `Change desktop background <image-url>` | Use an image as the wallpaper |
-| `Reset desktop background` | Revert to the default gradient |
-
-### Usage
-- `Change desktop background` — generates a new random gradient
-- `Change desktop background https://example.com/photo.jpg` — sets an image wallpaper
-- `Reset desktop background` — restores the default pink-to-blue gradient
+| Skill | Trigger | What it does |
+|-------|---------|-------------|
+| `/change-background` | "change desktop background", "reset desktop background", image URL | Change the desktop wallpaper gradient or set an image background |
+| `/show-top-app-bar [true\|false]` | "show TAB", "hide TAB", "show top app bar", "hide top app bar" | Show or hide the Top App Bar across all display presets |
+| `/show-right-panel [true\|false] <Page>` | "add right panel to <Page>", "remove right panel on <Page>" | Add or remove the right panel on a specific page |
+| `/show-search [true\|false]` | "show search", "hide search" | Show or hide the header search field |
+| `/pull-remote-update` | "sync with upstream", "pull remote update" | Pull latest changes from the upstream template repository |
+| `/adtech-services` | "list services", "use Firefly API", "use Photoshop API" | Discover and integrate @adtech service packages |
+| `/react-spectrum-s2` | "use React Spectrum", "S2 component", "Spectrum 2" | Build accessible UI with React Spectrum S2 components |
+| `/web-accessibility-checker` | "check accessibility", "WCAG audit", "EU EAA compliance" | Review websites for WCAG 2.2 Level AA and EU EAA compliance |
+| `/commands` | "what commands are available", "/commands" | Show this list |
 
 ## Tips
-- Commands are case-insensitive
-- New component shortcuts can be added to the table in CLAUDE.md under "Component Shortcuts"
+- New skills appear automatically when added to `.agents/skills/`

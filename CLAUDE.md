@@ -71,23 +71,6 @@ Toggle UI chrome visibility using the floating panel at the bottom-left corner. 
 
 Persists to localStorage. Context: `src/context/DisplayConfigContext.tsx`, panel: `src/components/SettingsFab/`.
 
-## Component Shortcuts
-When asked to show/hide individual components, edit the relevant flag in the active preset in `src/context/DisplayConfigContext.tsx`:
-
-| Command | Aliases | Flag | File |
-|---------|---------|------|------|
-| Show/Hide Top App Bar | TAB, top app bar, top bar | `topAppBar` | `src/context/DisplayConfigContext.tsx` |
-
-- "Hide TAB" → set `topAppBar: false` in **all** presets in `PRESET_FLAGS`
-- "Show TAB" → set `topAppBar: true` in **all** presets in `PRESET_FLAGS`
-- "Show search" → ensure the `<div className="header-search">` block is present (not commented out/removed) in `src/components/Header/index.tsx`
-- "Hide search" → remove or comment out the `<div className="header-search">` block in `src/components/Header/index.tsx`
-- "Add right panel to `<Page>`" → add `<div className="app-frame-right-panel" />` to the page component in `src/pages/` (e.g. `AppsPage.tsx`)
-- "Remove right panel on `<Page>`" → remove `<div className="app-frame-right-panel" />` from the page component in `src/pages/`
-
-## Desktop Background
-See skill: `.agents/skills/cc-change-background/`
-
 ## Adobe Product Icons
 Use SVGs from `src/assets/adobe-mnemonics/` for all Adobe product icons (Photoshop, Lightroom, Firefly, etc.) unless noted otherwise. Files are named by product code (e.g. `ps_appicon.svg`, `lr_appicon.svg`, `fi_appicon.svg`).
 
