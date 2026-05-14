@@ -342,3 +342,9 @@
   height: 20px;
 }
 
+/* Non-interactive mode: app tabs show default cursor and no hover highlight */
+.top-app-bar--non-interactive .top-app-bar__app {
+  cursor: default;
+  pointer-events: none;
+}
+

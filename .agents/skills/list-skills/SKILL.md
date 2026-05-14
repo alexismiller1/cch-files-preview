@@ -38,6 +38,20 @@ Toggle the Top App Bar (TAB) visibility across **all** display presets at once b
 
 ---
 
+### `/enabled-top-app-bar`
+> Source: `.agents/skills/enabled-top-app-bar/SKILL.md`
+
+Toggle whether the Top App Bar (TAB) is interactive. When disabled, app tabs and the overflow menu are non-clickable, while the collapse/expand toggle always remains functional. Implemented by adding or removing the `interactive` prop on `<TopAppBar>` in `src/components/AppShell.tsx`.
+
+| Variant | Trigger |
+|---------|---------|
+| `/enabled-top-app-bar true` | Make the Top App Bar fully interactive |
+| `/enabled-top-app-bar false` | Make app tabs and overflow menu non-interactive |
+| `Enable TAB` / `Make top app bar interactive` | Enable interactivity |
+| `Disable TAB` / `Make TAB non-interactive` | Disable interactivity |
+
+---
+
 ### `/show-right-panel`
 > Source: `.agents/skills/show-right-panel/SKILL.md`
 
@@ -73,27 +87,6 @@ Pull the latest changes from the `upstream` git remote into the current branch. 
 
 ---
 
-### `/adtech-services`
-> Source: `.agents/skills/adtech-services/SKILL.md`
-
-Discover and integrate `@adtech/protopack-services-all` Adobe service packages. Inspects the installed package's source and TypeScript types to list available APIs (Firefly, Photoshop, Lightroom, digitalImaging, adobe3p) and guides usage. All API calls use IMS credentials — never separate env-var API keys.
-
----
-
-### `/react-spectrum-s2`
-> Source: `.agents/skills/react-spectrum-s2/SKILL.md`
-
-Build accessible UI with React Spectrum S2 (`@react-spectrum/s2`), Adobe's implementation of the Spectrum 2 design system. Provides component documentation for buttons, forms, dialogs, tables, date/time pickers, color pickers, collections, selection, styling with the style macro, and migration from v3. Requires `@react-spectrum/s2` installed in the project.
-
----
-
-### `/web-accessibility-checker`
-> Source: `.agents/skills/web-accessibility-checker/SKILL.md`
-
-Audit websites for WCAG 2.2 Level AA and EU EAA compliance via a three-step process: automated scan (mechanical checks for contrast, alt text, etc.), manual checks (keyboard navigation, screen readers, UX patterns), and structured compliance report generation. Note: automated tools catch only ~30–40% of issues — manual testing is essential.
-
----
-
 ### `/list-skills`
 > Source: `.agents/skills/list-skills/SKILL.md`
 
@@ -114,7 +107,7 @@ Show this list of available project commands, drawn live from each skill's `SKIL
 
 When the argument is `update`:
 
-1. List every subdirectory in `.agents/skills/` (each is a skill).
+1. List every subdirectory in `.agents/skills/` (each is a skill). **Skip** `react-spectrum-s2`, `adtech-services`, and `web-accessibility-checker` — these are background/internal skills and must not appear in the listing.
 2. Read each skill's `SKILL.md` in full.
 3. Rewrite the skill listing section of **this file** (`.agents/skills/list-skills/SKILL.md`) — from the first `---` separator after the intro paragraph down to (but not including) the Tips section — replacing it with one entry per skill, structured as:
 

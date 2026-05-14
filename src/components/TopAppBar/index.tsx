@@ -86,7 +86,7 @@ export type TopAppBarProps = {
   apps?: TopAppBarApp[];
   /** Custom class name */
   className?: string;
-  /** Initial selected app id when uncontrolled (default: "home") */
+  /** Initial selected app id when uncontrolled (default: “home”) */
   defaultSelectedAppId?: string;
   /** Selected app id when controlled (omit for uncontrolled) */
   selectedAppId?: string;
@@ -95,6 +95,8 @@ export type TopAppBarProps = {
   /** Pinned “more” apps (lifted to AppShell for app switcher parity) */
   pinnedAppIds?: string[];
   onPinnedAppIdsChange?: React.Dispatch<React.SetStateAction<string[]>>;
+  /** When false, app tabs and overflow menu are non-interactive; collapse/expand still works */
+  interactive?: boolean;
 };
 
 export function TopAppBar({
@@ -107,6 +109,7 @@ export function TopAppBar({
   onAppSelect,
   pinnedAppIds: pinnedAppIdsProp,
   onPinnedAppIdsChange,
+  interactive = true,
 }: TopAppBarProps) {
   const [internalPinned, setInternalPinned] = useState<string[]>([]);
   const pinnedAppIds = pinnedAppIdsProp !== undefined ? pinnedAppIdsProp : internalPinned;
@@ -606,9 +609,10 @@ export function TopAppBar({
   return (
     <div
       ref={topAppBarRef}
-      className={`top-app-bar ${expanded ? "top-app-bar--expanded" : "top-app-bar--collapsed"} ${isEditMode ? "top-app-bar--edit-mode" : ""} ${draggingAppId ? "top-app-bar--dragging-tab" : ""} ${className}`.trim()}
+      className={`top-app-bar ${expanded ? "top-app-bar--expanded" : "top-app-bar--collapsed"} ${isEditMode ? "top-app-bar--edit-mode" : ""} ${draggingAppId ? "top-app-bar--dragging-tab" : ""} ${!interactive ? "top-app-bar--non-interactive" : ""} ${className}`.trim()}
       role="banner"
       aria-label="Top app bar"
+      data-interactive={interactive}
     >
         <div className="top-app-bar__collapse-btn-wrap">
         <ActionButton
@@ -673,11 +677,11 @@ export function TopAppBar({
                 tabIndex={isEditMode ? -1 : selectedAppId === app.id ? 0 : -1}
                 onPointerDown={isEditMode ? (e) => handleTabPointerDown(e, app.id) : undefined}
                 onClick={() => {
-                  if (isEditMode) return;
+                  if (isEditMode || !interactive) return;
                   handleAppClick(app.id);
                 }}
                 onKeyDown={(e) => {
-                  if (isEditMode) return;
+                  if (isEditMode || !interactive) return;
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
                     handleAppClick(app.id);
@@ -737,7 +741,8 @@ export function TopAppBar({
                 aria-label="More apps"
                 aria-expanded={menuOpen}
                 aria-haspopup="menu"
-                onPress={() => setMenuOpen((o) => !o)}
+                isDisabled={!interactive}
+                onPress={() => interactive && setMenuOpen((o) => !o)}
               >
                 <More />
               </ActionButton>

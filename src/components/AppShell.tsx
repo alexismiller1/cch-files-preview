@@ -34,6 +34,7 @@ function AppShell({ windowContext = "browser" }: AppShellProps) {
               pinnedAppIds={pinnedAppIds}
               onPinnedAppIdsChange={setPinnedAppIds}
               onExpandedChange={setTopAppBarExpanded}
+              interactive={false}
             />
           )}
           {flags.appHeaderBar && selectedAppId !== "home" && (
