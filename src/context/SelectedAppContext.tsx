@@ -3,7 +3,7 @@
 import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
 
 export type AiAssistantRequest = {
-  thumbnail: string;
+  thumbnail?: string;
   prompt: string;
 };
 
@@ -19,7 +19,11 @@ type SelectedAppContextValue = {
   /** Carries a file thumbnail + prompt text from wherever an "AI Assistant" action card was
       clicked (e.g. Home) to the AI Assistant page, since navigation only passes a nav id. */
   aiAssistantRequest: AiAssistantRequest | null;
-  setAiAssistantRequest: (request: AiAssistantRequest | null) => void;
+  /** Navigates to the AI Assistant page, atomically setting (or clearing) the pending request
+      so it can't be read as stale from a previous visit. Action cards/banners pass a request;
+      the primary nav's "AI Assistant" item calls this with no arguments to force a blank
+      conversation, even if a request was set on an earlier visit. */
+  goToAiAssistant: (request?: AiAssistantRequest) => void;
   /** Name of the app whose placeholder screen ("{App} module") is currently taking over the
       page — set by quick actions/context-menu items on Home and Files. Tracked as part of nav
       history (rather than local component state) so the faux browser's real back/forward
@@ -66,16 +70,20 @@ export function SelectedAppProvider({ children }: { children: ReactNode }) {
       setSelectedAppId: (id: string) => navigate({ selectedAppId: id }),
       homeNavId: current.homeNavId,
       setHomeNavId: (id: string) => {
-        // Navigating anywhere other than the AI Assistant page clears any pending request, so
-        // clicking the "AI Assistant" nav item directly (not via an action card) always lands
-        // on a blank conversation rather than replaying a stale one.
-        if (id !== "ai-assistant") {
+        // A plain nav to the AI Assistant page (e.g. the primary nav item) always clears any
+        // pending request, so it lands on a blank conversation rather than replaying a stale
+        // one from an earlier action card visit. Action cards/banners use goToAiAssistant
+        // instead, which sets the request atomically alongside the navigation.
+        if (id === "ai-assistant") {
           setAiAssistantRequest(null);
         }
         navigate({ homeNavId: id });
       },
       aiAssistantRequest,
-      setAiAssistantRequest,
+      goToAiAssistant: (request?: AiAssistantRequest) => {
+        setAiAssistantRequest(request ?? null);
+        navigate({ homeNavId: "ai-assistant" });
+      },
       placeholderApp: current.placeholderApp,
       setPlaceholderApp: (appName: string | null) => navigate({ placeholderApp: appName }),
       canGoBack: nav.index > 0,

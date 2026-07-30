@@ -14,7 +14,9 @@ export function AiAssistantPage() {
         {aiAssistantRequest && (
           <>
             <div className="ai-assistant-user-message">
-              <img src={aiAssistantRequest.thumbnail} alt="" className="ai-assistant-user-thumbnail" />
+              {aiAssistantRequest.thumbnail && (
+                <img src={aiAssistantRequest.thumbnail} alt="" className="ai-assistant-user-thumbnail" />
+              )}
               <div className="ai-assistant-user-bubble">{aiAssistantRequest.prompt}</div>
             </div>
 

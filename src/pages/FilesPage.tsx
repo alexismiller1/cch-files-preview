@@ -36,6 +36,8 @@ import DeleteIcon from "@react-spectrum/s2/icons/Delete";
 import MoreIcon from "@react-spectrum/s2/icons/More";
 import ChevronLeftIcon from "@react-spectrum/s2/icons/ChevronLeft";
 import HistoryIcon from "@react-spectrum/s2/icons/History";
+import MagicWandIcon from "@react-spectrum/s2/icons/MagicWand";
+import CloseIcon from "@react-spectrum/s2/icons/Close";
 import { FilesLeftNav } from "../components/FilesLeftNav";
 import { FireflyMnemonicIcon, MnemonicIcon, type MnemonicKind } from "../components/MnemonicIcons";
 import { FILES, FileBadge, KIND_FORMAT, type FileKind } from "../data/filesData";
@@ -199,11 +201,30 @@ function FileOpenView({
   );
 }
 
+/** Dismissible promo banner routing to the AI Assistant page with a prefilled prompt (no thumbnail, unlike the Home action cards). */
+function AiAssistantBanner({ onTryIt, onDismiss }: { onTryIt: () => void; onDismiss: () => void }) {
+  return (
+    <div className="files-ai-banner">
+      <div className="files-ai-banner-icon">
+        <MagicWandIcon />
+      </div>
+      <p className="files-ai-banner-text">Edit a group of photos with the Adobe Assistant (Beta).</p>
+      <Button variant="accent" size="M" UNSAFE_className="files-ai-banner-cta" onPress={onTryIt}>
+        Try it
+      </Button>
+      <ActionButton isQuiet aria-label="Dismiss" UNSAFE_className="files-ai-banner-dismiss" onPress={onDismiss}>
+        <CloseIcon />
+      </ActionButton>
+    </div>
+  );
+}
+
 export function FilesPage() {
-  const { setPlaceholderApp } = useSelectedApp();
+  const { setPlaceholderApp, goToAiAssistant } = useSelectedApp();
   const [leftNavSelectedId, setLeftNavSelectedId] = useState("files");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
   const [openedFileId, setOpenedFileId] = useState<string | null>(null);
+  const [showAiBanner, setShowAiBanner] = useState(true);
 
   const openedFile = FILES.find((file) => file.id === openedFileId) ?? null;
 
@@ -231,6 +252,12 @@ export function FilesPage() {
         ) : (
           <>
         <header className="files-header">
+          {showAiBanner && (
+            <AiAssistantBanner
+              onTryIt={() => goToAiAssistant({ prompt: "Edit a group of photos" })}
+              onDismiss={() => setShowAiBanner(false)}
+            />
+          )}
           <div className="files-title-row">
             <Breadcrumbs size="L">
               <Breadcrumb>Your files</Breadcrumb>

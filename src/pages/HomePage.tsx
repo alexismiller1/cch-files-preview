@@ -192,7 +192,7 @@ const ACTION_CARDS_BY_KIND: Partial<Record<FileKind, ActionCard[]>> = {
 };
 
 export function HomePage() {
-  const { setHomeNavId, setAiAssistantRequest, setPlaceholderApp } = useSelectedApp();
+  const { setHomeNavId, goToAiAssistant, setPlaceholderApp } = useSelectedApp();
   const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
   const selectedFile = FILES.find((file) => file.id === selectedFileId) ?? null;
   const actionCards = selectedFile ? (ACTION_CARDS_BY_KIND[selectedFile.kind] ?? DEFAULT_ACTION_CARDS) : [];
@@ -202,8 +202,7 @@ export function HomePage() {
       return;
     }
     if (card.brand === "ai") {
-      setAiAssistantRequest({ thumbnail: selectedFile.thumbnail, prompt: cardText(card) });
-      setHomeNavId("ai-assistant");
+      goToAiAssistant({ thumbnail: selectedFile.thumbnail, prompt: cardText(card) });
     } else {
       setPlaceholderApp(PLACEHOLDER_APP_NAME[card.brand] ?? card.brand);
     }
