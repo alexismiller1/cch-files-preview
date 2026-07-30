@@ -77,7 +77,7 @@ type DesktopViewProps = {
 export function DesktopView({ theme, setTheme }: DesktopViewProps) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { selectedAppId } = useSelectedApp();
+  const { selectedAppId, homeNavId, canGoBack, canGoForward, goBack, goForward } = useSelectedApp();
   const { appMode, preset, flags } = useDisplayConfig();
   const { background } = useDesktopBackground();
   const [dateTime, setDateTime] = useState(() => formatMenubarDateTime(new Date()));
@@ -291,16 +291,28 @@ export function DesktopView({ theme, setTheme }: DesktopViewProps) {
                     <span className="browser-chrome-dot browser-chrome-dot--maximize" />
                   </div>
                   <div className="browser-chrome-nav">
-                    <span className="browser-chrome-btn" aria-hidden>
+                    <button
+                      type="button"
+                      className="browser-chrome-btn browser-chrome-btn--active"
+                      aria-label="Back"
+                      disabled={!canGoBack}
+                      onClick={goBack}
+                    >
                       <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
                         <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
                       </svg>
-                    </span>
-                    <span className="browser-chrome-btn" aria-hidden>
+                    </button>
+                    <button
+                      type="button"
+                      className="browser-chrome-btn browser-chrome-btn--active"
+                      aria-label="Forward"
+                      disabled={!canGoForward}
+                      onClick={goForward}
+                    >
                       <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
                         <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
                       </svg>
-                    </span>
+                    </button>
                     <span className="browser-chrome-btn" aria-hidden>
                       <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
                         <path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
@@ -313,7 +325,7 @@ export function DesktopView({ theme, setTheme }: DesktopViewProps) {
                         <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
                       </svg>
                     </span>
-                    <span className="browser-chrome-url-text">{displayHostnameForAppId(selectedAppId)}</span>
+                    <span className="browser-chrome-url-text">{displayHostnameForAppId(selectedAppId, homeNavId)}</span>
                   </div>
                 </div>
               )}

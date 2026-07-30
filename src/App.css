@@ -381,6 +381,22 @@
   background: rgba(0, 0, 0, 0.06);
 }
 
+/* Back/forward are real buttons (unlike the decorative reload icon) — reset native button
+   chrome and re-enable interaction that the base class disables via pointer-events. */
+.browser-chrome-btn.browser-chrome-btn--active {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.browser-chrome-btn.browser-chrome-btn--active:disabled {
+  pointer-events: none;
+  opacity: 0.35;
+}
+
 .browser-chrome-url-bar {
   flex: 1;
   display: flex;

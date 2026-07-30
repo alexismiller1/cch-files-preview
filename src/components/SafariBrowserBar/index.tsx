@@ -14,8 +14,8 @@ import iconTextSize from "../../assets/safari-icons/text-size.svg";
  * Designed for iPhone device frame (402px width).
  */
 export function SafariBrowserBar() {
-  const { selectedAppId } = useSelectedApp();
-  const displayUrl = displayHostnameForAppId(selectedAppId);
+  const { selectedAppId, homeNavId } = useSelectedApp();
+  const displayUrl = displayHostnameForAppId(selectedAppId, homeNavId);
 
   return (
     <div className="safari-browser-bar" data-node-id="92:3243">

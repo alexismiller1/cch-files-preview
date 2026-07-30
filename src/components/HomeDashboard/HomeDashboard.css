@@ -1,0 +1,395 @@
+.home-dashboard {
+  width: 100%;
+}
+
+/* ─── Hero ─── */
+
+.home-dashboard-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 40px 64px;
+}
+
+.home-dashboard-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Fades the hero image into the page background at the bottom. A plain gradient overlay
+   (rather than mask-image) since CSS mask sizing/repeat defaults are inconsistently
+   resolved across engines for gradient masks, which was clipping part of the image. */
+.home-dashboard-hero-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 55%, var(--s2-container-bg, white) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.home-dashboard-hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  max-width: 960px;
+  width: 100%;
+}
+
+.home-dashboard-hero-heading {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 900;
+  text-align: center;
+  color: #131313;
+}
+
+.home-prompt-bar {
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+  width: 100%;
+  max-width: 833px;
+  box-sizing: border-box;
+  padding: 24px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(221, 221, 221, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.home-prompt-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 120px;
+  flex-shrink: 0;
+  border: 1px dashed var(--spectrum-gray-500, #8f8f8f);
+  border-radius: 8px;
+  color: var(--spectrum-gray-900, #292929);
+  font-size: 14px;
+}
+
+.home-prompt-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.home-prompt-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.home-prompt-label {
+  font-size: 14px;
+  color: var(--spectrum-gray-700, #505050);
+}
+
+.home-prompt-placeholder {
+  font-size: 16px;
+  color: #000;
+}
+
+.home-prompt-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.home-prompt-controls-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.home-prompt-model {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.home-prompt-model-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+}
+
+.home-prompt-generate {
+  background: #131313 !important;
+  color: white !important;
+  border-radius: 20px !important;
+}
+
+/* ─── Body ─── */
+
+.home-dashboard-body {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: 0 40px 40px;
+}
+
+@container app-frame (max-width: 899px) {
+  .home-dashboard-body {
+    padding: 0 24px 24px;
+  }
+}
+
+.home-dashboard-tabs {
+  margin-bottom: 24px;
+}
+
+/* ─── Desktop app banner ─── */
+
+.home-desktop-banner {
+  display: flex;
+  background: var(--spectrum-gray-50, #f8f8f8);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.home-desktop-banner-hero {
+  width: 286px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  justify-content: center;
+}
+
+.home-desktop-banner-title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: #131313;
+}
+
+.home-desktop-banner-description {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #717171;
+}
+
+.home-desktop-banner-description a {
+  color: #131313;
+}
+
+.home-desktop-banner-cta {
+  background: #131313 !important;
+  color: white !important;
+  border-radius: 20px !important;
+}
+
+.home-desktop-apps {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+  padding: 16px 16px 16px 0;
+  overflow-x: auto;
+}
+
+.home-desktop-app {
+  flex: 1 1 0;
+  min-width: 146px;
+  max-width: 240px;
+  box-sizing: border-box;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.home-desktop-app-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.home-desktop-app-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.home-desktop-app-description {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #717171;
+  flex: 1;
+}
+
+.home-desktop-app-button {
+  align-self: flex-start;
+}
+
+/* ─── Section heading ─── */
+
+.home-section-heading {
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #131313;
+}
+
+/* ─── Create with Firefly ─── */
+
+.home-suggested-section {
+  margin-top: 40px;
+}
+
+.home-suggested-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@container app-frame (max-width: 899px) {
+  .home-suggested-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.home-suggested-card {
+  position: relative;
+  aspect-ratio: 1 / 1.02;
+  border-radius: 12px;
+  overflow: hidden;
+  border: none;
+  padding: 16px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  cursor: pointer;
+  background: none;
+}
+
+.home-suggested-card-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-suggested-card-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 42.5%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+.home-suggested-card-label {
+  position: relative;
+  flex: 1;
+  text-align: left;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.home-suggested-card-try {
+  position: relative;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.94);
+  color: black;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+/* ─── More ways to create ─── */
+
+.home-more-ways-section {
+  margin-top: 40px;
+}
+
+.home-more-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+@container app-frame (max-width: 899px) {
+  .home-more-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.home-more-card {
+  box-sizing: border-box;
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.home-more-card-image-wrap {
+  width: 120px;
+  height: 80px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.home-more-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-more-card-title {
+  margin: 0;
+  min-height: 63px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #131313;
+}
+
+.home-more-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #292929;
+}
+
+.home-more-card-footer-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+}

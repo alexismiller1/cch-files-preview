@@ -1,0 +1,422 @@
+/* .home-content (the app-frame-content div) owns the scroll region and has a definite
+   height via the app-frame's flex-stretch chain; .home-main is unstyled (display: contents)
+   so the hero can fill that height/width edge-to-edge, matching the blank-state panel exactly
+   on any screen size, with the quickstart section centered/padded independently below it. */
+.home-content {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Hide the scrollbar entirely (still scrollable via wheel/trackpad) so it never reserves
+     a gutter — the simplest fix for full-bleed decorative backgrounds (e.g. the Home hero)
+     that need to reach this panel's true right edge at every width. */
+  scrollbar-width: none;
+}
+
+.home-content::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.home-main {
+  display: contents;
+}
+
+.home-hero {
+  position: relative;
+  box-sizing: border-box;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--spectrum-gray-25, #ffffff);
+  padding: 32px 64px;
+}
+
+.home-hero-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
+}
+
+.home-hero-bg-image {
+  position: absolute;
+  top: -75%;
+  left: 0;
+  width: 100%;
+  height: 250%;
+  object-fit: cover;
+  filter: blur(40px);
+  opacity: 0.3;
+}
+
+.home-hero-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+}
+
+.home-hero-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.home-hero-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+}
+
+.home-hero-spacer {
+  flex: 1 1 0;
+}
+
+.home-hero-thumb {
+  flex-shrink: 0;
+  width: 533px;
+  height: 400px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--spectrum-gray-75, #f3f3f3);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.home-hero-thumb-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-hero-actions {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 20px;
+  min-width: 0;
+}
+
+.home-hero-open-button {
+  align-self: flex-start;
+}
+
+.home-hero-actions-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.home-hero-action-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--spectrum-gray-900, #292929);
+  cursor: pointer;
+}
+
+/* ActionButton (used as the "More" MenuTrigger so RAC wires up press/aria-expanded correctly)
+   ships its own padding/background/min-height; strip that to match the plain icon+label rows. */
+.home-hero-action-trigger {
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: 0;
+}
+
+.home-hero-action-row svg {
+  width: 20px;
+  height: 20px;
+}
+
+.home-hero-bottom {
+  text-align: center;
+}
+
+.home-hero-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--spectrum-gray-900, #292929);
+}
+
+.home-hero-format {
+  margin: 4px 0 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--spectrum-gray-900, #292929);
+}
+
+.home-quickstart {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: 32px 40px 40px;
+}
+
+@container app-frame (max-width: 899px) {
+  .home-quickstart {
+    padding: 24px 24px;
+  }
+}
+
+.home-action-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@container app-frame (max-width: 899px) {
+  .home-action-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.home-action-card {
+  box-sizing: border-box;
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(215, 41, 234, 0.07), #ffffff);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.home-action-card--firefly {
+  background: linear-gradient(135deg, rgba(234, 56, 41, 0.07), #ffffff);
+}
+
+.home-action-card--photoshop {
+  background: linear-gradient(135deg, rgba(20, 115, 230, 0.07), #ffffff);
+}
+
+.home-action-card--express {
+  background: linear-gradient(135deg, rgba(111, 78, 245, 0.08), #ffffff);
+}
+
+.home-action-card--acrobat {
+  background: linear-gradient(135deg, rgba(203, 27, 27, 0.07), #ffffff);
+}
+
+.home-action-card-image {
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.home-action-card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.home-action-card-title {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #131313;
+}
+
+.home-action-card--ai .home-action-card-highlight {
+  color: #ce2a92;
+  font-weight: 700;
+}
+
+.home-action-card--firefly .home-action-card-highlight {
+  color: #d73220;
+  font-weight: 700;
+}
+
+.home-action-card--photoshop .home-action-card-highlight {
+  color: #1473e6;
+  font-weight: 700;
+}
+
+.home-action-card--express .home-action-card-highlight {
+  color: #6f4ef5;
+  font-weight: 700;
+}
+
+.home-action-card--acrobat .home-action-card-highlight {
+  color: #cb1b1b;
+  font-weight: 700;
+}
+
+.home-action-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--spectrum-gray-700, #6d6d6d);
+}
+
+.home-action-card-footer svg {
+  width: 16px;
+  height: 16px;
+}
+
+.home-action-card-footer-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+/* ─── Right panel: Recent files ─── */
+
+.home-right-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.home-right-panel-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+  padding: 16px 16px 8px 24px;
+  background: var(--s2-container-bg, white);
+}
+
+.home-right-panel-title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.home-right-panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.home-recent-grid {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  align-content: flex-start;
+  gap: 16px;
+  padding: 8px 24px 24px;
+}
+
+.home-recent-item {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.home-recent-thumb-wrap {
+  position: relative;
+}
+
+.home-recent-thumb-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* "More actions" only reveals on hover/focus, matching the Files tab's card menu button. */
+.home-recent-menu {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.home-recent-item:hover .home-recent-menu,
+.home-recent-item:focus-within .home-recent-menu {
+  opacity: 1;
+}
+
+.home-recent-thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 128 / 128;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--spectrum-gray-75, #f3f3f3);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.home-recent-item[data-selected="true"] .home-recent-thumb {
+  outline-color: #3b63fb;
+}
+
+/* Reserve a fixed grey shelf at the bottom of every thumbnail for the app badge to sit on,
+   regardless of the source image's aspect ratio — cropping the image to fill the remaining
+   area instead of letting it fill the whole square. */
+.home-recent-thumb-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 40px;
+}
+
+.home-recent-thumb-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The shared FileBadge only gives its S2-icon variants (image/video kinds) a background
+   chip; the plain mnemonic <img> variants (pdf/express/illustrator/photoshop/firefly) render
+   with no backing, leaving the icon to float directly on the thumbnail. Match them here so
+   every badge in this panel sits on the same translucent chip. */
+.home-recent-thumb .files-card-badge {
+  background: var(--spectrum-gray-50, #ffffff);
+  border: 1px solid var(--spectrum-gray-200, rgba(0, 0, 0, 0.09));
+  border-radius: 4px;
+}
+
+.home-recent-name {
+  font-size: 14px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-recent-format {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #505050;
+}

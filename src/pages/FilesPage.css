@@ -1,0 +1,285 @@
+.files-page {
+  display: flex;
+  min-height: 0;
+}
+
+.files-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.files-header {
+  padding: 24px 32px 0;
+}
+
+.files-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+}
+
+.files-filtering-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+}
+
+.files-sort-grid-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.files-grid-wrap {
+  flex: 1;
+  min-height: 0;
+  padding: 0 32px 32px;
+}
+
+.files-grid {
+  width: 100%;
+  height: 100%;
+}
+
+/* The whole card already toggles selection on click (Spectrum's checkbox-style selection
+   behavior), but defaults to cursor:auto, giving no visual hint the thumbnail itself is
+   clickable — only the checkbox looks interactive. */
+.files-grid [role="row"] {
+  cursor: pointer;
+}
+
+.files-card-badge {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  width: 18px;
+  height: 18px;
+}
+
+.files-card-badge--icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background: var(--spectrum-gray-50, #ffffff);
+  border: 1px solid var(--spectrum-gray-200, rgba(0, 0, 0, 0.09));
+  color: var(--spectrum-gray-900, #292929);
+}
+
+.files-card-badge--icon svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* Real @react-spectrum/s2 menu icons get their own centered flex wrapper with a built-in inset;
+   our inline SVG mnemonic lands directly in the label's baseline-aligned grid, so recenter and
+   inset it manually to match. */
+.files-menu-mnemonic-icon {
+  align-self: center;
+  margin-left: 12px;
+}
+
+/* When every item in a menu section uses a custom mnemonic icon (none of Spectrum's own icon
+   components), MenuItem never reserves an icon column, so the label renders flush left underneath
+   the icon. Nudge just these labels over to clear it. */
+.files-context-action-item [slot="label"] {
+  margin-left: 26px;
+}
+
+/* "More actions" trigger is pulled out of the content row and placed in the top-right of the
+   thumbnail, parallel with the selection checkbox in the top-left (same 12px offset). */
+.files-grid [role="row"] [data-slot="menu"] {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  margin: 0;
+  z-index: 1;
+}
+
+/* Selection checkbox (incl. its background chip) and "more actions" menu trigger only reveal on
+   hover/focus/selection, matching the Figma hover-state spec. Kept in the DOM (opacity, not
+   display) for keyboard/touch a11y. */
+.files-grid [role="row"] div:has(> label[slot="selection"]),
+.files-grid [role="row"] [data-slot="menu"] {
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.files-grid [role="row"]:hover div:has(> label[slot="selection"]),
+.files-grid [role="row"]:focus-within div:has(> label[slot="selection"]),
+.files-grid [role="row"]:has(input[type="checkbox"]:checked) div:has(> label[slot="selection"]),
+.files-grid [role="row"]:hover [data-slot="menu"],
+.files-grid [role="row"]:focus-within [data-slot="menu"] {
+  opacity: 1;
+}
+
+/* Selected card ring matches the Figma accent blue used by the bulk-selection action bar. The
+   ring is a nested overlay div (opacity-toggled, not the row's own outline/border) styled via
+   Spectrum's shared `.ik12` light/dark border-color utility class — scoped narrowly to selected
+   rows in this grid so it doesn't affect that class anywhere else in the app. */
+.files-grid [role="row"][data-selected="true"] .ik12 {
+  border-color: #3b63fb;
+}
+
+/* The bulk-selection bar defaults to a centered floating pill (max-width: 960px) with a neutral
+   dark background; the Figma spec has it stretch the full width of the grid (from the left nav
+   divider to the window edge) in the same accent blue as the selected-card outline. */
+.files-action-bar {
+  max-width: none;
+  background: #3b63fb !important;
+}
+
+/* ─── File open view (image/video detail viewer + app placeholder) ─── */
+
+.file-open-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.file-open-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 64px;
+  flex-shrink: 0;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--spectrum-gray-200, #e1e1e1);
+}
+
+.file-open-header-left,
+.file-open-crumb,
+.file-open-header-center,
+.file-open-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.file-open-header-center {
+  flex: 1;
+  min-width: 0;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--spectrum-gray-900, #292929);
+}
+
+.file-open-crumb {
+  font-size: 14px;
+  color: var(--spectrum-gray-900, #292929);
+}
+
+.file-open-format {
+  color: var(--spectrum-gray-500, #8f8f8f);
+}
+
+.file-open-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.file-open-viewer {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--spectrum-gray-100, #e9e9e9);
+}
+
+.file-open-viewer-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.file-open-details {
+  width: 340px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  border-left: 1px solid var(--spectrum-gray-200, #e1e1e1);
+  background: white;
+}
+
+.file-open-details-title,
+.file-open-details-section {
+  padding: 24px;
+  border-bottom: 1px solid var(--spectrum-gray-200, #e1e1e1);
+}
+
+.file-open-details-section:last-child {
+  border-bottom: none;
+}
+
+.file-open-details-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.file-open-details-format {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--spectrum-gray-500, #8f8f8f);
+}
+
+.file-open-details-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.file-open-details-heading {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.file-open-details-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 14px;
+}
+
+.file-open-details-row span:last-child {
+  white-space: nowrap;
+  color: var(--spectrum-gray-700, #6d6d6d);
+}
+
+.file-open-quick-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.file-open-quick-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: 1px solid var(--spectrum-gray-100, #e9e9e9);
+  border-radius: 10px;
+  background: white;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.file-open-quick-action:hover {
+  background: var(--spectrum-gray-75, #f3f3f3);
+}
+
+.file-open-quick-action-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}

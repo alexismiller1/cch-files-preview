@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <rect width="200" height="200" fill="#DCEBFB"/>
+  <g transform="rotate(-6 55 100)">
+    <rect x="20" y="65" width="66" height="70" rx="10" fill="#D6295D"/>
+    <path d="M36 84h34M36 98h34M36 112h20" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <path d="M92 92c20-24 40-24 56 0" fill="none" stroke="#D6295D" stroke-width="3" stroke-linecap="round"/>
+  <path d="M140 84l8 8-10 4z" fill="#D6295D"/>
+  <g transform="translate(96 108)">
+    <rect x="0" y="0" width="66" height="20" rx="6" fill="#FFFFFF"/>
+    <circle cx="12" cy="10" r="4" fill="#2F80ED"/>
+    <text x="22" y="14" font-family="Adobe Clean, sans-serif" font-size="11" font-weight="700" fill="#2F3B4C">DOCX</text>
+  </g>
+  <g transform="translate(96 132)">
+    <rect x="0" y="0" width="66" height="20" rx="6" fill="#FFFFFF"/>
+    <circle cx="12" cy="10" r="4" fill="#27AE60"/>
+    <text x="22" y="14" font-family="Adobe Clean, sans-serif" font-size="11" font-weight="700" fill="#2F3B4C">XLSX</text>
+  </g>
+</svg>

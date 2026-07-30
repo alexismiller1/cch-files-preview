@@ -24,6 +24,19 @@
   min-height: 0;
 }
 
+/* Keeps the underlying page mounted (preserving its local state) while an app placeholder
+   takes over the frame — just visually hidden instead of unmounted. display: contents makes
+   this wrapper transparent to layout so the page's own top-level siblings (e.g. HomePage's
+   .app-frame-content + .app-frame-right-panel) still lay out directly against
+   .app-frame-page's flex row, exactly as if this div weren't there. */
+.app-frame-page-slot {
+  display: contents;
+}
+
+.app-frame-page-slot.app-frame-page-hidden {
+  display: none;
+}
+
 /* ─── Content panel ─── */
 .app-frame-content {
   flex: 1;
