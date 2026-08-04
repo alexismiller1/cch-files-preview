@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useCallback, useMemo, type ReactNo
 
 export type AppMode = "cc-home" | "cc-desktop";
 export type DisplayPreset = "full-desktop" | "content-only";
-export type PreviewMode = "small" | "fullscreen" | "split";
+export type PreviewMode = "small" | "fullscreen" | "split" | "action-tab" | "consolidated-open";
 
 export type DisplayFlags = {
   desktopChrome: boolean;
@@ -83,7 +83,13 @@ function loadAppMode(): AppMode {
 function loadPreviewMode(): PreviewMode {
   try {
     const stored = localStorage.getItem(PREVIEW_MODE_STORAGE_KEY);
-    if (stored === "small" || stored === "fullscreen" || stored === "split") {
+    if (
+      stored === "small" ||
+      stored === "fullscreen" ||
+      stored === "split" ||
+      stored === "action-tab" ||
+      stored === "consolidated-open"
+    ) {
       return stored;
     }
   } catch {

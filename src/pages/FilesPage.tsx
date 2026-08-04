@@ -46,6 +46,7 @@ import {
   CONTEXT_ACTIONS,
   MNEMONIC_APP_NAME,
   EXTRA_OPEN_ACTIONS,
+  KINDS_WITHOUT_GENERIC_OPEN,
 } from "../data/filesData";
 import { useSelectedApp } from "../context/SelectedAppContext";
 import { useDisplayConfig } from "../context/DisplayConfigContext";
@@ -184,7 +185,7 @@ export function FilesPage() {
                   <Text slot="title">{file.name}</Text>
                   <ActionMenu aria-label="More actions">
                     <MenuSection aria-label="Open actions">
-                      {!EXTRA_OPEN_ACTIONS[file.kind] && (
+                      {!KINDS_WITHOUT_GENERIC_OPEN.includes(file.kind) && (
                         <MenuItem textValue="Open">
                           <OpenInIcon />
                           <Text slot="label">Open</Text>
@@ -259,7 +260,9 @@ export function FilesPage() {
 
       {previewFile && (
         <FilePreviewModal
-          size={previewMode}
+          size={previewMode === "action-tab" || previewMode === "consolidated-open" ? "fullscreen" : previewMode}
+          showActionsTab={previewMode === "action-tab" || previewMode === "consolidated-open"}
+          consolidatedOpenMenu={previewMode === "consolidated-open"}
           file={previewFile}
           onClose={() => setPreviewFileId(null)}
           onNavigate={navigatePreview}

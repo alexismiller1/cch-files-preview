@@ -5,6 +5,8 @@ const OPTIONS: { id: PreviewMode; label: string }[] = [
   { id: "small", label: "Small modal" },
   { id: "fullscreen", label: "Full screen modal" },
   { id: "split", label: "Split view" },
+  { id: "action-tab", label: "Action tab" },
+  { id: "consolidated-open", label: "Consolidated open" },
 ];
 
 export type PreviewModeToggleProps = {

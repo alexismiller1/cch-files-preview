@@ -7,12 +7,11 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
 }
 
-/* Fullscreen (Option 2) — fills the main content area only; left offset matches .files-left-nav's width so
-   the files sidebar (and primary nav, further left, outside this page) stay visible behind it. */
+/* Fullscreen (Option 2) — fills the whole Files page, covering the files sidebar (L2 nav) too;
+   the primary nav/header/TAB, further outside this page, stay visible behind it. */
 .file-preview-modal--fullscreen {
   position: absolute;
   inset: 0;
-  left: 202px;
   z-index: 5;
 }
 
@@ -69,19 +68,40 @@
   min-width: 0;
 }
 
+/* Option 5's consolidated "Open"/"Open in" split button — a main action button with an attached
+   chevron trigger, styled to read as one seamless control. */
+.file-preview-modal-split-open {
+  display: flex;
+  align-items: stretch;
+}
+
+.file-preview-modal-split-open-main {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.file-preview-modal-split-open-chevron {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-left: none !important;
+  min-width: 0 !important;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
 .file-preview-modal-app-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
 }
 
 .file-preview-modal-app-icon svg,
 .file-preview-modal-app-icon img {
-  width: 32px;
-  height: 32px;
+  width: 20px;
+  height: 20px;
 }
 
 .file-preview-modal-title-wrap {
@@ -93,7 +113,7 @@
 
 .file-preview-modal-title {
   margin: 0;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
   color: black;
   white-space: nowrap;
@@ -294,6 +314,43 @@
   color: var(--spectrum-gray-700, #6d6d6d);
 }
 
+/* ─── Actions tab (Option 4) ─── */
+
+.file-preview-modal-actions-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.file-preview-modal-create-prompt-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 16px;
+  border: 1px solid var(--spectrum-gray-200, #e1e1e1);
+  background: white;
+  padding: 10px 8px 10px 14px;
+}
+
+.file-preview-modal-create-prompt-box svg {
+  flex-shrink: 0;
+}
+
+.file-preview-modal-prompt-field {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--spectrum-gray-900, #292929);
+}
+
+.file-preview-modal-prompt-field::placeholder {
+  color: var(--spectrum-gray-600, #767676);
+}
+
 /* ─── AI Assistant tab ─── */
 
 .file-preview-modal-ai-panel {
@@ -330,6 +387,58 @@
   width: 14px;
   height: 14px;
   flex-shrink: 0;
+}
+
+.file-preview-modal-ai-conversation {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.file-preview-modal-ai-user-bubble {
+  align-self: flex-end;
+  max-width: 90%;
+  background: var(--spectrum-gray-75, #f3f3f3);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--spectrum-gray-900, #292929);
+}
+
+.file-preview-modal-ai-thinking {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--spectrum-gray-700, #505050);
+}
+
+.file-preview-modal-ai-thinking-dots {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.file-preview-modal-ai-thinking-dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--spectrum-gray-500, #8f8f8f);
+  animation: file-preview-modal-ai-pulse 1.4s ease-in-out infinite;
+}
+
+.file-preview-modal-ai-thinking-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.file-preview-modal-ai-thinking-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes file-preview-modal-ai-pulse {
+  0%, 80%, 100% { opacity: 0.3; }
+  40% { opacity: 1; }
 }
 
 /* ─── Comments tab ─── */

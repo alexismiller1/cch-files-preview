@@ -1,6 +1,18 @@
-import { cloneElement, useState, type MouseEvent } from "react";
-import { ActionButton, ActionMenu, Avatar, Button, Divider, MenuItem, MenuSection, Text } from "@react-spectrum/s2";
+import { cloneElement, useEffect, useState, type MouseEvent, type ReactNode } from "react";
+import {
+  ActionButton,
+  ActionMenu,
+  Avatar,
+  Button,
+  Divider,
+  Menu,
+  MenuItem,
+  MenuSection,
+  MenuTrigger,
+  Text,
+} from "@react-spectrum/s2";
 import OpenInIcon from "@react-spectrum/s2/icons/OpenIn";
+import ChevronDownIcon from "@react-spectrum/s2/icons/ChevronDown";
 import SendIcon from "@react-spectrum/s2/icons/Send";
 import ShareIcon from "@react-spectrum/s2/icons/Share";
 import CopyIcon from "@react-spectrum/s2/icons/Copy";
@@ -15,6 +27,7 @@ import CloseIcon from "@react-spectrum/s2/icons/Close";
 import InfoCircleIcon from "@react-spectrum/s2/icons/InfoCircle";
 import ChatIcon from "@react-spectrum/s2/icons/Chat";
 import MagicWandIcon from "@react-spectrum/s2/icons/MagicWand";
+import ToolsIcon from "@react-spectrum/s2/icons/Tools";
 import ZoomInIcon from "@react-spectrum/s2/icons/ZoomIn";
 import ZoomOutIcon from "@react-spectrum/s2/icons/ZoomOut";
 import PlayIcon from "@react-spectrum/s2/icons/Play";
@@ -24,9 +37,11 @@ import DownloadIcon from "@react-spectrum/s2/icons/Download";
 import MaximizeIcon from "@react-spectrum/s2/icons/Maximize";
 import { MnemonicIcon, type MnemonicKind } from "../MnemonicIcons";
 import {
+  CONSOLIDATED_OPEN_CONFIG,
   CONTEXT_ACTIONS,
   EDIT_APP_NAME,
   EXTRA_OPEN_ACTIONS,
+  KINDS_WITHOUT_GENERIC_OPEN,
   FileKindIcon,
   KIND_FORMAT,
   type FileEntry,
@@ -43,7 +58,39 @@ const PROMPT_TEXT =
 /** Kinds with a real pixel resolution — everything else (documents/boards) skips that metadata row. */
 const RASTER_KINDS: FileKind[] = ["image", "video", "firefly-image", "photoshop"];
 
-type RailTab = "details" | "ai" | "comments";
+type RailTab = "details" | "actions" | "ai" | "comments";
+
+/** Kinds that get the "Describe a change to this file" prompt bar at the top of the Actions tab. */
+const PROMPT_BAR_KINDS: FileKind[] = ["image", "video", "firefly-image"];
+
+/** One rail icon button, shared by the expanded rail and the collapsed rail card. */
+function RailTabButton({
+  tab,
+  activeTab,
+  onSelect,
+  label,
+  children,
+}: {
+  tab: RailTab;
+  activeTab: RailTab;
+  onSelect: (tab: RailTab) => void;
+  label: string;
+  children: ReactNode;
+}) {
+  const isActive = activeTab === tab;
+  return (
+    <ActionButton
+      size="M"
+      isQuiet={!isActive}
+      staticColor={isActive ? "black" : undefined}
+      UNSAFE_className={isActive ? "file-preview-modal-rail-btn--active" : undefined}
+      aria-label={label}
+      onPress={() => onSelect(tab)}
+    >
+      {children}
+    </ActionButton>
+  );
+}
 
 const COMMENTS = [
   {
@@ -76,6 +123,14 @@ export type FilePreviewModalProps = {
    * column, pushing the grid and collapsing the files sidebar to make room (no overlay/scrim).
    */
   size: "fullscreen" | "small" | "split";
+  /** Option 4 (Action tab): adds a dedicated "Actions" rail tab (default-selected) holding the quick
+   * actions, which are removed from the Details tab. */
+  showActionsTab?: boolean;
+  /** Option 5 (Consolidated open menu): replaces the flat list of open-destination buttons in the
+   * header with a single "Open"/"Open in" split button (a dropdown of destinations, default action
+   * on press) per CONSOLIDATED_OPEN_CONFIG, alongside a standalone action like "Edit in Firefly" when
+   * that kind has one. Implies showActionsTab (reuses Option 4's fullscreen + Actions tab base). */
+  consolidatedOpenMenu?: boolean;
   file: FileEntry;
   onClose: () => void;
   onNavigate: (direction: "prev" | "next") => void;
@@ -142,16 +197,135 @@ function VideoPreview({ file }: { file: FileEntry }) {
   );
 }
 
-/** Full screen file preview overlay (Option 2), scoped to the Files page's main content area only — the left primary nav and files sidebar stay visible behind it. */
-export function FilePreviewModal({ size, file, onClose, onNavigate, onOpenApp, onQuickAction }: FilePreviewModalProps) {
-  const [detailsCollapsed, setDetailsCollapsed] = useState(false);
-  const [activeTab, setActiveTab] = useState<RailTab>("details");
+/**
+ * Option 5's consolidated "Open"/"Open in" control. A single item renders as a plain button (no
+ * dropdown). Multiple items render as a split button: pressing the button body fires the first
+ * (default) item, while the attached chevron opens a menu listing every item, including that default.
+ */
+function OpenMenuButton({
+  items,
+  onOpenApp,
+}: {
+  items: { label: string; appName: string }[];
+  onOpenApp: (appName: string) => void;
+}) {
+  const label = items.length > 1 ? "Open in" : "Open";
+  const defaultItem = items[0];
+
+  if (items.length <= 1) {
+    return (
+      <Button variant="secondary" size="M" onPress={() => onOpenApp(defaultItem.appName)}>
+        <OpenInIcon />
+        <Text>{label}</Text>
+      </Button>
+    );
+  }
+
+  return (
+    <div className="file-preview-modal-split-open">
+      <Button
+        variant="secondary"
+        size="M"
+        UNSAFE_className="file-preview-modal-split-open-main"
+        onPress={() => onOpenApp(defaultItem.appName)}
+      >
+        <OpenInIcon />
+        <Text>{label}</Text>
+      </Button>
+      <MenuTrigger>
+        <Button
+          variant="secondary"
+          size="M"
+          aria-label="More open options"
+          UNSAFE_className="file-preview-modal-split-open-chevron"
+        >
+          <ChevronDownIcon />
+        </Button>
+        <Menu
+          aria-label="Open in"
+          onAction={(key) => {
+            const item = items.find((i) => i.label === key);
+            if (item) onOpenApp(item.appName);
+          }}
+        >
+          {items.map((item) => (
+            <MenuItem key={item.label} id={item.label} textValue={item.label}>
+              <OpenInIcon />
+              <Text slot="label">{item.label}</Text>
+            </MenuItem>
+          ))}
+        </Menu>
+      </MenuTrigger>
+    </div>
+  );
+}
+
+/** File preview panel shared by all 5 preview options — see the `size`/`showActionsTab`/`consolidatedOpenMenu` props. */
+export function FilePreviewModal({
+  size,
+  showActionsTab = false,
+  consolidatedOpenMenu = false,
+  file,
+  onClose,
+  onNavigate,
+  onOpenApp,
+  onQuickAction,
+}: FilePreviewModalProps) {
   const actions = CONTEXT_ACTIONS[file.kind];
   const isFireflyImage = file.kind === "firefly-image";
   const isVideo = file.kind === "video";
   const showZoom = file.kind === "image" || file.kind === "firefly-image";
   const showResolution = RASTER_KINDS.includes(file.kind);
   const extraOpenActions = EXTRA_OPEN_ACTIONS[file.kind] ?? [];
+  const consolidatedOpenConfig = CONSOLIDATED_OPEN_CONFIG[file.kind];
+  const showPromptBar = showActionsTab && PROMPT_BAR_KINDS.includes(file.kind);
+  const hasQuickActions = !!actions && actions.length > 0;
+  /** The Actions tab only exists when there's something to put in it — matches the "no tab" behavior on boards, which have neither a prompt bar nor quick actions. */
+  const actionsTabAvailable = showActionsTab && (hasQuickActions || showPromptBar);
+  /** Acrobat (PDF) files don't get the AI Assistant tab. */
+  const showAiTab = file.kind !== "pdf";
+
+  const [detailsCollapsed, setDetailsCollapsed] = useState(false);
+  const [activeTab, setActiveTab] = useState<RailTab>(() => {
+    if (actionsTabAvailable) return "actions";
+    // If Option 4 is active but this file has no Actions tab (e.g. boards), land on AI Assistant instead of Details.
+    if (showActionsTab && showAiTab) return "ai";
+    return "details";
+  });
+  const [draftPrompt, setDraftPrompt] = useState("");
+  const [aiPrompt, setAiPrompt] = useState<string | null>(null);
+
+  // The modal doesn't remount when navigating prev/next to a different file, so the active tab has to
+  // be reset to that file's own recommended default (Actions when available, else AI Assistant/Details)
+  // whenever the previewed file changes — otherwise e.g. leaving a board (no Actions tab, so it falls
+  // back to AI Assistant) and landing on a Photoshop file would incorrectly stay on AI Assistant instead
+  // of that file's Create tab.
+  useEffect(() => {
+    setActiveTab(actionsTabAvailable ? "actions" : showActionsTab && showAiTab ? "ai" : "details");
+  }, [file.id, actionsTabAvailable, showActionsTab, showAiTab]);
+
+  const submitPrompt = () => {
+    const trimmed = draftPrompt.trim();
+    if (!trimmed) return;
+    setAiPrompt(trimmed);
+    setActiveTab("ai");
+    setDraftPrompt("");
+  };
+
+  const quickActionButtons =
+    hasQuickActions && actions
+      ? actions.map((action) => (
+          <button
+            key={action.label}
+            type="button"
+            className="file-preview-modal-quick-action"
+            onClick={() => onQuickAction(action.icon)}
+          >
+            <MnemonicIcon kind={action.icon} className="file-preview-modal-quick-action-icon" />
+            <span>{action.label}</span>
+          </button>
+        ))
+      : null;
 
   const modal = (
     <div className={`file-preview-modal file-preview-modal--${size}`} role="dialog" aria-modal="true" aria-label={file.name}>
@@ -165,22 +339,40 @@ export function FilePreviewModal({ size, file, onClose, onNavigate, onOpenApp, o
           </div>
         </div>
         <div className="file-preview-modal-header-right">
-          {extraOpenActions.map((action) => (
-            <Button
-              key={action.label}
-              variant="secondary"
-              size="M"
-              onPress={() => onOpenApp(action.appName)}
-            >
-              <OpenInIcon />
-              <Text>{action.label}</Text>
-            </Button>
-          ))}
-          {extraOpenActions.length === 0 && (
-            <Button variant="secondary" size="M" onPress={() => onOpenApp(EDIT_APP_NAME[file.kind])}>
-              <OpenInIcon />
-              <Text>Open</Text>
-            </Button>
+          {consolidatedOpenMenu ? (
+            <>
+              {consolidatedOpenConfig.standaloneAction && (
+                <Button
+                  variant="secondary"
+                  size="M"
+                  onPress={() => onOpenApp(consolidatedOpenConfig.standaloneAction!.appName)}
+                >
+                  <OpenInIcon />
+                  <Text>{consolidatedOpenConfig.standaloneAction.label}</Text>
+                </Button>
+              )}
+              <OpenMenuButton items={consolidatedOpenConfig.items} onOpenApp={onOpenApp} />
+            </>
+          ) : (
+            <>
+              {extraOpenActions.map((action) => (
+                <Button
+                  key={action.label}
+                  variant="secondary"
+                  size="M"
+                  onPress={() => onOpenApp(action.appName)}
+                >
+                  <OpenInIcon />
+                  <Text>{action.label}</Text>
+                </Button>
+              ))}
+              {!KINDS_WITHOUT_GENERIC_OPEN.includes(file.kind) && (
+                <Button variant="secondary" size="M" onPress={() => onOpenApp(EDIT_APP_NAME[file.kind])}>
+                  <OpenInIcon />
+                  <Text>Open</Text>
+                </Button>
+              )}
+            </>
           )}
           <ActionMenu isQuiet size="L" aria-label="More actions">
             <MenuSection aria-label="File actions">
@@ -255,45 +447,54 @@ export function FilePreviewModal({ size, file, onClose, onNavigate, onOpenApp, o
                   <ChevronDoubleRightIcon />
                 </ActionButton>
                 <Divider size="S" />
-                <ActionButton
-                  size="M"
-                  isQuiet={activeTab !== "details"}
-                  staticColor={activeTab === "details" ? "black" : undefined}
-                  UNSAFE_className={activeTab === "details" ? "file-preview-modal-rail-btn--active" : undefined}
-                  aria-label="Details"
-                  onPress={() => {
-                    setActiveTab("details");
+                {actionsTabAvailable && (
+                  <RailTabButton
+                    tab="actions"
+                    activeTab={activeTab}
+                    label="Actions"
+                    onSelect={(tab) => {
+                      setActiveTab(tab);
+                      setDetailsCollapsed(false);
+                    }}
+                  >
+                    <ToolsIcon />
+                  </RailTabButton>
+                )}
+                {showAiTab && (
+                  <RailTabButton
+                    tab="ai"
+                    activeTab={activeTab}
+                    label="AI Assistant"
+                    onSelect={(tab) => {
+                      setActiveTab(tab);
+                      setDetailsCollapsed(false);
+                    }}
+                  >
+                    <MagicWandIcon />
+                  </RailTabButton>
+                )}
+                <RailTabButton
+                  tab="details"
+                  activeTab={activeTab}
+                  label="Details"
+                  onSelect={(tab) => {
+                    setActiveTab(tab);
                     setDetailsCollapsed(false);
                   }}
                 >
                   <InfoCircleIcon />
-                </ActionButton>
-                <ActionButton
-                  size="M"
-                  isQuiet={activeTab !== "ai"}
-                  staticColor={activeTab === "ai" ? "black" : undefined}
-                  UNSAFE_className={activeTab === "ai" ? "file-preview-modal-rail-btn--active" : undefined}
-                  aria-label="AI Assistant"
-                  onPress={() => {
-                    setActiveTab("ai");
-                    setDetailsCollapsed(false);
-                  }}
-                >
-                  <MagicWandIcon />
-                </ActionButton>
-                <ActionButton
-                  size="M"
-                  isQuiet={activeTab !== "comments"}
-                  staticColor={activeTab === "comments" ? "black" : undefined}
-                  UNSAFE_className={activeTab === "comments" ? "file-preview-modal-rail-btn--active" : undefined}
-                  aria-label="Comments"
-                  onPress={() => {
-                    setActiveTab("comments");
+                </RailTabButton>
+                <RailTabButton
+                  tab="comments"
+                  activeTab={activeTab}
+                  label="Comments"
+                  onSelect={(tab) => {
+                    setActiveTab(tab);
                     setDetailsCollapsed(false);
                   }}
                 >
                   <ChatIcon />
-                </ActionButton>
+                </RailTabButton>
               </div>
             </div>
           </div>
@@ -335,30 +536,62 @@ export function FilePreviewModal({ size, file, onClose, onNavigate, onOpenApp, o
                       </div>
                     )}
 
-                    {actions && actions.length > 0 && (
+                    {!actionsTabAvailable && quickActionButtons && (
                       <>
                         <p className="file-preview-modal-section-heading">Try this next</p>
-                        <div className="file-preview-modal-quick-actions">
-                          {actions.map((action) => (
-                            <button
-                              key={action.label}
-                              type="button"
-                              className="file-preview-modal-quick-action"
-                              onClick={() => onQuickAction(action.icon)}
-                            >
-                              <MnemonicIcon kind={action.icon} className="file-preview-modal-quick-action-icon" />
-                              <span>{action.label}</span>
-                            </button>
-                          ))}
-                        </div>
+                        <div className="file-preview-modal-quick-actions">{quickActionButtons}</div>
                       </>
                     )}
                   </>
                 )}
 
-                {activeTab === "ai" && (
+                {activeTab === "actions" && actionsTabAvailable && (
+                  <div className="file-preview-modal-actions-panel">
+                    <p className="file-preview-modal-section-heading">Edit your file</p>
+                    <div className="file-preview-modal-quick-actions">
+                      {showPromptBar && (
+                        <div className="file-preview-modal-create-prompt-box">
+                          <MagicWandIcon />
+                          <input
+                            type="text"
+                            className="file-preview-modal-prompt-field"
+                            placeholder="Describe a change to this file"
+                            value={draftPrompt}
+                            onChange={(e) => setDraftPrompt(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                submitPrompt();
+                              }
+                            }}
+                          />
+                          <ActionButton isQuiet size="S" aria-label="Send" onPress={submitPrompt}>
+                            <SendIcon />
+                          </ActionButton>
+                        </div>
+                      )}
+                      {quickActionButtons}
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === "ai" && showAiTab && (
                   <div className="file-preview-modal-ai-panel">
-                    <p className="file-preview-modal-section-heading">Ask AI Assistant</p>
+                    {aiPrompt ? (
+                      <div className="file-preview-modal-ai-conversation">
+                        <div className="file-preview-modal-ai-user-bubble">{aiPrompt}</div>
+                        <div className="file-preview-modal-ai-thinking">
+                          <span className="file-preview-modal-ai-thinking-dots">
+                            <span />
+                            <span />
+                            <span />
+                          </span>
+                          Generating response
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="file-preview-modal-section-heading">Ask AI Assistant</p>
+                    )}
                     <div className="file-preview-modal-ai-prompt-box">
                       <div className="file-preview-modal-ai-prompt-input">Ask anything</div>
                       <ActionButton isQuiet size="S" aria-label="Send">
@@ -411,36 +644,22 @@ export function FilePreviewModal({ size, file, onClose, onNavigate, onOpenApp, o
                     <ChevronDoubleRightIcon />
                   </ActionButton>
                   <Divider size="S" />
-                  <ActionButton
-                    size="M"
-                    isQuiet={activeTab !== "details"}
-                    staticColor={activeTab === "details" ? "black" : undefined}
-                    UNSAFE_className={activeTab === "details" ? "file-preview-modal-rail-btn--active" : undefined}
-                    aria-label="Details"
-                    onPress={() => setActiveTab("details")}
-                  >
+                  {actionsTabAvailable && (
+                    <RailTabButton tab="actions" activeTab={activeTab} label="Actions" onSelect={setActiveTab}>
+                      <ToolsIcon />
+                    </RailTabButton>
+                  )}
+                  {showAiTab && (
+                    <RailTabButton tab="ai" activeTab={activeTab} label="AI Assistant" onSelect={setActiveTab}>
+                      <MagicWandIcon />
+                    </RailTabButton>
+                  )}
+                  <RailTabButton tab="details" activeTab={activeTab} label="Details" onSelect={setActiveTab}>
                     <InfoCircleIcon />
-                  </ActionButton>
-                  <ActionButton
-                    size="M"
-                    isQuiet={activeTab !== "ai"}
-                    staticColor={activeTab === "ai" ? "black" : undefined}
-                    UNSAFE_className={activeTab === "ai" ? "file-preview-modal-rail-btn--active" : undefined}
-                    aria-label="AI Assistant"
-                    onPress={() => setActiveTab("ai")}
-                  >
-                    <MagicWandIcon />
-                  </ActionButton>
-                  <ActionButton
-                    size="M"
-                    isQuiet={activeTab !== "comments"}
-                    staticColor={activeTab === "comments" ? "black" : undefined}
-                    UNSAFE_className={activeTab === "comments" ? "file-preview-modal-rail-btn--active" : undefined}
-                    aria-label="Comments"
-                    onPress={() => setActiveTab("comments")}
-                  >
+                  </RailTabButton>
+                  <RailTabButton tab="comments" activeTab={activeTab} label="Comments" onSelect={setActiveTab}>
                     <ChatIcon />
-                  </ActionButton>
+                  </RailTabButton>
                 </div>
               </div>
             </div>

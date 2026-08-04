@@ -56,7 +56,7 @@ export const CONTEXT_ACTIONS: Partial<Record<FileKind, { label: string; icon: Mn
     { label: "Select objects", icon: "photoshop" },
   ],
   "firefly-image": [
-    { label: "Add an image effect", icon: "firefly" },
+    { label: "Add an image effect", icon: "ai-assistant" },
   ],
   pdf: [
     { label: "Chat with this document", icon: "acrobat" },
@@ -97,6 +97,7 @@ export const MNEMONIC_APP_NAME: Record<MnemonicKind, string> = {
   photoshop: "Photoshop",
   acrobat: "Acrobat",
   express: "Express",
+  "ai-assistant": "Firefly",
 };
 
 export type ExtraOpenAction = { label: string; icon: "boards" | "firefly"; appName: string };
@@ -114,6 +115,69 @@ export const EXTRA_OPEN_ACTIONS: Partial<Record<FileKind, ExtraOpenAction[]>> = 
     { label: "Open in Boards", icon: "boards", appName: "Firefly Boards" },
     { label: "Edit in Firefly", icon: "firefly", appName: "Firefly" },
   ],
+  photoshop: [
+    { label: "Open in Boards", icon: "boards", appName: "Firefly Boards" },
+  ],
+  illustrator: [
+    { label: "Open in Boards", icon: "boards", appName: "Firefly Boards" },
+  ],
+};
+
+/** Kinds whose extra open actions replace the plain "Open" item entirely rather than sitting alongside it. */
+export const KINDS_WITHOUT_GENERIC_OPEN: FileKind[] = ["image", "video"];
+
+export type OpenMenuItem = { label: string; appName: string };
+
+/**
+ * Per-kind config for Option 5's consolidated "Open"/"Open in" split button: `items` are the
+ * destinations listed in the dropdown (the first is the default action fired by pressing the
+ * button body itself), and `standaloneAction` (when present) is a separate button shown alongside
+ * it — e.g. "Edit in Firefly" for image/video, which isn't one of the open destinations.
+ */
+export const CONSOLIDATED_OPEN_CONFIG: Record<FileKind, { standaloneAction?: OpenMenuItem; items: OpenMenuItem[] }> = {
+  image: {
+    standaloneAction: { label: "Edit in Firefly", appName: "Firefly" },
+    items: [
+      { label: "Open in Boards", appName: "Firefly Boards" },
+      { label: "Open in Photoshop web", appName: "Photoshop" },
+      { label: "Open in Lightroom desktop", appName: "Lightroom" },
+    ],
+  },
+  pdf: {
+    items: [
+      { label: "Open in Acrobat web", appName: "Acrobat" },
+      { label: "Open in Acrobat desktop", appName: "Acrobat" },
+    ],
+  },
+  video: {
+    standaloneAction: { label: "Edit in Firefly", appName: "Firefly" },
+    items: [
+      { label: "Open in Boards", appName: "Firefly Boards" },
+      { label: "Open in Premiere desktop", appName: "Premiere" },
+    ],
+  },
+  express: {
+    items: [{ label: "Open", appName: "Express" }],
+  },
+  photoshop: {
+    items: [
+      { label: "Open in Photoshop web", appName: "Photoshop" },
+      { label: "Open in Photoshop desktop", appName: "Photoshop" },
+      { label: "Open in Boards", appName: "Firefly Boards" },
+    ],
+  },
+  illustrator: {
+    items: [
+      { label: "Open in Illustrator", appName: "Illustrator" },
+      { label: "Open in Boards", appName: "Firefly Boards" },
+    ],
+  },
+  "firefly-image": {
+    items: [{ label: "Open", appName: "Firefly" }],
+  },
+  "firefly-board": {
+    items: [{ label: "Open", appName: "Firefly Boards" }],
+  },
 };
 
 /** Shared file list — reused by the Files grid and the Home page's "Recent files" panel. */
