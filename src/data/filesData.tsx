@@ -129,55 +129,41 @@ export const KINDS_WITHOUT_GENERIC_OPEN: FileKind[] = ["image", "video"];
 export type OpenMenuItem = { label: string; appName: string };
 
 /**
- * Per-kind config for Option 5's consolidated "Open"/"Open in" split button: `items` are the
- * destinations listed in the dropdown (the first is the default action fired by pressing the
- * button body itself), and `standaloneAction` (when present) is a separate button shown alongside
- * it — e.g. "Edit in Firefly" for image/video, which isn't one of the open destinations.
+ * Per-kind items for Option 5's consolidated "Open in ___" split button. The first item is both
+ * the default action (fired by pressing the button body) and the button's own visible label —
+ * the button always reads as "Open in <app>", never a generic "Open"/"Open in". The dropdown lists
+ * every item, including that first/default one, so re-selecting it is still possible.
  */
-export const CONSOLIDATED_OPEN_CONFIG: Record<FileKind, { standaloneAction?: OpenMenuItem; items: OpenMenuItem[] }> = {
-  image: {
-    standaloneAction: { label: "Edit in Firefly", appName: "Firefly" },
-    items: [
-      { label: "Open in Boards", appName: "Firefly Boards" },
-      { label: "Open in Photoshop web", appName: "Photoshop" },
-      { label: "Open in Lightroom desktop", appName: "Lightroom" },
-    ],
-  },
-  pdf: {
-    items: [
-      { label: "Open in Acrobat web", appName: "Acrobat" },
-      { label: "Open in Acrobat desktop", appName: "Acrobat" },
-    ],
-  },
-  video: {
-    standaloneAction: { label: "Edit in Firefly", appName: "Firefly" },
-    items: [
-      { label: "Open in Boards", appName: "Firefly Boards" },
-      { label: "Open in Premiere desktop", appName: "Premiere" },
-    ],
-  },
-  express: {
-    items: [{ label: "Open", appName: "Express" }],
-  },
-  photoshop: {
-    items: [
-      { label: "Open in Photoshop web", appName: "Photoshop" },
-      { label: "Open in Photoshop desktop", appName: "Photoshop" },
-      { label: "Open in Boards", appName: "Firefly Boards" },
-    ],
-  },
-  illustrator: {
-    items: [
-      { label: "Open in Illustrator", appName: "Illustrator" },
-      { label: "Open in Boards", appName: "Firefly Boards" },
-    ],
-  },
-  "firefly-image": {
-    items: [{ label: "Open", appName: "Firefly" }],
-  },
-  "firefly-board": {
-    items: [{ label: "Open", appName: "Firefly Boards" }],
-  },
+export const CONSOLIDATED_OPEN_CONFIG: Record<FileKind, OpenMenuItem[]> = {
+  image: [
+    { label: "Open in Firefly", appName: "Firefly" },
+    { label: "Open in Boards", appName: "Firefly Boards" },
+    { label: "Open in Photoshop web", appName: "Photoshop" },
+    { label: "Open in Lightroom desktop", appName: "Lightroom" },
+  ],
+  pdf: [
+    { label: "Open in Acrobat web", appName: "Acrobat" },
+    { label: "Open in Acrobat desktop", appName: "Acrobat" },
+  ],
+  video: [
+    { label: "Open in Firefly", appName: "Firefly" },
+    { label: "Open in Boards", appName: "Firefly Boards" },
+    { label: "Open in Premiere desktop", appName: "Premiere" },
+  ],
+  express: [{ label: "Open in Express", appName: "Express" }],
+  photoshop: [
+    { label: "Open in Photoshop web", appName: "Photoshop" },
+    { label: "Open in Photoshop desktop", appName: "Photoshop" },
+    { label: "Open in Firefly", appName: "Firefly" },
+    { label: "Open in Boards", appName: "Firefly Boards" },
+  ],
+  illustrator: [
+    { label: "Open in Illustrator", appName: "Illustrator" },
+    { label: "Open in Firefly", appName: "Firefly" },
+    { label: "Open in Boards", appName: "Firefly Boards" },
+  ],
+  "firefly-image": [{ label: "Open in Firefly", appName: "Firefly" }],
+  "firefly-board": [{ label: "Open in Boards", appName: "Firefly Boards" }],
 };
 
 /** Shared file list — reused by the Files grid and the Home page's "Recent files" panel. */

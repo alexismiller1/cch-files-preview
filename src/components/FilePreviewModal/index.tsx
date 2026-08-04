@@ -198,9 +198,11 @@ function VideoPreview({ file }: { file: FileEntry }) {
 }
 
 /**
- * Option 5's consolidated "Open"/"Open in" control. A single item renders as a plain button (no
- * dropdown). Multiple items render as a split button: pressing the button body fires the first
- * (default) item, while the attached chevron opens a menu listing every item, including that default.
+ * Option 5's consolidated "Open in ___" control. The button always shows the default (first) item's
+ * own label — e.g. "Open in Photoshop web" — never a generic "Open"/"Open in". A single item renders
+ * as a plain button (no dropdown); multiple items render as a split button: pressing the button body
+ * fires the default item, while the attached chevron opens a menu listing the *other* items — the
+ * default isn't repeated there since the button itself already reads as that action.
  */
 function OpenMenuButton({
   items,
@@ -209,10 +211,10 @@ function OpenMenuButton({
   items: { label: string; appName: string }[];
   onOpenApp: (appName: string) => void;
 }) {
-  const label = items.length > 1 ? "Open in" : "Open";
-  const defaultItem = items[0];
+  const [defaultItem, ...otherItems] = items;
+  const label = defaultItem.label;
 
-  if (items.length <= 1) {
+  if (otherItems.length === 0) {
     return (
       <Button variant="secondary" size="M" onPress={() => onOpenApp(defaultItem.appName)}>
         <OpenInIcon />
@@ -244,11 +246,11 @@ function OpenMenuButton({
         <Menu
           aria-label="Open in"
           onAction={(key) => {
-            const item = items.find((i) => i.label === key);
+            const item = otherItems.find((i) => i.label === key);
             if (item) onOpenApp(item.appName);
           }}
         >
-          {items.map((item) => (
+          {otherItems.map((item) => (
             <MenuItem key={item.label} id={item.label} textValue={item.label}>
               <OpenInIcon />
               <Text slot="label">{item.label}</Text>
@@ -340,19 +342,7 @@ export function FilePreviewModal({
         </div>
         <div className="file-preview-modal-header-right">
           {consolidatedOpenMenu ? (
-            <>
-              {consolidatedOpenConfig.standaloneAction && (
-                <Button
-                  variant="secondary"
-                  size="M"
-                  onPress={() => onOpenApp(consolidatedOpenConfig.standaloneAction!.appName)}
-                >
-                  <OpenInIcon />
-                  <Text>{consolidatedOpenConfig.standaloneAction.label}</Text>
-                </Button>
-              )}
-              <OpenMenuButton items={consolidatedOpenConfig.items} onOpenApp={onOpenApp} />
-            </>
+            <OpenMenuButton items={consolidatedOpenConfig} onOpenApp={onOpenApp} />
           ) : (
             <>
               {extraOpenActions.map((action) => (
