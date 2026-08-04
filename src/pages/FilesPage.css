@@ -1,4 +1,5 @@
 .files-page {
+  position: relative;
   display: flex;
   min-height: 0;
 }
@@ -8,6 +9,20 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
+}
+
+/* Split view (Option 3): collapses the "Your files / Shared with you / ..." sidebar to make room for
+   the preview panel docked on the right. Width is set here (not on .files-left-nav) so the nav keeps
+   its own intrinsic width and just gets clipped away. */
+.files-left-nav-wrap {
+  flex-shrink: 0;
+  width: 202px;
+  overflow: hidden;
+  transition: width 0.2s ease;
+}
+
+.files-left-nav-wrap--collapsed {
+  width: 0;
 }
 
 .files-header {
@@ -182,155 +197,4 @@
 .files-action-bar {
   max-width: none;
   background: #3b63fb !important;
-}
-
-/* ─── File open view (image/video detail viewer + app placeholder) ─── */
-
-.file-open-view {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  min-height: 0;
-}
-
-.file-open-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  height: 64px;
-  flex-shrink: 0;
-  padding: 0 16px;
-  border-bottom: 1px solid var(--spectrum-gray-200, #e1e1e1);
-}
-
-.file-open-header-left,
-.file-open-crumb,
-.file-open-header-center,
-.file-open-header-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.file-open-header-center {
-  flex: 1;
-  min-width: 0;
-  justify-content: center;
-  font-size: 14px;
-  color: var(--spectrum-gray-900, #292929);
-}
-
-.file-open-crumb {
-  font-size: 14px;
-  color: var(--spectrum-gray-900, #292929);
-}
-
-.file-open-format {
-  color: var(--spectrum-gray-500, #8f8f8f);
-}
-
-.file-open-body {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-}
-
-.file-open-viewer {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: var(--spectrum-gray-100, #e9e9e9);
-}
-
-.file-open-viewer-image {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.file-open-details {
-  width: 340px;
-  flex-shrink: 0;
-  overflow-y: auto;
-  border-left: 1px solid var(--spectrum-gray-200, #e1e1e1);
-  background: white;
-}
-
-.file-open-details-title,
-.file-open-details-section {
-  padding: 24px;
-  border-bottom: 1px solid var(--spectrum-gray-200, #e1e1e1);
-}
-
-.file-open-details-section:last-child {
-  border-bottom: none;
-}
-
-.file-open-details-name {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.file-open-details-format {
-  margin-top: 4px;
-  font-size: 11px;
-  color: var(--spectrum-gray-500, #8f8f8f);
-}
-
-.file-open-details-section {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.file-open-details-heading {
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.file-open-details-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  font-size: 14px;
-}
-
-.file-open-details-row span:last-child {
-  white-space: nowrap;
-  color: var(--spectrum-gray-700, #6d6d6d);
-}
-
-.file-open-quick-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.file-open-quick-action {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
-  border: 1px solid var(--spectrum-gray-100, #e9e9e9);
-  border-radius: 10px;
-  background: white;
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 500;
-  text-align: left;
-  cursor: pointer;
-}
-
-.file-open-quick-action:hover {
-  background: var(--spectrum-gray-75, #f3f3f3);
-}
-
-.file-open-quick-action-icon {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
 }

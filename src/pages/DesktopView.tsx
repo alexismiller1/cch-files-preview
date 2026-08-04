@@ -8,6 +8,7 @@ import AppShell from "../components/AppShell";
 import StatusBar from "../components/StatusBar";
 import SafariBrowserBar from "../components/SafariBrowserBar";
 import { ResponsiveTester } from "../components/ResponsiveTester";
+import { PreviewModeToggle } from "../components/PreviewModeToggle";
 import { type DeviceType } from "../components/DeviceSwitcher";
 import { SettingsFab } from "../components/SettingsFab";
 import { THEME_COLORS } from "../themeColors";
@@ -78,7 +79,7 @@ export function DesktopView({ theme, setTheme }: DesktopViewProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedAppId, homeNavId, canGoBack, canGoForward, goBack, goForward } = useSelectedApp();
-  const { appMode, preset, flags } = useDisplayConfig();
+  const { appMode, preset, flags, previewMode, setPreviewMode } = useDisplayConfig();
   const { background } = useDesktopBackground();
   const [dateTime, setDateTime] = useState(() => formatMenubarDateTime(new Date()));
   /** Browser chrome only — desktop-app chrome switch removed from UI */
@@ -273,6 +274,11 @@ export function DesktopView({ theme, setTheme }: DesktopViewProps) {
       )}
 
       <div ref={containerRef} className="responsive-window-container">
+        {flags.responsiveTester && isDesktopDevice && (
+          <div className="preview-mode-toggle-wrap">
+            <PreviewModeToggle mode={previewMode} onModeChange={setPreviewMode} />
+          </div>
+        )}
         <div className="desktop-window-wrap">
           {isDesktopDevice && isFullDesktop && !resizeDisabled && (
             <div

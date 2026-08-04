@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useCallback, useMemo, type ReactNo
 
 export type AppMode = "cc-home" | "cc-desktop";
 export type DisplayPreset = "full-desktop" | "content-only";
+export type PreviewMode = "small" | "fullscreen" | "split";
 
 export type DisplayFlags = {
   desktopChrome: boolean;
@@ -47,10 +48,13 @@ type DisplayConfigContextValue = {
   preset: DisplayPreset;
   setPreset: (preset: DisplayPreset) => void;
   flags: DisplayFlags;
+  previewMode: PreviewMode;
+  setPreviewMode: (mode: PreviewMode) => void;
 };
 
 const PRESET_STORAGE_KEY = "display-preset";
 const APP_MODE_STORAGE_KEY = "app-mode";
+const PREVIEW_MODE_STORAGE_KEY = "files-preview-mode";
 
 function loadPreset(): DisplayPreset {
   try {
@@ -76,17 +80,32 @@ function loadAppMode(): AppMode {
   return "cc-home";
 }
 
+function loadPreviewMode(): PreviewMode {
+  try {
+    const stored = localStorage.getItem(PREVIEW_MODE_STORAGE_KEY);
+    if (stored === "small" || stored === "fullscreen" || stored === "split") {
+      return stored;
+    }
+  } catch {
+    // localStorage unavailable
+  }
+  return "fullscreen";
+}
+
 const DisplayConfigContext = createContext<DisplayConfigContextValue>({
   appMode: "cc-home",
   setAppMode: () => {},
   preset: "full-desktop",
   setPreset: () => {},
   flags: PRESET_FLAGS["full-desktop"],
+  previewMode: "fullscreen",
+  setPreviewMode: () => {},
 });
 
 export function DisplayConfigProvider({ children }: { children: ReactNode }) {
   const [appMode, setAppModeState] = useState<AppMode>(loadAppMode);
   const [preset, setPresetState] = useState<DisplayPreset>(loadPreset);
+  const [previewMode, setPreviewModeState] = useState<PreviewMode>(loadPreviewMode);
 
   const setAppMode = useCallback((next: AppMode) => {
     setAppModeState(next);
@@ -106,6 +125,15 @@ export function DisplayConfigProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const setPreviewMode = useCallback((next: PreviewMode) => {
+    setPreviewModeState(next);
+    try {
+      localStorage.setItem(PREVIEW_MODE_STORAGE_KEY, next);
+    } catch {
+      // localStorage unavailable
+    }
+  }, []);
+
   const flags = useMemo(() => {
     const base = PRESET_FLAGS[preset];
     if (appMode === "cc-desktop") {
@@ -115,7 +143,9 @@ export function DisplayConfigProvider({ children }: { children: ReactNode }) {
   }, [preset, appMode]);
 
   return (
-    <DisplayConfigContext.Provider value={{ appMode, setAppMode, preset, setPreset, flags }}>
+    <DisplayConfigContext.Provider
+      value={{ appMode, setAppMode, preset, setPreset, flags, previewMode, setPreviewMode }}
+    >
       {children}
     </DisplayConfigContext.Provider>
   );
