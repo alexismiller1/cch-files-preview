@@ -37,7 +37,7 @@ import MoreIcon from "@react-spectrum/s2/icons/More";
 import MagicWandIcon from "@react-spectrum/s2/icons/MagicWand";
 import CloseIcon from "@react-spectrum/s2/icons/Close";
 import { FilesLeftNav } from "../components/FilesLeftNav";
-import { FireflyMnemonicIcon, MnemonicIcon } from "../components/MnemonicIcons";
+import { FireflyMnemonicIcon, MnemonicIcon, PngMnemonicIcon } from "../components/MnemonicIcons";
 import { FilePreviewModal } from "../components/FilePreviewModal";
 import {
   FILES,
@@ -211,7 +211,7 @@ export function FilesPage() {
                             UNSAFE_className="files-context-action-item"
                             onAction={() => setPlaceholderApp(MNEMONIC_APP_NAME[action.icon])}
                           >
-                            <MnemonicIcon kind={action.icon} />
+                            {action.image ? <PngMnemonicIcon src={action.image} /> : <MnemonicIcon kind={action.icon} />}
                             <Text slot="label">{action.label}</Text>
                           </MenuItem>
                         ))}
@@ -260,9 +260,23 @@ export function FilesPage() {
 
       {previewFile && (
         <FilePreviewModal
-          size={previewMode === "action-tab" || previewMode === "consolidated-open" ? "fullscreen" : previewMode}
-          showActionsTab={previewMode === "action-tab" || previewMode === "consolidated-open"}
+          size={
+            previewMode === "action-tab" ||
+            previewMode === "consolidated-open" ||
+            previewMode === "primary-open" ||
+            previewMode === "combined-actions"
+              ? "fullscreen"
+              : previewMode
+          }
+          showActionsTab={
+            previewMode === "action-tab" ||
+            previewMode === "consolidated-open" ||
+            previewMode === "primary-open" ||
+            previewMode === "combined-actions"
+          }
           consolidatedOpenMenu={previewMode === "consolidated-open"}
+          primaryOpenMenu={previewMode === "primary-open" || previewMode === "combined-actions"}
+          combinedActionsTab={previewMode === "combined-actions"}
           file={previewFile}
           onClose={() => setPreviewFileId(null)}
           onNavigate={navigatePreview}

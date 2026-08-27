@@ -63,3 +63,15 @@
 .desktop[data-theme="light"] .preview-mode-toggle__preset--active {
   background: rgba(80, 120, 220, 0.35);
 }
+
+.preview-mode-toggle__preset--disabled,
+.preview-mode-toggle__preset--disabled:hover {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.desktop[data-theme="light"] .preview-mode-toggle__preset--disabled,
+.desktop[data-theme="light"] .preview-mode-toggle__preset--disabled:hover {
+  background: rgba(0, 0, 0, 0.08);
+}

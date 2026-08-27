@@ -77,6 +77,15 @@ export function AiAssistantMnemonicIcon({ className = "files-menu-mnemonic-icon"
   );
 }
 
+/** Wraps an arbitrary raster icon in an <svg> shell so it can slot into MenuItem's icon area — see FireflyMnemonicIcon for why MenuItem needs an <svg>, not an <img>. */
+export function PngMnemonicIcon({ src, className = "files-menu-mnemonic-icon" }: { src: string; className?: string }) {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <image href={src} width="20" height="20" />
+    </svg>
+  );
+}
+
 export type MnemonicKind = "firefly" | "photoshop" | "acrobat" | "express" | "ai-assistant";
 
 export function MnemonicIcon({ kind, className }: { kind: MnemonicKind; className?: string }) {

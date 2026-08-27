@@ -17,6 +17,31 @@ import expressPlaceholder from "../assets/files-thumbnails/express-placeholder.s
 import illustratorPlaceholder from "../assets/files-thumbnails/illustrator-placeholder.svg";
 import fireflyImagePlaceholder from "../assets/files-thumbnails/firefly-image-placeholder.svg";
 import fireflyBoardPlaceholder from "../assets/files-thumbnails/firefly-board-placeholder.svg";
+import addChartsGridsIcon from "../assets/create-action-icons/add-charts-grids.png";
+import addDesignElementsIcon from "../assets/create-action-icons/add-design-elements.png";
+import addMediaIcon from "../assets/create-action-icons/add-media.png";
+import adjustColorLightingIcon from "../assets/create-action-icons/adjust-color-lighting.png";
+import adjustObjectIcon from "../assets/create-action-icons/adjust-object.png";
+import applyPresetIcon from "../assets/create-action-icons/apply-preset.png";
+import chatWithPdfIcon from "../assets/create-action-icons/chat-with-pdf.png";
+import combineFilesIcon from "../assets/create-action-icons/combine-files-to-pdf-acrobat.png";
+import convertAicToExpressIcon from "../assets/create-action-icons/convert-aic-to-express.png";
+import editTextImgAcrobatIcon from "../assets/create-action-icons/edit-text-img-acrobat.png";
+import genFillPhotoshopIcon from "../assets/create-action-icons/gen-fill-photoshop.png";
+import genFillRemoveObjectIcon from "../assets/create-action-icons/gen-fill-remove-object.png";
+import generateImageExpressIcon from "../assets/create-action-icons/generate-image-express.png";
+import generateImagePhotoshopIcon from "../assets/create-action-icons/generate-image-photoshop.png";
+import generateVideoExpressIcon from "../assets/create-action-icons/generate-video-express.png";
+import imageReferenceIcon from "../assets/create-action-icons/image-reference.png";
+import imageToVideoIcon from "../assets/create-action-icons/image-to-video.png";
+import pdfToWordIcon from "../assets/create-action-icons/pdf-to-word.png";
+import psQuickActionsIcon from "../assets/create-action-icons/ps-quick-actions.png";
+import removeObjectPhotoshopIcon from "../assets/create-action-icons/remove-object-photoshop.png";
+import requestSignaturesAcrobatIcon from "../assets/create-action-icons/request-signatures-acrobat.png";
+import summarizePdfIcon from "../assets/create-action-icons/summarize-pdf.png";
+import textEffectsIcon from "../assets/create-action-icons/text-effects.png";
+import translateVideoIcon from "../assets/create-action-icons/translate-video.png";
+import upscaleVideoIcon from "../assets/create-action-icons/upscale-video.png";
 
 export type FileKind = "image" | "pdf" | "video" | "express" | "photoshop" | "illustrator" | "firefly-image" | "firefly-board";
 
@@ -45,49 +70,55 @@ export const EDIT_APP_NAME: Record<FileKind, string> = {
   "firefly-board": "Firefly Boards",
 };
 
-/** Per-file-type contextual actions shown in the ActionMenu and file preview "Try this next" list, each routed to the app that handles it. */
-export const CONTEXT_ACTIONS: Partial<Record<FileKind, { label: string; icon: MnemonicKind }[]>> = {
+export type ContextAction = { label: string; icon: MnemonicKind; image?: string };
+
+/**
+ * Per-file-type contextual actions shown in the ActionMenu and file preview "Try this next" list, each
+ * routed to the app that handles it. `image`, when present, overrides the generic app mnemonic (`icon`)
+ * with a specific uploaded action icon — `icon` is still kept for app-name routing (MNEMONIC_APP_NAME).
+ */
+export const CONTEXT_ACTIONS: Partial<Record<FileKind, ContextAction[]>> = {
   image: [
-    { label: "Convert this image to video", icon: "firefly" },
-    { label: "Generate image with reference", icon: "firefly" },
-    { label: "Remove objects", icon: "firefly" },
-    { label: "Generate a new image layer", icon: "photoshop" },
-    { label: "Make quick adjustments", icon: "photoshop" },
-    { label: "Select objects", icon: "photoshop" },
+    { label: "Convert this image to video", icon: "firefly", image: imageToVideoIcon },
+    { label: "Generate image with reference", icon: "firefly", image: imageReferenceIcon },
+    { label: "Remove objects", icon: "firefly", image: genFillRemoveObjectIcon },
+    { label: "Generate a new image layer", icon: "photoshop", image: generateImagePhotoshopIcon },
+    { label: "Make quick adjustments", icon: "photoshop", image: adjustColorLightingIcon },
+    { label: "Select objects", icon: "photoshop", image: adjustObjectIcon },
   ],
   "firefly-image": [
-    { label: "Add an image effect", icon: "ai-assistant" },
+    { label: "Add an image effect", icon: "ai-assistant", image: applyPresetIcon },
   ],
   pdf: [
-    { label: "Chat with this document", icon: "acrobat" },
-    { label: "Summarize key points", icon: "acrobat" },
-    { label: "Edit the text", icon: "acrobat" },
-    { label: "Request signatures", icon: "acrobat" },
-    { label: "Convert to Microsoft Office", icon: "acrobat" },
-    { label: "Combine files", icon: "acrobat" },
+    { label: "Chat with this document", icon: "acrobat", image: chatWithPdfIcon },
+    { label: "Summarize key points", icon: "acrobat", image: summarizePdfIcon },
+    { label: "Edit the text", icon: "acrobat", image: editTextImgAcrobatIcon },
+    { label: "Request signatures", icon: "acrobat", image: requestSignaturesAcrobatIcon },
+    { label: "Convert to Microsoft Office", icon: "acrobat", image: pdfToWordIcon },
+    { label: "Combine files", icon: "acrobat", image: combineFilesIcon },
   ],
   video: [
-    { label: "Upscale video", icon: "firefly" },
-    { label: "Translate video", icon: "firefly" },
+    { label: "Upscale video", icon: "firefly", image: upscaleVideoIcon },
+    { label: "Translate video", icon: "firefly", image: translateVideoIcon },
   ],
   express: [
-    { label: "Add design elements", icon: "express" },
-    { label: "Add media", icon: "express" },
-    { label: "Generate video clip", icon: "express" },
-    { label: "Generate new image", icon: "express" },
-    { label: "Add text effect", icon: "express" },
-    { label: "Organize data", icon: "express" },
+    { label: "Add design elements", icon: "express", image: addDesignElementsIcon },
+    { label: "Add media", icon: "express", image: addMediaIcon },
+    { label: "Generate video clip", icon: "express", image: generateVideoExpressIcon },
+    { label: "Generate new image", icon: "express", image: generateImageExpressIcon },
+    { label: "Add text effect", icon: "express", image: textEffectsIcon },
+    { label: "Organize data", icon: "express", image: addChartsGridsIcon },
   ],
   illustrator: [
-    { label: "Add to Express file", icon: "express" },
+    { label: "Add to Express file", icon: "express", image: convertAicToExpressIcon },
   ],
   photoshop: [
-    { label: "Convert to video", icon: "firefly" },
-    { label: "Generate image with reference", icon: "firefly" },
-    { label: "Remove objects", icon: "photoshop" },
-    { label: "Generate new objects", icon: "photoshop" },
-    { label: "Generate new image layer", icon: "photoshop" },
-    { label: "Make quick adjustments", icon: "photoshop" },
+    { label: "Convert to video", icon: "firefly", image: imageToVideoIcon },
+    { label: "Generate image with reference", icon: "firefly", image: imageReferenceIcon },
+    { label: "Remove objects", icon: "photoshop", image: removeObjectPhotoshopIcon },
+    { label: "Generate new objects", icon: "photoshop", image: genFillPhotoshopIcon },
+    { label: "Generate new image layer", icon: "photoshop", image: generateImagePhotoshopIcon },
+    { label: "Make quick adjustments", icon: "photoshop", image: psQuickActionsIcon },
   ],
 };
 

@@ -2,7 +2,14 @@ import { createContext, useContext, useState, useCallback, useMemo, type ReactNo
 
 export type AppMode = "cc-home" | "cc-desktop";
 export type DisplayPreset = "full-desktop" | "content-only";
-export type PreviewMode = "small" | "fullscreen" | "split" | "action-tab" | "consolidated-open";
+export type PreviewMode =
+  | "small"
+  | "fullscreen"
+  | "split"
+  | "action-tab"
+  | "consolidated-open"
+  | "primary-open"
+  | "combined-actions";
 
 export type DisplayFlags = {
   desktopChrome: boolean;
@@ -88,7 +95,9 @@ function loadPreviewMode(): PreviewMode {
       stored === "fullscreen" ||
       stored === "split" ||
       stored === "action-tab" ||
-      stored === "consolidated-open"
+      stored === "consolidated-open" ||
+      stored === "primary-open" ||
+      stored === "combined-actions"
     ) {
       return stored;
     }

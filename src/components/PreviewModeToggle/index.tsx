@@ -1,12 +1,14 @@
 import type { PreviewMode } from "../../context/DisplayConfigContext";
 import "./PreviewModeToggle.css";
 
-const OPTIONS: { id: PreviewMode; label: string }[] = [
-  { id: "small", label: "Small modal" },
-  { id: "fullscreen", label: "Full screen modal" },
-  { id: "split", label: "Split view" },
+const OPTIONS: { id: PreviewMode; label: string; disabled?: boolean }[] = [
+  { id: "small", label: "Small modal", disabled: true },
+  { id: "fullscreen", label: "Full screen modal", disabled: true },
+  { id: "split", label: "Split view", disabled: true },
   { id: "action-tab", label: "Action tab" },
   { id: "consolidated-open", label: "Consolidated open" },
+  { id: "primary-open", label: "Primary open" },
+  { id: "combined-actions", label: "Combined actions" },
 ];
 
 export type PreviewModeToggleProps = {
@@ -26,8 +28,9 @@ export function PreviewModeToggle({ mode, onModeChange }: PreviewModeToggleProps
           <button
             key={option.id}
             type="button"
-            className={`preview-mode-toggle__preset ${mode === option.id ? "preview-mode-toggle__preset--active" : ""}`}
-            onClick={() => onModeChange(option.id)}
+            className={`preview-mode-toggle__preset ${mode === option.id ? "preview-mode-toggle__preset--active" : ""} ${option.disabled ? "preview-mode-toggle__preset--disabled" : ""}`}
+            onClick={() => !option.disabled && onModeChange(option.id)}
+            disabled={option.disabled}
             aria-pressed={mode === option.id}
           >
             {option.label}

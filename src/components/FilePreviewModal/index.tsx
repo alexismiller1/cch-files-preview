@@ -131,6 +131,16 @@ export type FilePreviewModalProps = {
    * on press) per CONSOLIDATED_OPEN_CONFIG, alongside a standalone action like "Edit in Firefly" when
    * that kind has one. Implies showActionsTab (reuses Option 4's fullscreen + Actions tab base). */
   consolidatedOpenMenu?: boolean;
+  /** Option 6 (Primary open): the first two CONSOLIDATED_OPEN_CONFIG items render as standalone
+   * buttons (the first styled as the primary/accent action), and any remaining items move into the
+   * "..." overflow menu, above "Share", separated by a divider. Implies showActionsTab. */
+  primaryOpenMenu?: boolean;
+  /** Option 7 (Combined actions): duplicates Primary open's header, and additionally merges the
+   * separate AI Assistant rail tab into the Actions tab (for every kind that has one — Acrobat still
+   * has none) — the AI prompt bar always shows at the top there, and submitting a prompt shows a live
+   * conversation in place (without switching tabs) with the action cards still visible below it.
+   * The Actions tab keeps its "Create" rail icon throughout. */
+  combinedActionsTab?: boolean;
   file: FileEntry;
   onClose: () => void;
   onNavigate: (direction: "prev" | "next") => void;
@@ -267,6 +277,8 @@ export function FilePreviewModal({
   size,
   showActionsTab = false,
   consolidatedOpenMenu = false,
+  primaryOpenMenu = false,
+  combinedActionsTab = false,
   file,
   onClose,
   onNavigate,
@@ -280,12 +292,18 @@ export function FilePreviewModal({
   const showResolution = RASTER_KINDS.includes(file.kind);
   const extraOpenActions = EXTRA_OPEN_ACTIONS[file.kind] ?? [];
   const consolidatedOpenConfig = CONSOLIDATED_OPEN_CONFIG[file.kind];
+  const primaryOpenButtons = primaryOpenMenu ? consolidatedOpenConfig.slice(0, 2) : [];
+  const primaryOpenOverflow = primaryOpenMenu ? consolidatedOpenConfig.slice(2) : [];
   const showPromptBar = showActionsTab && PROMPT_BAR_KINDS.includes(file.kind);
   const hasQuickActions = !!actions && actions.length > 0;
-  /** The Actions tab only exists when there's something to put in it — matches the "no tab" behavior on boards, which have neither a prompt bar nor quick actions. */
-  const actionsTabAvailable = showActionsTab && (hasQuickActions || showPromptBar);
   /** Acrobat (PDF) files don't get the AI Assistant tab. */
   const showAiTab = file.kind !== "pdf";
+  /** Option 7 only: merges the AI Assistant tab into Actions for every kind that has one — PDF still doesn't, so it keeps its own plain Actions tab. */
+  const mergeAiIntoActions = combinedActionsTab && showAiTab;
+  /** The Actions tab only exists when there's something to put in it — matches the "no tab" behavior on boards, which have neither a prompt bar nor quick actions. Once AI is merged in, the tab is always available for any kind that would've had the AI tab, even with no quick actions of its own (e.g. boards). */
+  const actionsTabAvailable = showActionsTab && (hasQuickActions || showPromptBar || mergeAiIntoActions);
+  /** The prompt bar normally only shows for PROMPT_BAR_KINDS, but once AI is merged in it doubles as the "ask AI Assistant" entry point for every combinable kind. */
+  const promptBarVisible = mergeAiIntoActions || showPromptBar;
 
   const [detailsCollapsed, setDetailsCollapsed] = useState(false);
   const [activeTab, setActiveTab] = useState<RailTab>(() => {
@@ -296,21 +314,35 @@ export function FilePreviewModal({
   });
   const [draftPrompt, setDraftPrompt] = useState("");
   const [aiPrompt, setAiPrompt] = useState<string | null>(null);
+  const [aiResponseReady, setAiResponseReady] = useState(false);
 
   // The modal doesn't remount when navigating prev/next to a different file, so the active tab has to
   // be reset to that file's own recommended default (Actions when available, else AI Assistant/Details)
   // whenever the previewed file changes — otherwise e.g. leaving a board (no Actions tab, so it falls
   // back to AI Assistant) and landing on a Photoshop file would incorrectly stay on AI Assistant instead
-  // of that file's Create tab.
+  // of that file's Create tab. The in-progress conversation is also cleared so the next file doesn't
+  // inherit a stale prompt/response from the one just closed.
   useEffect(() => {
     setActiveTab(actionsTabAvailable ? "actions" : showActionsTab && showAiTab ? "ai" : "details");
+    setAiPrompt(null);
+    setAiResponseReady(false);
   }, [file.id, actionsTabAvailable, showActionsTab, showAiTab]);
+
+  // Simulates the assistant "finishing" a bit after it starts "thinking" — once ready, the combined
+  // Actions tab swaps the conversation's thinking indicator for a completed reply, and the preview
+  // itself picks up an "Updated" badge to show the file was changed.
+  useEffect(() => {
+    if (!aiPrompt) return;
+    const timer = setTimeout(() => setAiResponseReady(true), 1800);
+    return () => clearTimeout(timer);
+  }, [aiPrompt]);
 
   const submitPrompt = () => {
     const trimmed = draftPrompt.trim();
     if (!trimmed) return;
     setAiPrompt(trimmed);
-    setActiveTab("ai");
+    setAiResponseReady(false);
+    if (!mergeAiIntoActions) setActiveTab("ai");
     setDraftPrompt("");
   };
 
@@ -323,11 +355,37 @@ export function FilePreviewModal({
             className="file-preview-modal-quick-action"
             onClick={() => onQuickAction(action.icon)}
           >
-            <MnemonicIcon kind={action.icon} className="file-preview-modal-quick-action-icon" />
+            {action.image ? (
+              <img src={action.image} alt="" className="file-preview-modal-quick-action-icon" />
+            ) : (
+              <MnemonicIcon kind={action.icon} className="file-preview-modal-quick-action-icon" />
+            )}
             <span>{action.label}</span>
           </button>
         ))
       : null;
+
+  const promptBar = promptBarVisible && (
+    <div className="file-preview-modal-create-prompt-box">
+      <MagicWandIcon />
+      <input
+        type="text"
+        className="file-preview-modal-prompt-field"
+        placeholder="Describe a change to this file"
+        value={draftPrompt}
+        onChange={(e) => setDraftPrompt(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            submitPrompt();
+          }
+        }}
+      />
+      <ActionButton isQuiet size="S" aria-label="Send" onPress={submitPrompt}>
+        <SendIcon />
+      </ActionButton>
+    </div>
+  );
 
   const modal = (
     <div className={`file-preview-modal file-preview-modal--${size}`} role="dialog" aria-modal="true" aria-label={file.name}>
@@ -343,6 +401,18 @@ export function FilePreviewModal({
         <div className="file-preview-modal-header-right">
           {consolidatedOpenMenu ? (
             <OpenMenuButton items={consolidatedOpenConfig} onOpenApp={onOpenApp} />
+          ) : primaryOpenMenu ? (
+            primaryOpenButtons.map((item, index) => (
+              <Button
+                key={item.label}
+                variant={index === 0 ? "accent" : "secondary"}
+                size="M"
+                onPress={() => onOpenApp(item.appName)}
+              >
+                <OpenInIcon />
+                <Text>{item.label}</Text>
+              </Button>
+            ))
           ) : (
             <>
               {extraOpenActions.map((action) => (
@@ -365,6 +435,16 @@ export function FilePreviewModal({
             </>
           )}
           <ActionMenu isQuiet size="L" aria-label="More actions">
+            {primaryOpenOverflow.length > 0 && (
+              <MenuSection aria-label="Open actions">
+                {primaryOpenOverflow.map((item) => (
+                  <MenuItem key={item.label} textValue={item.label} onAction={() => onOpenApp(item.appName)}>
+                    <OpenInIcon />
+                    <Text slot="label">{item.label}</Text>
+                  </MenuItem>
+                ))}
+              </MenuSection>
+            )}
             <MenuSection aria-label="File actions">
               <MenuItem textValue="Share">
                 <ShareIcon />
@@ -414,7 +494,10 @@ export function FilePreviewModal({
       </header>
 
       <div className="file-preview-modal-body">
-        <div className="file-preview-modal-preview">
+        <div className={`file-preview-modal-preview${mergeAiIntoActions && aiResponseReady ? " file-preview-modal-preview--updated" : ""}`}>
+          {mergeAiIntoActions && aiResponseReady && (
+            <span className="file-preview-modal-updated-badge">Updated</span>
+          )}
           {isVideo ? (
             <VideoPreview file={file} />
           ) : (
@@ -450,7 +533,7 @@ export function FilePreviewModal({
                     <ToolsIcon />
                   </RailTabButton>
                 )}
-                {showAiTab && (
+                {showAiTab && !mergeAiIntoActions && (
                   <RailTabButton
                     tab="ai"
                     activeTab={activeTab}
@@ -537,35 +620,51 @@ export function FilePreviewModal({
 
                 {activeTab === "actions" && actionsTabAvailable && (
                   <div className="file-preview-modal-actions-panel">
-                    <p className="file-preview-modal-section-heading">Edit your file</p>
-                    <div className="file-preview-modal-quick-actions">
-                      {showPromptBar && (
-                        <div className="file-preview-modal-create-prompt-box">
-                          <MagicWandIcon />
-                          <input
-                            type="text"
-                            className="file-preview-modal-prompt-field"
-                            placeholder="Describe a change to this file"
-                            value={draftPrompt}
-                            onChange={(e) => setDraftPrompt(e.target.value)}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") {
-                                e.preventDefault();
-                                submitPrompt();
-                              }
-                            }}
-                          />
-                          <ActionButton isQuiet size="S" aria-label="Send" onPress={submitPrompt}>
-                            <SendIcon />
-                          </ActionButton>
+                    {mergeAiIntoActions ? (
+                      <>
+                        <p className="file-preview-modal-section-heading">Ask AI Assistant</p>
+                        <div className="file-preview-modal-quick-actions">
+                          {promptBar}
+                          {aiPrompt && (
+                            <div className="file-preview-modal-ai-conversation">
+                              <div className="file-preview-modal-ai-user-bubble">{aiPrompt}</div>
+                              {aiResponseReady ? (
+                                <div className="file-preview-modal-ai-response-bubble">
+                                  Done — I've updated your file based on your request.
+                                </div>
+                              ) : (
+                                <div className="file-preview-modal-ai-thinking">
+                                  <span className="file-preview-modal-ai-thinking-dots">
+                                    <span />
+                                    <span />
+                                    <span />
+                                  </span>
+                                  Generating response
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
-                      )}
-                      {quickActionButtons}
-                    </div>
+                        {quickActionButtons && (
+                          <>
+                            <p className="file-preview-modal-section-heading">Quick actions</p>
+                            <div className="file-preview-modal-quick-actions">{quickActionButtons}</div>
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <p className="file-preview-modal-section-heading">Edit your file</p>
+                        <div className="file-preview-modal-quick-actions">
+                          {promptBar}
+                          {quickActionButtons}
+                        </div>
+                      </>
+                    )}
                   </div>
                 )}
 
-                {activeTab === "ai" && showAiTab && (
+                {activeTab === "ai" && showAiTab && !mergeAiIntoActions && (
                   <div className="file-preview-modal-ai-panel">
                     {aiPrompt ? (
                       <div className="file-preview-modal-ai-conversation">
@@ -639,7 +738,7 @@ export function FilePreviewModal({
                       <ToolsIcon />
                     </RailTabButton>
                   )}
-                  {showAiTab && (
+                  {showAiTab && !mergeAiIntoActions && (
                     <RailTabButton tab="ai" activeTab={activeTab} label="AI Assistant" onSelect={setActiveTab}>
                       <MagicWandIcon />
                     </RailTabButton>
