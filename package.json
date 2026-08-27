@@ -11,8 +11,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@adtech/protopack-services-all": "^2.0.1",
-    "@identity/imslib": "^0.47.0",
     "@react-spectrum/s2": "^1.2.0",
     "react": "^19.0.0",
     "react-aria-components": "^1.15.1",

@@ -12,12 +12,6 @@ importers:
 
   .:
     dependencies:
-      '@adtech/protopack-services-all':
-        specifier: ^2.0.1
-        version: 2.0.1(axios@1.13.5)
-      '@identity/imslib':
-        specifier: ^0.47.0
-        version: 0.47.0
       '@react-spectrum/s2':
         specifier: ^1.2.0
         version: 1.2.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -90,39 +84,6 @@ importers:
         version: 1.17.9(vite@6.4.1(tsx@4.21.0))
 
 packages:
-
-  '@adtech/protopack-services-adobe3p@2.0.1':
-    resolution: {integrity: sha512-lyx7559crXXhe43RZ4CsNDwL0b1NSstJXCnjbAmBueT4Y69KTRqDcnZ91ohF5YAgnXKGvQBULp0iTrWjzXp+ig==, tarball: https://artifactory.corp.adobe.com/artifactory/api/npm/npm-adtech-release/@adtech/protopack-services-adobe3p/-/@adtech/protopack-services-adobe3p-2.0.1.tgz}
-    peerDependencies:
-      axios: ^1.0.0
-
-  '@adtech/protopack-services-all@2.0.1':
-    resolution: {integrity: sha512-A8ErN/53+zLOBQIvGC2nA8hAI+YzT+myd6Pice+RxfAq2WsWS0jBWbYD3D64YDNYU3mCBWgUAkqTmpSc5koDcA==, tarball: https://artifactory.corp.adobe.com/artifactory/api/npm/npm-adtech-release/@adtech/protopack-services-all/-/@adtech/protopack-services-all-2.0.1.tgz}
-    engines: {node: '>=16.0.0'}
-
-  '@adtech/protopack-services-core@2.0.1':
-    resolution: {integrity: sha512-NbQSpaELgD3nwoW1EJL00dOxg4dIoNBuW+ryb10KFBZ6ZVdBwbMRRoo2hme+c1YkcQYZ1fjk3w6p2wH8UDHhmQ==, tarball: https://artifactory.corp.adobe.com/artifactory/api/npm/npm-adtech-release/@adtech/protopack-services-core/-/@adtech/protopack-services-core-2.0.1.tgz}
-    engines: {node: '>=16.0.0'}
-
-  '@adtech/protopack-services-digital-imaging@2.0.1':
-    resolution: {integrity: sha512-x4Comfr1FHvRgAwggbcposxZXBF3aXOic15w0noC3hax9nhegjJoSnEzNWv/GwUBV+1qp7qA/2QqLnyTW/6SlQ==, tarball: https://artifactory.corp.adobe.com/artifactory/api/npm/npm-adtech-release/@adtech/protopack-services-digital-imaging/-/@adtech/protopack-services-digital-imaging-2.0.1.tgz}
-    peerDependencies:
-      axios: ^1.0.0
-
-  '@adtech/protopack-services-firefly@2.0.1':
-    resolution: {integrity: sha512-FXvdqrXhNnTVG+RdWWS7+YxMP8rjiUFOFydl5rj1A5cMaE+F3VLOo+exuQhYB6uFYqvnszknvXwRzn0WNJ3OIA==, tarball: https://artifactory.corp.adobe.com/artifactory/api/npm/npm-adtech-release/@adtech/protopack-services-firefly/-/@adtech/protopack-services-firefly-2.0.1.tgz}
-    peerDependencies:
-      axios: ^1.0.0
-
-  '@adtech/protopack-services-lightroom@2.0.1':
-    resolution: {integrity: sha512-0uAOvuz8hiV9/ZB0Pyf2oOHphDA9amqt6yL41gOZM8rkNlzqkny+lpOsnkFOw43ZkpC+h98JiRlv/wFQ6ySTuQ==, tarball: https://artifactory.corp.adobe.com/artifactory/api/npm/npm-adtech-release/@adtech/protopack-services-lightroom/-/@adtech/protopack-services-lightroom-2.0.1.tgz}
-    peerDependencies:
-      axios: ^1.0.0
-
-  '@adtech/protopack-services-ps@2.0.1':
-    resolution: {integrity: sha512-4hNCsr+tY1K2SP0DAbzofj/HAQw7j8hAACFLP04wEiRiklezosZKC29OWfNur/yrDTmkyVozgHR45/kj37LnfA==, tarball: https://artifactory.corp.adobe.com/artifactory/api/npm/npm-adtech-release/@adtech/protopack-services-ps/-/@adtech/protopack-services-ps-2.0.1.tgz}
-    peerDependencies:
-      axios: ^1.0.0
 
   '@babel/code-frame@7.29.0':
     resolution: {integrity: sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw==}
@@ -587,9 +548,6 @@ packages:
   '@humanwhocodes/retry@0.4.3':
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
-
-  '@identity/imslib@0.47.0':
-    resolution: {integrity: sha512-1RmFOI8JxU9ik5cDL87CxClVRQe2+1km1mTkpilH0FOHUwjJSdWafOfCZH99icA/GOpnnLOn87oJJduino0CeQ==, tarball: https://artifactory.corp.adobe.com/artifactory/api/npm/npm-adobe-release/@identity/imslib/-/@identity/imslib-0.47.0.tgz}
 
   '@internationalized/date@3.11.0':
     resolution: {integrity: sha512-BOx5huLAWhicM9/ZFs84CzP+V3gBW6vlpM02yzsdYC7TGlZJX1OJiEEHcSayF00Z+3jLlm4w79amvSt6RqKN3Q==}
@@ -2481,9 +2439,6 @@ packages:
     resolution: {integrity: sha512-ei8Aos7ja0weRpFzJnEA9UHJ/7XQmqglbRwnf2ATjcB9Wq874VKH9kfjjirM6UhU2/E5fFYadylyhFldcqSidQ==}
     engines: {node: '>=18'}
 
-  core-js@3.48.0:
-    resolution: {integrity: sha512-zpEHTy1fjTMZCKLHUZoVeylt9XrzaIN2rbPXEt0k+q7JE5CkCZdo6bNq55bn24a69CH7ErAVLKijxJja4fw+UQ==}
-
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
@@ -3063,9 +3018,6 @@ packages:
     peerDependencies:
       typescript: '>=4.8.4'
 
-  ts-polyfill@3.8.2:
-    resolution: {integrity: sha512-x0M4kx+FObO88sedZ1zld+YX+GvcgaYSVnHspNftI4GRT86FTBy41O89ztKfvue0XtaKpb8WBpPZsh82hy3Ncw==}
-
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
@@ -3275,44 +3227,6 @@ packages:
     engines: {node: '>=10'}
 
 snapshots:
-
-  '@adtech/protopack-services-adobe3p@2.0.1(axios@1.13.5)':
-    dependencies:
-      '@adtech/protopack-services-core': 2.0.1
-      axios: 1.13.5(debug@4.4.3)
-
-  '@adtech/protopack-services-all@2.0.1(axios@1.13.5)':
-    dependencies:
-      '@adtech/protopack-services-adobe3p': 2.0.1(axios@1.13.5)
-      '@adtech/protopack-services-core': 2.0.1
-      '@adtech/protopack-services-digital-imaging': 2.0.1(axios@1.13.5)
-      '@adtech/protopack-services-firefly': 2.0.1(axios@1.13.5)
-      '@adtech/protopack-services-lightroom': 2.0.1(axios@1.13.5)
-      '@adtech/protopack-services-ps': 2.0.1(axios@1.13.5)
-    transitivePeerDependencies:
-      - axios
-
-  '@adtech/protopack-services-core@2.0.1': {}
-
-  '@adtech/protopack-services-digital-imaging@2.0.1(axios@1.13.5)':
-    dependencies:
-      '@adtech/protopack-services-core': 2.0.1
-      axios: 1.13.5(debug@4.4.3)
-
-  '@adtech/protopack-services-firefly@2.0.1(axios@1.13.5)':
-    dependencies:
-      '@adtech/protopack-services-core': 2.0.1
-      axios: 1.13.5(debug@4.4.3)
-
-  '@adtech/protopack-services-lightroom@2.0.1(axios@1.13.5)':
-    dependencies:
-      '@adtech/protopack-services-core': 2.0.1
-      axios: 1.13.5(debug@4.4.3)
-
-  '@adtech/protopack-services-ps@2.0.1(axios@1.13.5)':
-    dependencies:
-      '@adtech/protopack-services-core': 2.0.1
-      axios: 1.13.5(debug@4.4.3)
 
   '@babel/code-frame@7.29.0':
     dependencies:
@@ -3664,10 +3578,6 @@ snapshots:
   '@humanwhocodes/module-importer@1.0.1': {}
 
   '@humanwhocodes/retry@0.4.3': {}
-
-  '@identity/imslib@0.47.0':
-    dependencies:
-      ts-polyfill: 3.8.2
 
   '@internationalized/date@3.11.0':
     dependencies:
@@ -6478,8 +6388,6 @@ snapshots:
 
   cookie@1.1.1: {}
 
-  core-js@3.48.0: {}
-
   cross-spawn@7.0.6:
     dependencies:
       path-key: 3.1.1
@@ -7266,10 +7174,6 @@ snapshots:
   ts-api-utils@2.4.0(typescript@5.7.3):
     dependencies:
       typescript: 5.7.3
-
-  ts-polyfill@3.8.2:
-    dependencies:
-      core-js: 3.48.0
 
   tslib@2.8.1: {}
 
